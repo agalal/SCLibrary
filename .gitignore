@@ -35,3 +35,7 @@ config/*
 
 # Redis installation
 redis/*
+
+
+#  not sure what this is
+dump.rdb
