@@ -102,13 +102,14 @@
 .context-menu-item {
   background-color: #FFF;
   color: #2F2F2F;
-  padding: 0.5em 2em;
+  padding: 0.4em 1.6em;
   width: 100%;
   position: relative;
   user-select: none; }
 
 .context-menu-separator {
-  border-bottom: 1px solid #999999;
+  border-bottom: 1px solid #d6d6d6;
+  padding: 0;
   margin: 0.25em 0; }
 
 .context-menu-item > label > input,
