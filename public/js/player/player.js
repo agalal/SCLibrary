@@ -171,7 +171,7 @@ function waveform() {
   mids1 = d3.mean(fd.slice(99, 102)) * options.height * .95;
   mids2 = d3.mean(fd.slice(60, 63)) * options.height * .9;
   lows = d3.mean(fd.slice(34, 37)) * options.height * .8;
-  kick = ((d3.mean(fd.slice(7, 9)) * options.height * .7) - 15) * 1.7;
+  kick = d3.mean(fd.slice(7, 9)) * options.height * .7;
 
   var data = [];
   var b = 33 - window_width;
@@ -213,15 +213,15 @@ function waveform() {
     })
     .attr("y", function(d, i) {
       var height = y(d * options.bar_height) / h;
-      if (i % 9 === 0) height *= composite(1, 0, 0, 0, 0, 0, 0);
-      if (i % 9 === 1) height *= composite(1, 1, 0, 0, 0, 0, 0);
-      if (i % 9 === 2) height *= composite(1, 4, 0, 0, 0, 0, 0);
-      if (i % 9 === 3) height *= composite(3, 2, 0, 0, 0, 0, 0);
-      if (i % 9 === 4) height *= composite(5, 1, 0, 0, 0, 0, 0);
-      if (i % 9 === 5) height *= composite(3, 2, 0, 0, 0, 0, 0);
-      if (i % 9 === 6) height *= composite(1, 4, 0, 0, 0, 0, 0);
-      if (i % 9 === 7) height *= composite(1, 1, 0, 0, 0, 0, 0);
-      if (i % 9 === 8) height *= composite(1, 0, 0, 0, 0, 0, 0);
+      if (i % 9 === 0) height *= composite(1, 3, 4, 6, 1, 0, 0); //15
+      if (i % 9 === 1) height *= composite(2, 2, 7, 3, 1, 0, 0); //15
+      if (i % 9 === 2) height *= composite(4, 6, 3, 2, 0, 0, 0); //15
+      if (i % 9 === 3) height *= composite(8, 4, 2, 1, 0, 0, 0); //15
+      if (i % 9 === 4) height *= composite(10, 2, 1, 0, 0, 1, 1); //15
+      if (i % 9 === 5) height *= composite(8, 2, 0, 0, 0, 2, 3); //15
+      if (i % 9 === 6) height *= composite(3, 0, 0, 0, 1, 3, 8); //15
+      if (i % 9 === 7) height *= composite(2, 0, 0, 1, 2, 8, 2); //15
+      if (i % 9 === 8) height *= composite(0, 0, 1, 5, 7, 2, 0); //15
       return h - Math.pow(Math.max(height, .01), 1.5);
     })
     .attr("width", function(d) {
@@ -230,15 +230,15 @@ function waveform() {
     })
     .attr("height", function(d, i) {
       var height = y(d * options.bar_height) / h;
-      if (i % 9 === 0) height *= composite(1, 0, 0, 0, 0, 0, 0);
-      if (i % 9 === 1) height *= composite(1, 1, 0, 0, 0, 0, 0);
-      if (i % 9 === 2) height *= composite(1, 4, 0, 0, 0, 0, 0);
-      if (i % 9 === 3) height *= composite(3, 2, 0, 0, 0, 0, 0);
-      if (i % 9 === 4) height *= composite(5, 1, 0, 0, 0, 0, 0);
-      if (i % 9 === 5) height *= composite(3, 2, 0, 0, 0, 0, 0);
-      if (i % 9 === 6) height *= composite(1, 4, 0, 0, 0, 0, 0);
-      if (i % 9 === 7) height *= composite(1, 1, 0, 0, 0, 0, 0);
-      if (i % 9 === 8) height *= composite(1, 0, 0, 0, 0, 0, 0);
+      if (i % 9 === 0) height *= composite(1, 3, 4, 6, 1, 0, 0); //15
+      if (i % 9 === 1) height *= composite(2, 2, 7, 3, 1, 0, 0); //15
+      if (i % 9 === 2) height *= composite(4, 6, 3, 2, 0, 0, 0); //15
+      if (i % 9 === 3) height *= composite(8, 4, 2, 1, 0, 0, 0); //15
+      if (i % 9 === 4) height *= composite(10, 2, 1, 0, 0, 1, 1); //15
+      if (i % 9 === 5) height *= composite(8, 2, 0, 0, 0, 2, 3); //15
+      if (i % 9 === 6) height *= composite(3, 0, 0, 0, 1, 3, 8); //15
+      if (i % 9 === 7) height *= composite(2, 0, 0, 1, 2, 8, 2); //15
+      if (i % 9 === 8) height *= composite(0, 0, 1, 5, 7, 2, 0); //15
       return Math.pow(Math.max(height, .01), 1.5) + options.bar_y_offset;
     });
 }
