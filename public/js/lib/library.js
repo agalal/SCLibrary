@@ -41,9 +41,6 @@ app.directive("library", [function (){
                 scope.sortReverse = true;
                 scope.searchTerm = '';
 
-                // Variable used for pagination
-                scope.limit = 200;
-
                 // Draggable handles for the columns
                 scope.colSizeable = attachColHandles();
                 scope.playNext = nextListener();
@@ -207,7 +204,7 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     // Update the view with the user's collection
     $scope.displaySongs = function(){
-        $scope.display = $scope.collection.splice(0,$scope.limit);
+        $scope.display = $scope.collection.splice(0,300);
         $scope.context = 'songs';
         $scope.currPlaylist = null;
     }
@@ -356,14 +353,19 @@ app.controller("LibraryCtlr", function($scope, $http){
         name: "Download page",
         callback: function(key, opt){
           var track = JSON.parse(opt.$trigger[0].dataset.track);
-          var url = track.t.properties.purchase_url;
-          window.open(url);
+          $scope.openPurchaseUrl(track);
         }
       }
       settings.selector = '.track-row[data-purchase="true"]';
 
       // Create the context menu
       $.contextMenu(settings);
+    }
+
+    $scope.openPurchaseUrl = function(track){
+      $scope.toggleDownload({track});
+      var url = track.t.properties.purchase_url;
+      window.open(url);
     }
 
     $scope.buildAddToPlaylistMenu = function(result){
