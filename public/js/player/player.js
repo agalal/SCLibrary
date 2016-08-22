@@ -186,7 +186,7 @@ function waveform() {
 
   var max = d3.max(data);
   var w = (7 - 12 / window_width)
-  var h = max * 2;
+  var h = max * 2 || 0;
 
   var x = d3.scale.linear()
     .domain([0, 1])
