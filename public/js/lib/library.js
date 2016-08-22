@@ -266,8 +266,9 @@ app.controller("LibraryCtlr", function($scope, $http){
       // Destroy the current context menu
       $.contextMenu( 'destroy' );
 
-      // Initialize rate track menu
+      // Initialize rate track and search on menus
       $scope.buildRateTrackMenu();
+      $scope.buildSearchOnMenu();
 
       // Create object to hold context menu items
       var items = {};
@@ -321,6 +322,11 @@ app.controller("LibraryCtlr", function($scope, $http){
 
       // Include separator
       items.sep1 = "---------";
+
+      items.search_on = {
+        name: "Search on...",
+        items: $scope.search_menu
+      }
 
       // Include link to soundcloud page
       items.soundcloud_page = {
@@ -408,7 +414,7 @@ app.controller("LibraryCtlr", function($scope, $http){
     }
 
     $scope.buildRateTrackMenu = function(){
-      var rating_menu = {};
+      var rating_menu = [];
 
       for (var i = 0; i <= 5; i++){
           var next =  {
@@ -431,8 +437,37 @@ app.controller("LibraryCtlr", function($scope, $http){
       }
 
       rating_menu[0].name = "Clear rating"
-
       $scope.rating_menu = rating_menu;
+    }
+
+    $scope.buildSearchOnMenu = function(){
+      var sites = [
+        { url: 'http://www.zippysharedjs.com/search/?q=',
+          name: 'ZippyShare'
+        },
+        { url: 'https://thepiratebay.org/search/',
+          name: 'thepiratebay'
+        },
+        { url: 'https://www.beatport.com/search?q=',
+          name: 'Beatport'
+        }
+      ];
+      var search_menu = [];
+
+      for (var i = 0; i < sites.length; i++){
+          var name = sites[i].name;
+          var url = sites[i].url;
+          var next =  {
+              name: name,
+              callback: function(key, opt){
+                var tags = parseForTags(JSON.parse(opt.$trigger[0].dataset.track));
+                window.open(url + tags);
+              }
+          }
+          search_menu[i] = next;
+      }
+
+      $scope.search_menu = search_menu;
     }
 
     $scope.incPlayCount = function(track){
@@ -481,4 +516,11 @@ function updateCollection(){
   $.post(url, function( data ) {
     location.reload();
   });
+}
+
+function parseForTags(track){
+  var name = track.t.properties.name;
+  var artist = track.c.properties.name;
+  var search = name + " " + artist;
+  return search;
 }
