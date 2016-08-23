@@ -49,77 +49,64 @@
                         <a also-resize="channel" class="dark">Channel</a>
                         <span ng-show="sortType == 'c.properties.name' && !sortReverse" class="fa fa-caret-down"></span>
                         <span ng-show="sortType == 'c.properties.name' && sortReverse" class="fa fa-caret-up"></span>
-                    </li>
                     <li class="text-center" ng-click="updateSort('t.properties.name')">
                         <a also-resize="title" class="dark">Title</a>
                         <span ng-show="sortType == 't.properties.name' && !sortReverse" class="fa fa-caret-down"></span>
                         <span ng-show="sortType == 't.properties.name' && sortReverse" class="fa fa-caret-up"></span>
-                    </li>
                     <li class="text-center" ng-click="updateSort('t.properties.created_at')">
                         <a also-resize="date" class="dark">Date Created</a>
                         <span ng-show="sortType == 't.properties.created_at' && !sortReverse" class="fa fa-caret-down"></span>
                         <span ng-show="sortType == 't.properties.created_at' && sortReverse" class="fa fa-caret-up"></span>
-                    </li>
                     <li class="text-center" ng-click="updateSort('t.properties.genre')">
                         <a also-resize="genre" class="dark">Genre</a>
                         <span ng-show="sortType == 't.properties.genre' && !sortReverse" class="fa fa-caret-down"></span>
                         <span ng-show="sortType == 't.properties.genre' && sortReverse" class="fa fa-caret-up"></span>
-                    </li>
                     <li class="text-center" ng-click="updateSort('t.properties.duration')">
                         <a also-resize="duration" class="dark">Duration</a>
                         <span ng-show="sortType == 't.properties.duration' && !sortReverse" class="fa fa-caret-down"></span>
                         <span ng-show="sortType == 't.properties.duration' && sortReverse" class="fa fa-caret-up"></span>
-                    </li>
                     <li class="text-center" ng-click="updateSort('r.properties.created_at')">
                         <a also-resize="liked" class="dark">Date Liked</a>
                         <span ng-show="sortType == 'r.properties.created_at' && !sortReverse" class="fa fa-caret-down"></span>
                         <span ng-show="sortType == 'r.properties.created_at' && sortReverse" class="fa fa-caret-up"></span>
-                    </li>
                     <li class="text-center" ng-click="updateSort('r.properties.play_count')">
                         <a also-resize="playcount" class="dark">Play Count</a>
                         <span ng-show="sortType == 'r.properties.play_count' && !sortReverse" class="fa fa-caret-down"></span>
                         <span ng-show="sortType == 'r.properties.play_count' && sortReverse" class="fa fa-caret-up"></span>
-                    </li>
                     <li class="text-center" ng-click="updateSort('r.properties.rating')">
                         <a also-resize="rating" class="dark">Rating</a>
                         <span ng-show="sortType == 'r.properties.rating' && !sortReverse" class="fa fa-caret-down"></span>
                         <span ng-show="sortType == 'r.properties.rating' && sortReverse" class="fa fa-caret-up"></span>
-                    </li>
                     <li class="text-center" ng-click="updateSort('t.properties.purchase_url_domain')">
                         <a also-resize="domain" class="dark">Domain</a>
                         <span ng-show="sortType == 'r.properties.purchase_url_domain' && !sortReverse" class="fa fa-caret-down"></span>
                         <span ng-show="sortType == 'r.properties.purchase_url_domain' && sortReverse" class="fa fa-caret-up"></span>
-                    </li>
-                    <li class="text-center" ng-click="updateSort('r.properties.downloaded')">
-                        <a also-resize="downloaded" class="dark">Downloaded</a>
+                    <li class="text-center downloaded" ng-click="updateSort('r.properties.downloaded')">
+                        <a also-resize="downloaded" class="dark"><i style="height:1em; width:1em;display:inline-block;background-image:url(/images/sc_icons/download.svg);"></i></a>
                         <span ng-show="sortType == 'r.properties.downloaded' && !sortReverse" class="fa fa-caret-down"></span>
                         <span ng-show="sortType == 'r.properties.downloaded' && sortReverse" class="fa fa-caret-up"></span>
-                    </li>
                 </ol>
-            </li>
         </ul>
         <ul class="list">
             <li class="track-row" ng-repeat="track in display | filter:searchTerm" ng-click="playSong(track, this)" ng-init="updateMenu()" data-track="{{track}}" data-id="{{track.t._id}}" data-purchase="{{hasPurchaseUrl(track)}}">
                 <!--td >x</td-->
                 <ol>
-                    <li class="channel" ng-bind="track.c.properties.name"></li>
-                    <li class="title" ng-bind="track.t.properties.name"></li>
-                    <li class="date" ng-bind="formatDate(track.t.properties.created_at)"></li>
-                    <li class="genre" ng-bind="track.t.properties.genre"></li>
-                    <li class="duration" ng-bind="convertTime(track.t.properties.duration)"></li>
-                    <li class="liked" ng-bind="formatDate(track.r.properties.created_at)"></li>
-                    <li class="playcount" ng-bind="track.r.properties.play_count"></li>
-                    <li class="rating" ng-bind="track.r.properties.rating"></li>
+                    <li class="channel" ng-bind="track.c.properties.name">
+                    <li class="title" ng-bind="track.t.properties.name">
+                    <li class="date" ng-bind="formatDate(track.t.properties.created_at)">
+                    <li class="genre" ng-bind="track.t.properties.genre">
+                    <li class="duration" ng-bind="convertTime(track.t.properties.duration)">
+                    <li class="liked" ng-bind="formatDate(track.r.properties.created_at)">
+                    <li class="playcount" ng-bind="track.r.properties.play_count">
+                    <li class="rating" ng-bind="track.r.properties.rating">
                     <li class="domain" ng-click="$event.stopPropagation()">
                         <a ng-click="openPurchaseUrl(track)">
                           {{track.t.properties.purchase_url_domain}}
                         </a>
-                    </li>
                     <li style="height:100%" ng-click="toggleDownload(this); $event.stopPropagation()">
                       <input type="checkbox" class="downloaded" ng-checked="track.r.properties.downloaded"></input>
-                    </li>
+
                 </ol>
-            </li>
         </ul>
     </table>
 </div>
