@@ -607,15 +607,20 @@ div#settings-popup {
   margin: 7px 0;
 }
 
+a#autocheck-toggle + a,
 a#autoplay-toggle + a,
 a#shuffle-toggle + a {
   color: #333 !important;
   text-decoration: none !important;
 }
+
+a#autocheck-toggle.toggled + a,
 a#autoplay-toggle.toggled + a,
 a#shuffle-toggle.toggled + a {
   color: #3b65ff !important;
 }
+
+a#autocheck-toggle,
 a#autoplay-toggle,
 a#shuffle-toggle {
   width: 1em;

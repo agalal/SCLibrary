@@ -286,34 +286,3 @@ function attachColHandles() {
     });
   });
 }
-
-function nextListener() {
-  // autoplay!
-  // hack to detect when song is over:
-  // listen for the width of the progress bar
-  var observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutationRecord) {
-
-      var completionPer = mutationRecord.target.style.width;
-
-      // move the image background, since we're already listening
-      if (completionPer == "100%") {
-        var track;
-        if (queue.length === 0) {
-          track = autoqueue.shift();
-          loadSong(track);
-        } else {
-          track = autoqueue.shift();
-          loadSong(track);
-        }
-
-      }
-    });
-  });
-
-  var target = document.getElementById('back-div');
-  observer.observe(target, {
-    attributes: true,
-    attributeFilter: ['style']
-  });
-}

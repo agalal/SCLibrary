@@ -43,8 +43,6 @@ app.directive("library", [function (){
 
                 // Draggable handles for the columns
                 scope.colSizeable = attachColHandles();
-                scope.playNext = nextListener();
-
             }
         }
     };
@@ -374,7 +372,9 @@ app.controller("LibraryCtlr", function($scope, $http){
     }
 
     $scope.openPurchaseUrl = function(track){
-      $scope.toggleDownload({track});
+      if (getOpt('autocheck')) {
+        $scope.toggleDownload({track});
+      }
       var url = track.t.properties.purchase_url;
       window.open(url);
     }
