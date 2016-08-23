@@ -41,13 +41,8 @@ app.directive("library", [function (){
                 scope.sortReverse = true;
                 scope.searchTerm = '';
 
-                // Variable used for pagination
-                scope.limit = 200;
-
                 // Draggable handles for the columns
                 scope.colSizeable = attachColHandles();
-                scope.playNext = nextListener();
-
             }
         }
     };
@@ -55,32 +50,6 @@ app.directive("library", [function (){
 
 // Library controller
 app.controller("LibraryCtlr", function($scope, $http){
-
-    // Send a song to the player and save the next 20 songs for an autoplay queue
-    $scope.playSong = function(track, element){
-
-        var b_element = element;
-
-        autoqueue = [];
-        var i = 0;
-        while (element.$$nextSibling && i < 20){
-            var t = element.$$nextSibling.track;
-            autoqueue.push(t);
-            element = element.$$nextSibling;
-            i++;
-        }
-
-        backqueue = [];
-        var j = 0;
-        while (b_element.$$prevSibling && j < 20){
-            var t = b_element.$$prevSibling.track;
-            backqueue.push(t);
-            b_element = b_element.$$prevSibling;
-            j++;
-        }
-
-        loadSong(track);
-    }
 
     // Update sort variables
     $scope.updateSort = function(sortBy){
@@ -207,7 +176,7 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     // Update the view with the user's collection
     $scope.displaySongs = function(){
-        $scope.display = $scope.collection.splice(0,$scope.limit);
+        $scope.display = $scope.collection.splice(0,300);
         $scope.context = 'songs';
         $scope.currPlaylist = null;
     }
@@ -269,8 +238,9 @@ app.controller("LibraryCtlr", function($scope, $http){
       // Destroy the current context menu
       $.contextMenu( 'destroy' );
 
-      // Initialize rate track menu
+      // Initialize rate track and search on menus
       $scope.buildRateTrackMenu();
+      $scope.buildSearchOnMenu();
 
       // Create object to hold context menu items
       var items = {};
@@ -325,6 +295,16 @@ app.controller("LibraryCtlr", function($scope, $http){
       // Include separator
       items.sep1 = "---------";
 
+      items.search_track_on = {
+        name: "Search on...",
+        items: $scope.search_track_menu
+      }
+
+      items.search_channel_on = {
+        name: "Search channel on...",
+        items: $scope.search_channel_menu
+      }
+
       // Include link to soundcloud page
       items.soundcloud_page = {
         name: "Soundcloud page",
@@ -356,8 +336,7 @@ app.controller("LibraryCtlr", function($scope, $http){
         name: "Download page",
         callback: function(key, opt){
           var track = JSON.parse(opt.$trigger[0].dataset.track);
-          var url = track.t.properties.purchase_url;
-          window.open(url);
+          $scope.openPurchaseUrl(track);
         }
       }
       settings.selector = '.track-row[data-purchase="true"]';
@@ -429,8 +408,38 @@ app.controller("LibraryCtlr", function($scope, $http){
       }
 
       rating_menu[0].name = "Clear rating"
-
       $scope.rating_menu = rating_menu;
+    }
+
+    $scope.buildSearchOnMenu = function(){
+      var search_track_menu = {};
+      var search_channel_menu = {};
+
+      for (var i = 0; i < sites.length; i++){
+        var name = sites[i].name;
+        var track = {
+          name: name,
+          callback: function(key, opt){
+            var url = sites.find(x=>x.name === key).url;
+            var track = JSON.parse(opt.$trigger[0].dataset.track);
+            searchTrackOn(track, url);
+          }
+        }
+        var channel = {
+          name: name,
+          callback: function(key, opt){
+            var url = sites.find(x=>x.name === key).url;
+            var channel_name = JSON.parse(opt.$trigger[0].dataset.track).c.properties.name;
+            searchChannelOn(channel_name, url);
+          }
+
+        }
+        search_track_menu[name] = track;
+        search_channel_menu[name] = channel;
+      }
+
+      $scope.search_track_menu = search_track_menu;
+      $scope.search_channel_menu = search_channel_menu;
     }
 
     $scope.incPlayCount = function(track){
@@ -467,6 +476,26 @@ app.controller("LibraryCtlr", function($scope, $http){
 
 });
 
+function openPurchaseUrl(track){
+  var url = track.t.properties.purchase_url;
+  if (url) {
+    if (getOpt('autocheck')) {
+      angular.element(document.getElementById('libraryCtlrDiv')).scope().toggleDownload({track});
+    }
+    window.open(url);
+  }
+}
+
+function searchTrackOn(track, url){
+  let tags = parseForTags(track);
+  window.open(url + tags);
+}
+
+function searchChannelOn(track, url){
+  let channel_name = track.c.properties.name;
+  window.open(url + channel_name);
+}
+
 function highlightRow(track){
   $('.curr-playing').removeClass('curr-playing');
   $('*[data-id="' + track.t._id + '"]').addClass('curr-playing');
@@ -479,4 +508,11 @@ function updateCollection(){
   $.post(url, function( data ) {
     location.reload();
   });
+}
+
+function parseForTags(track){
+  var name = track.t.properties.name;
+  var artist = track.c.properties.name;
+  var search = name + " " + artist;
+  return search;
 }

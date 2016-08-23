@@ -36,5 +36,8 @@ config/*
 # Redis installation
 redis/*
 
-#sass compilation cache
+# not sure what this is
+dump.rdb
+
+# sass compilation cache
 .sass-cache
