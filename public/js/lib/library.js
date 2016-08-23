@@ -323,9 +323,14 @@ app.controller("LibraryCtlr", function($scope, $http){
       // Include separator
       items.sep1 = "---------";
 
-      items.search_on = {
+      items.search_track_on = {
         name: "Search on...",
-        items: $scope.search_menu
+        items: $scope.search_track_menu
+      }
+
+      items.search_channel_on = {
+        name: "Search channel on...",
+        items: $scope.search_channel_menu
       }
 
       // Include link to soundcloud page
@@ -414,7 +419,7 @@ app.controller("LibraryCtlr", function($scope, $http){
     }
 
     $scope.buildRateTrackMenu = function(){
-      var rating_menu = [];
+      var rating_menu = {};
 
       for (var i = 0; i <= 5; i++){
           var next =  {
@@ -452,22 +457,34 @@ app.controller("LibraryCtlr", function($scope, $http){
           name: 'Beatport'
         }
       ];
-      var search_menu = [];
+      var search_track_menu = {};
+      var search_channel_menu = {};
 
       for (var i = 0; i < sites.length; i++){
-          var name = sites[i].name;
-          var url = sites[i].url;
-          var next =  {
-              name: name,
-              callback: function(key, opt){
-                var tags = parseForTags(JSON.parse(opt.$trigger[0].dataset.track));
-                window.open(url + tags);
-              }
+        var name = sites[i].name;
+        var track = {
+          name: name,
+          callback: function(key, opt){
+            var url = sites.find(x=>x.name === key).url;
+            var tags = parseForTags(JSON.parse(opt.$trigger[0].dataset.track));
+            window.open(url + tags);
           }
-          search_menu[i] = next;
+        }
+        var channel = {
+          name: name,
+          callback: function(key, opt){
+            var url = sites.find(x=>x.name === key).url;
+            var channel_name = JSON.parse(opt.$trigger[0].dataset.track).c.properties.name;
+            window.open(url + channel_name);
+          }
+
+        }
+        search_track_menu[name] = track;
+        search_channel_menu[name] = channel;
       }
 
-      $scope.search_menu = search_menu;
+      $scope.search_track_menu = search_track_menu;
+      $scope.search_channel_menu = search_channel_menu;
     }
 
     $scope.incPlayCount = function(track){
