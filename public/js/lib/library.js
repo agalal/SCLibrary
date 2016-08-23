@@ -51,32 +51,6 @@ app.directive("library", [function (){
 // Library controller
 app.controller("LibraryCtlr", function($scope, $http){
 
-    // Send a song to the player and save the next 20 songs for an autoplay queue
-    $scope.playSong = function(track, element){
-
-        var b_element = element;
-
-        autoqueue = [];
-        var i = 0;
-        while (element.$$nextSibling && i < 20){
-            var t = element.$$nextSibling.track;
-            autoqueue.push(t);
-            element = element.$$nextSibling;
-            i++;
-        }
-
-        backqueue = [];
-        var j = 0;
-        while (b_element.$$prevSibling && j < 20){
-            var t = b_element.$$prevSibling.track;
-            backqueue.push(t);
-            b_element = b_element.$$prevSibling;
-            j++;
-        }
-
-        loadSong(track);
-    }
-
     // Update sort variables
     $scope.updateSort = function(sortBy){
         if ($scope.sortType == sortBy)
@@ -371,14 +345,6 @@ app.controller("LibraryCtlr", function($scope, $http){
       $.contextMenu(settings);
     }
 
-    $scope.openPurchaseUrl = function(track){
-      if (getOpt('autocheck')) {
-        $scope.toggleDownload({track});
-      }
-      var url = track.t.properties.purchase_url;
-      window.open(url);
-    }
-
     $scope.buildAddToPlaylistMenu = function(result){
         var playlist_menu = {};
 
@@ -446,17 +412,6 @@ app.controller("LibraryCtlr", function($scope, $http){
     }
 
     $scope.buildSearchOnMenu = function(){
-      var sites = [
-        { url: 'http://www.zippysharedjs.com/search/?q=',
-          name: 'ZippyShare'
-        },
-        { url: 'https://thepiratebay.org/search/',
-          name: 'thepiratebay'
-        },
-        { url: 'https://www.beatport.com/search?q=',
-          name: 'Beatport'
-        }
-      ];
       var search_track_menu = {};
       var search_channel_menu = {};
 
@@ -466,8 +421,8 @@ app.controller("LibraryCtlr", function($scope, $http){
           name: name,
           callback: function(key, opt){
             var url = sites.find(x=>x.name === key).url;
-            var tags = parseForTags(JSON.parse(opt.$trigger[0].dataset.track));
-            window.open(url + tags);
+            var track = JSON.parse(opt.$trigger[0].dataset.track);
+            searchTrackOn(track, url);
           }
         }
         var channel = {
@@ -475,7 +430,7 @@ app.controller("LibraryCtlr", function($scope, $http){
           callback: function(key, opt){
             var url = sites.find(x=>x.name === key).url;
             var channel_name = JSON.parse(opt.$trigger[0].dataset.track).c.properties.name;
-            window.open(url + channel_name);
+            searchChannelOn(channel_name, url);
           }
 
         }
@@ -520,6 +475,26 @@ app.controller("LibraryCtlr", function($scope, $http){
     }
 
 });
+
+function openPurchaseUrl(track){
+  var url = track.t.properties.purchase_url;
+  if (url) {
+    if (getOpt('autocheck')) {
+      angular.element(document.getElementById('libraryCtlrDiv')).scope().toggleDownload({track});
+    }
+    window.open(url);
+  }
+}
+
+function searchTrackOn(track, url){
+  let tags = parseForTags(track);
+  window.open(url + tags);
+}
+
+function searchChannelOn(track, url){
+  let channel_name = track.c.properties.name;
+  window.open(url + channel_name);
+}
 
 function highlightRow(track){
   $('.curr-playing').removeClass('curr-playing');

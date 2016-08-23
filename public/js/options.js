@@ -1,3 +1,15 @@
+var sites = [
+  { url: 'http://www.zippysharedjs.com/search/?q=',
+    name: 'ZippyShare'
+  },
+  { url: 'https://thepiratebay.org/search/',
+    name: 'thepiratebay'
+  },
+  { url: 'https://www.beatport.com/search?q=',
+    name: 'Beatport'
+  }
+];
+
 let _options = {
   shuffle: false,
   repeat: false,

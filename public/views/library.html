@@ -109,7 +109,7 @@
             </li>
         </ul>
         <ul class="list">
-            <li class="track-row" ng-repeat="track in display | orderBy:sortType:sortReverse | filter:searchTerm" ng-click="playSong(track, this)" ng-init="updateMenu()" data-track="{{track}}" data-id="{{track.t._id}}" data-purchase="{{hasPurchaseUrl(track)}}">
+            <li class="track-row" ng-repeat="track in display | orderBy:sortType:sortReverse | filter:searchTerm" onclick="trackClickListener(this)" ng-init="updateMenu()" data-track="{{track}}" data-id="{{track.t._id}}" data-purchase="{{hasPurchaseUrl(track)}}">
                 <!--td >x</td-->
                 <ol>
                     <li class="channel" ng-bind="track.c.properties.name"></li>

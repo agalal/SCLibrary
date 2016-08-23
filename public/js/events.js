@@ -23,7 +23,37 @@ document.body.onkeydown = document.body.onkeyup = function(e) {
   if (map[190]) {
     nextSong();
   }
-  if (map[49]) {
+}
 
+function trackClickListener(element){
+  const track = $(element).data('track');
+  if (map[49]) {
+    openPurchaseUrl(track);
+  } else if (map[50]) {
+    // Search track on zippyshare
+    const url = sites[0].url;
+    searchTrackOn(track, url);
+  } else if (map[51]) {
+    // Search channel on zippyshare
+    const url = sites[0].url;
+    searchChannelOn(track, url);
+  } else if (map[52]) {
+    // Search track on thepiratebay
+    const url = sites[1].url;
+    searchTrackOn(track, url);
+  } else if (map[53]) {
+    // Search channel on thepiratebay
+    const url = sites[1].url;
+    searchChannelOn(track, url);
+  } else if (map[54]) {
+    // Search track on beatport
+    const url = sites[2].url;
+    searchTrackOn(track, url);
+  } else if (map[55]) {
+    // Search channel on beatport
+    const url = sites[2].url;
+    searchChannelOn(track, url);
+  } else {
+    playSong(track, element);
   }
 }

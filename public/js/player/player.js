@@ -1,3 +1,30 @@
+// Send a song to the player and save the next 20 songs for an autoplay queue
+function playSong(track, element){
+
+    var b_element = element;
+
+    autoqueue = [];
+    var i = 0;
+    while (element.$$nextSibling && i < 20){
+        var t = element.$$nextSibling.track;
+        autoqueue.push(t);
+        element = element.$$nextSibling;
+        i++;
+    }
+
+    backqueue = [];
+    var j = 0;
+    while (b_element.$$prevSibling && j < 20){
+        var t = b_element.$$prevSibling.track;
+        backqueue.push(t);
+        b_element = b_element.$$prevSibling;
+        j++;
+    }
+
+    loadSong(track);
+}
+
+
 function playPause() {
   if (!audioPlayer.paused) {
     audioPlayer.pause();
