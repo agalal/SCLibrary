@@ -1,7 +1,7 @@
 // Constants used for tuning the waveform
 let options = {
   refresh_rate: 24,
-  wf_percent: 97,
+  wf_offset: 3.5,
   bar_width: 75,
   bar_height: 0.5,
   bar_y_offset: 1.5,
@@ -12,10 +12,11 @@ let refresh = false
 let wform_data = [];
 let sub, lows, mids1, mids2, highs1, highs2, highs3;
 
-// Track the width to be used in calculations
-let window_width;
+// Track the window and waveform width
+let window_width, waveform_width;
 function setWidth() {
-  window_width = Math.round($(window).width() / options.bar_width);
+  window_width = $(window).width()
+  waveform_width = window_width * (100 - (2 * options.wf_offset)) / 100;
 }
 $(document).ready(setWidth);
 window.addEventListener("resize", setWidth);
@@ -63,15 +64,18 @@ function waveform() {
   lows = d3.mean(fd.slice(34, 37)) * options.height * .8;
   kick = d3.mean(fd.slice(7, 9)) * options.height * .7;
 
+  let bar_distance = 11;
+  let num_bars = Math.floor(waveform_width / bar_distance);
+  let bucket_size = Math.floor(wform_data.length / num_bars);
+
   var data = [];
-  var b = 33 - window_width;
-  for (var i = 1; i < wform_data.length / b; i++) {
+  for (var i = 0; i < num_bars; i++) {
     var total = 0;
-    for (var j = 0; j < b; j++) {
-      total += wform_data[(i * b) + j];
+    for (var j = 0; j < bucket_size; j++) {
+      total += wform_data[(i * bucket_size) + j];
     }
-    if (Math.round(total / b))
-      data.push(Math.round(total / b));
+    if (Math.round(total / bucket_size))
+      data.push(Math.round(total / bucket_size));
   }
 
   var max = d3.max(data);
@@ -86,10 +90,11 @@ function waveform() {
     .domain([0, h])
     .rangeRound([0, h]); //rangeRound is used for antialiasing
 
+  const percent_offset = 100 - options.wf_offset;
   var chart = d3.select(".charts").append("svg")
     .attr("class", "chart")
-    .attr("width", "" + options.wf_percent + "%")
-    .attr("style", "padding-left:" + (100 - options.wf_percent) + "%;")
+    .attr("width", "" + percent_offset + "%")
+    .attr("style", "padding-left:" + (100 - percent_offset) + "%;")
     .attr("viewBox", "0 0 " + Math.max(w * data.length, 0) + " " + Math.max(h, 0))
     .attr("fill", "white");
   //TODO: Make a color analyzer for album artwork so that we can use a pallette to color things in the player, like fill.
