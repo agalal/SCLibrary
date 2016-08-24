@@ -113,7 +113,7 @@
                         <a ng-click="openPurchaseUrl(track)">
                           {{track.t.properties.purchase_url_domain}}
                         </a>
-                    <li style="height:100%" ng-click="toggleDownload(this); $event.stopPropagation()">
+                    <li class="downloaded" style="height:100%" ng-click="toggleDownload(this); $event.stopPropagation()">
                       <input type="checkbox" class="downloaded" ng-checked="track.r.properties.downloaded"></input>
 
                 </ol>
