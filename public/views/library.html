@@ -120,7 +120,11 @@
                     <li class="liked" ng-bind="formatDate(track.r.properties.created_at)"></li>
                     <li class="playcount" ng-bind="track.r.properties.play_count"></li>
                     <li class="rating" ng-bind="track.r.properties.rating"></li>
-                    <li class="domain" ng-bind="track.t.properties.purchase_url_domain"></li>
+                    <li class="domain" ng-click="$event.stopPropagation()">
+                        <a ng-click="openPurchaseUrl(track)">
+                          {{track.t.properties.purchase_url_domain}}
+                        </a>
+                    </li>
                     <li style="height:100%" ng-click="toggleDownload(this); $event.stopPropagation()">
                       <input type="checkbox" class="downloaded" ng-checked="track.r.properties.downloaded"></input>
                     </li>

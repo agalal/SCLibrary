@@ -1,6 +1,7 @@
 /*Google font collection*/
 
 @import url(https://fonts.googleapis.com/css?family=Source+Code+Pro:300|Oxygen:400,300);
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css);
 
 /*Table js solution CSS*/
@@ -166,7 +167,7 @@ li.track-row:nth-of-type(2n+1) {
     background-color: #fff;
 }
 li.track-row.curr-playing {
-  background-color: gold;
+  background-color: #2980B9;
 }
 
 ul.list > li,
@@ -199,7 +200,7 @@ ul.list li > ol > li {
     white-space: nowrap;
     overflow: hidden;
     padding: .1em .2em;
-    height: 1.4em !important;
+    height: 100%;
 }
 ul.header ol > li {
     border: 1px solid #e3e3e3;
@@ -414,7 +415,7 @@ body #player {
     margin-top: 30px;
 }
 
-#player.playing #top-wrapper a#toggle {
+#player #top-wrapper a#toggle {
     height: 40px;
     width: 40px;
     background-image: url(../../images/sc_icons/menu.svg);
@@ -422,7 +423,7 @@ body #player {
     transition: opacity .5s ease;
 }
 
-#player.playing #top-wrapper a#settings {
+#player #top-wrapper a#settings {
     height: 40px;
     width: 40px;
     background-image: url(../../images/sc_icons/gear.svg);
@@ -436,7 +437,7 @@ div#top-wrapper {
     display: inline-block;
     position: relative;
     padding: 10px;
-    z-index: 3;
+    z-index: 39;
 }
 
 a#settings {}
@@ -457,7 +458,7 @@ span.track-channel {
     height: 40px;
     z-index: 2;
     position: absolute;
-    font-family: Montserrat;
+    font-family: Montserrat, 'Montserrat', 'Oxygen', sans-serif;
     font-weight: 600;
     padding: 10px 15px;
     color: #222;
@@ -606,15 +607,20 @@ div#settings-popup {
   margin: 7px 0;
 }
 
+a#autocheck-toggle + a,
 a#autoplay-toggle + a,
 a#shuffle-toggle + a {
   color: #333 !important;
   text-decoration: none !important;
 }
+
+a#autocheck-toggle.toggled + a,
 a#autoplay-toggle.toggled + a,
 a#shuffle-toggle.toggled + a {
   color: #3b65ff !important;
 }
+
+a#autocheck-toggle,
 a#autoplay-toggle,
 a#shuffle-toggle {
   width: 1em;

@@ -47,7 +47,7 @@ function getCollectionRecurse(user, collection, next_href, done){
     // Update our collection array
     var updatedCollection = collection.concat(response.collection);
     // Check if the response has a next_href
-    if (response.next_href && collection.length == 0){
+    if (response.next_href){
       var href = response.next_href + '&client_id=' + config.auth.client_id;
       // Make sure the first track doesn't already have an existing relationship with the user before continuing
       // This is so that we don't make unnecessary API calls
@@ -98,7 +98,7 @@ function getPlaylistsRecurse(pids, playlists, index, done){
         if (!tracks[i].user) {
           incomplete_track_ids.push(tracks[i].id);
         } else {
-            
+
           complete_tracks.push(tracks[i]);
         }
       }
