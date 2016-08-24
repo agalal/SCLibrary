@@ -294,6 +294,11 @@ function attachColHandles() {
         }
       });
 
+      // stop resizing from causing sort
+      $('ui-resizable-handle').click(function (event) {
+        event.stopPropogation();
+      });
+
       // bind a function to update lower widths
       $(this).on('resizestop', function() {
         left = false; // reset global hack for dir

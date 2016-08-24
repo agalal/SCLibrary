@@ -112,8 +112,9 @@ input.search {
     float: right;
     clear: none;
     transform: translate(300px, 0);
-    overflow-y: hidden;
+    overflow: scroll;
     font-size: 0;
+    height: calc(100vh - 300px);
 }
 * {
     font-family: 'Oxygen', sans-serif;
@@ -130,6 +131,7 @@ ul.header {
     margin-bottom: 0;
     font-size: 14px;
     float: left;
+    top: 0;
 }
 ul.list {
     overflow: visible;
@@ -354,7 +356,7 @@ div#library {
     width: 100vw;
     position: fixed;
     top: 300px;
-    overflow: scroll;
+    overflow: hidden;
     height: calc(100vh - 300px);
 }
 
