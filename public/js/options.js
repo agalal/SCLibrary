@@ -1,5 +1,5 @@
 var sites = [
-  { url: 'http://www.zippysharedjs.com/search/?q=',
+  { url: 'http://www.zippysharermp3.com/search/?q=',
     name: 'ZippyShare'
   },
   { url: 'https://thepiratebay.org/search/',
