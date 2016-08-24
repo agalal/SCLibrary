@@ -23,10 +23,12 @@ document.body.onkeydown = document.body.onkeyup = function(e) {
   if (map[190]) {
     nextSong();
   }
+  if (map[191]) {
+    randomSong();
+  }
 }
 
-function trackClickListener(element){
-  const track = $(element).data('track');
+function trackClickListener(track, element){
   if (map[49]) {
     openPurchaseUrl(track);
   } else if (map[50]) {
@@ -54,6 +56,7 @@ function trackClickListener(element){
     const url = sites[2].url;
     searchChannelOn(track, url);
   } else {
-    playSong(track, element);
+    fillAutoqueue(element);
+    loadSong(track);
   }
 }

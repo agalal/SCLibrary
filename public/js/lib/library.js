@@ -51,6 +51,10 @@ app.directive("library", [function (){
 // Library controller
 app.controller("LibraryCtlr", function($scope, $http){
 
+    $scope.playSong = function(track, element){
+        trackClickListener(track, element)
+    }
+
     // Update sort variables
     $scope.updateSort = function(sortBy){
         if ($scope.sortType == sortBy)
