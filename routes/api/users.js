@@ -109,8 +109,8 @@ router.get('/:id/scplaylists', function(req, res, next) {
 });
 
 /* GET user's soundcloud playlist */
-router.get('/:uid/scplaylists/:pid', function(req, res, next) {
-  db.getSCPlaylist(req.params.uid, req.params.pid, function(playlists, error) {
+router.get('/:id/scplaylists/:pid', function(req, res, next) {
+  db.getSCPlaylist(req.params.id, req.params.pid, function(playlists, error) {
     if (error) {
       res.json({ "error": "failed" });
     } else {

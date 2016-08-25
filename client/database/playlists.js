@@ -127,7 +127,7 @@ module.exports = function(db) {
   // Given a playlist id, return the list of all tracks contained by the playlist.
   module.getSCPlaylist = function(uid, pid, done) {
     db.cypher({
-      query: "MATCH (u:Channel)-[r:LIKES_PLAYLIST]->(p:SCPlaylist)-[:CONTAINS]->(t:Track)<-[:UPLOADED]-(c)  " +
+      query: "MATCH (p:SCPlaylist)-[:CONTAINS]->(t:Track)<-[:UPLOADED]-(c), (u:Channel)-[r:LIKES_TRACK]->(t) " +
         "WHERE id(p) = " + pid + " " +
         "AND id(u) = " + uid + " " +
         "RETURN t, r, c",
