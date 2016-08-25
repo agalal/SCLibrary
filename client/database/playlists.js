@@ -86,26 +86,6 @@ module.exports = function(db) {
     });
   }
 
-  // Given a playlist id, return the list of all tracks contained by the playlist.
-  module.getPlaylist = function(uid, pid, done) {
-    db.cypher({
-      query: "MATCH (p:Playlist)-[:CONTAINS]->(t:Track)<-[:UPLOADED]-(c), " +
-        "(u:Channel)-[r:LIKES_TRACK]->(t) " +
-        "WHERE id(p) = " + pid + " " +
-        "AND id(u) = " + uid + " " +
-        "RETURN t, r, c",
-      params: {
-        id: parseInt(pid)
-      }
-    }, function(error, results) {
-      if (error) {
-        done(error);
-      } else {
-        done(results);
-      }
-    });
-  }
-
   // Given a user, return the list of all playlists owned by the user.
   module.getPlaylists = function(uid, done) {
     db.cypher({
@@ -113,26 +93,6 @@ module.exports = function(db) {
         "WHERE id(c) = {uid} " +
         "RETURN p",
       params: {
-        uid: parseInt(uid)
-      }
-    }, function(error, results) {
-      if (error) {
-        done(error);
-      } else {
-        done(results);
-      }
-    });
-  }
-
-  // Given a playlist id, return the list of all tracks contained by the playlist.
-  module.getSCPlaylist = function(uid, pid, done) {
-    db.cypher({
-      query: "MATCH (p:SCPlaylist)-[:CONTAINS]->(t:Track)<-[:UPLOADED]-(c), (u:Channel)-[r:LIKES_TRACK]->(t) " +
-        "WHERE id(p) = " + pid + " " +
-        "AND id(u) = " + uid + " " +
-        "RETURN t, r, c",
-      params: {
-        pid: parseInt(pid),
         uid: parseInt(uid)
       }
     }, function(error, results) {

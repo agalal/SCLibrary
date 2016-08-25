@@ -67,8 +67,12 @@ function getPage(done) {
   } else {
     reverse = "ASC";
   }
+  let context = aScope.context;
   var url = 'http://localhost:3000/api/users/' + uid + '/collection/?limit=' + limit;
-      url += '&offset=' + offset + '&sort=' + sort + '&reverse=' + reverse;
+      url += '&offset=' + offset + '&sort=' + sort + '&reverse=' + reverse + '&context=' + context;
+  if (context == 'channel') url += '&cid=' + aScope.cid;
+  else if (context == 'playlist') url += '&pid=' + aScope.pid;
+  else if (context == 'scplaylist') url += '&spid=' + aScope.spid;
   $.get(url, function(data) {
     done(data);
   });

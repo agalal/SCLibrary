@@ -24,14 +24,20 @@ router.get('/:id', function(req, res, next) {
 
 /* GET user's collection. */
 router.get('/:id/collection', function(req, res, next) {
-  const uid = req.params.id;
-  const limit = parseInt(req.query.limit);
-  const offset = parseInt(req.query.offset);
-  const sort = req.query.sort;
-  const reverse = req.query.reverse;
+  const options = {
+    'uid': parseInt(req.params.id),
+    'cid': parseInt(req.query.cid),
+    'pid': parseInt(req.query.pid),
+    'spid': parseInt(req.query.spid),
+    'context': req.query.context,
+    'limit': parseInt(req.query.limit),
+    'offset': parseInt(req.query.offset),
+    'sort': req.query.sort,
+    'reverse': req.query.reverse
+  }
   // Get the collection from the database and render the json.
-  db.getCollection(uid, limit, offset, sort, reverse, function(collection) {
-    res.json(collection);
+  db.getTrackPage(options, function(page) {
+    res.json(page);
   });
 })
 
@@ -85,32 +91,9 @@ router.get('/:id/playlists', function(req, res, next) {
   });
 });
 
-/* GET user's playlist */
-router.get('/:id/playlists/:pid', function(req, res, next) {
-	db.getPlaylist(req.params.id, req.params.pid, function(collection, error){
-		if (error) {
-			res.json({"error":"failed"});
-		} else {
-			res.json(collection);
-    }
-	});
-});
-
-
 /* GET user's soundcloud playlists */
 router.get('/:id/scplaylists', function(req, res, next) {
   db.getSCPlaylists(req.params.id, function(playlists, error) {
-    if (error) {
-      res.json({ "error": "failed" });
-    } else {
-      res.json(playlists);
-    }
-  });
-});
-
-/* GET user's soundcloud playlist */
-router.get('/:id/scplaylists/:pid', function(req, res, next) {
-  db.getSCPlaylist(req.params.id, req.params.pid, function(playlists, error) {
     if (error) {
       res.json({ "error": "failed" });
     } else {
@@ -129,17 +112,5 @@ router.get('/:id/channels', function(req, res, next) {
     }
   });
 });
-
-/* GET liked tracks from a specified channel */
-router.get('/:uid/channels/:cid', function(req, res, next) {
-  db.getLikedTracksByChannel(req.params.uid, req.params.cid, function(tracks, error) {
-    if (error) {
-      res.json({ "error": "failed" });
-    } else {
-      res.json(tracks);
-    }
-  });
-});
-
 
 module.exports = router;

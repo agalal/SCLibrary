@@ -298,42 +298,9 @@ module.exports = function(db) {
     }
   };
 
-  // Given a user, find and return their entire collection of songs, along with the channels
-  // that uploaded them.
-  module.getCollection = function(uid, limit, offset, sort, reverse, done) {
-    db.cypher({
-      query: 'MATCH (u:Channel), ' +
-        '(u)-[r:LIKES_TRACK]->(t)<-[:UPLOADED]-(c) ' +
-        'WHERE id(u) = {uid} ' +
-        'RETURN t, r, c ' +
-        'ORDER BY ' + sort + ' ' + reverse + ' ' + 
-        'SKIP {offset} ' +
-        'LIMIT {limit}',
-      params: {
-        uid: parseInt(uid),
-        offset: offset,
-        limit: limit,
-        sort: sort,
-        reverse: reverse
-      },
-    }, function(error, results) {
-      if (error) {
-        console.log(error);
-        done(null, error);
-      } else {
-        // No collection found for the user
-        if (results.length === 0) {
-          console.log("no collection found for this user");
-          // If match found, do nothing
-        } else {
-
-        }
-        done(results);
-      }
-    });
-  };
   return module;
-};
+
+}
 
 truncatePurchaseUrl = function(purchase_url) {
   if (!purchase_url) {

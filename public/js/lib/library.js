@@ -24,8 +24,8 @@ app.directive("library", [function (){
                     $('.playlistForm').show();
                 });
 
-                // Set context to default option (songs)
-                scope.context = 'songs';
+                // Set context to default option (library)
+                scope.context = 'library';
 
                 // Variables used for sort and search functionality
                 scope.sortType = 'r.properties.created_at';
@@ -132,16 +132,15 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     // Update the view with tracks from the selected playlist.
     $scope.loadPlaylist = function(playlist){
-        var uid = loggedinuser._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/playlists/' + playlist.p._id;
-        $http.get(url).then(function(response){
-            $scope.display = response.data;
-            $scope.context = 'playlists';
-            $scope.currPlaylist = playlist.p._id;
-            $scope.buildDeleteFromPlaylistMenu(playlist);
-        }, function(error){
-            console.log(error);
-        })
+      $scope.context = 'playlist';
+      $scope.currPlaylist = playlist.p._id;
+      $scope.pid = playlist.p._id;
+      page = 1;
+      offset = 0;
+      getPage(function(tracks) {
+        $scope.resetDisplay(tracks);
+        $scope.buildDeleteFromPlaylistMenu(playlist);
+      });
     }
 
     // Delete playlist with permission from the user.
@@ -163,27 +162,23 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     // Update the view with tracks from the selected playlist.
     $scope.loadSCPlaylist = function(playlist){
-        var uid = loggedinuser._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/scplaylists/' + playlist.p._id;
-        $http.get(url).then(function(response){
-            console.log(response);
-            $scope.display = response.data;
-            $scope.context = 'scplaylists';
-        }, function(error){
-            console.log(error);
-        })
+      $scope.context = 'scplaylist';
+      $scope.spid = playlist.p._id;
+      page = 1;
+      offset = 0;
+      getPage(function(tracks) {
+        $scope.resetDisplay(tracks);
+      });
     }
 
     $scope.loadChannel = function(channel){
-        var uid = loggedinuser._id;
-        var cid = channel.c._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/channels/' + cid;
-        $http.get(url).then(function(response){
-            $scope.display = response.data;
-            $scope.context = 'channels';
-        }, function(error){
-            console.log(error);
-        })
+      $scope.context = 'channel';
+      $scope.cid = channel.c._id;
+      page = 1;
+      offset = 0;
+      getPage(function(tracks) {
+        $scope.resetDisplay(tracks);
+      });
     }
 
     $scope.updateDisplay = function(tracks){
@@ -207,11 +202,11 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     // Populate the list of songs
     $scope.loadLibrary = function(){
+      $scope.context = 'library';
       page = 1;
       offset = 0;
       getPage(function(tracks) {
         $scope.resetDisplay(tracks);
-        $scope.context = 'songs';
       });
     }
 
@@ -268,7 +263,7 @@ app.controller("LibraryCtlr", function($scope, $http){
       }
 
       // Include delete_playlist option when in a playlist context
-      if ($scope.context == 'playlists'){
+      if ($scope.context == 'playlist'){
         items.delete_playlist = {
           name: "Delete from playlist",
           callback: $scope.delete_func
