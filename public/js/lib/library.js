@@ -180,9 +180,14 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     // Update the view with the user's collection
     $scope.displaySongs = function(){
-        $scope.display = $scope.collection.splice(0,1000);
+        $scope.display = $scope.collection;
         $scope.context = 'songs';
         $scope.currPlaylist = null;
+    }
+
+    $scope.addToDisplay = function(array){
+      $scope.display = $scope.display.concat(array);
+      $scope.$apply();
     }
 
     $scope.displayQueue = function(){
@@ -194,7 +199,7 @@ app.controller("LibraryCtlr", function($scope, $http){
     // Populate the list of songs
     $scope.loadLibrary = function(){
         var uid = loggedinuser._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/collection/';
+        var url = 'http://localhost:3000/api/users/' + uid + '/collection/?limit=' + limit + '&offset=' + offset;
         $http.get(url).then(function(response){
             $scope.collection = response.data;
             $scope.displaySongs();
@@ -486,7 +491,7 @@ function openPurchaseUrl(track){
   var url = track.t.properties.purchase_url;
   if (url) {
     if (getOpt('autocheck')) {
-      angular.element(document.getElementById('libraryCtlrDiv')).scope().toggleDownload({track});
+      aScope.toggleDownload({track});
     }
     window.open(url);
   }
@@ -506,7 +511,6 @@ function highlightRow(track){
   $('.curr-playing').removeClass('curr-playing');
   $('*[data-id="' + track.t._id + '"]').addClass('curr-playing');
 }
-
 
 $(document).ready(function(){
   $('#updatingMessage').hide();
