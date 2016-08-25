@@ -24,8 +24,11 @@ router.get('/:id', function(req, res, next) {
 
 /* GET user's collection. */
 router.get('/:id/collection', function(req, res, next) {
+  const uid = req.params.id;
+  const limit = parseInt(req.query.limit);
+  const offset = parseInt(req.query.offset);
   // Get the collection from the database and render the json.
-  db.getCollection(req.params.id, function(collection) {
+  db.getCollection(uid, limit, offset, function(collection) {
     res.json(collection);
   });
 })
