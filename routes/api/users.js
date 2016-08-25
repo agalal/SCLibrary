@@ -77,48 +77,56 @@ router.post('/:id/collection/update', function(req, res, next) {
 /* GET user's playlists */
 router.get('/:id/playlists', function(req, res, next) {
   db.getPlaylists(req.params.id, function(playlists, error) {
-    if (error)
-      res.json({
-        "error": "failed"
-      });
-    else
+    if (error) {
+      res.json({ "error": "failed" });
+    } else {
       res.json(playlists);
+    }
   });
 });
+
+/* GET user's playlist */
+router.get('/:id/playlists/:pid', function(req, res, next) {
+	db.getPlaylist(req.params.id, req.params.pid, function(collection, error){
+		if (error) {
+			res.json({"error":"failed"});
+		} else {
+			res.json(collection);
+    }
+	});
+});
+
 
 /* GET user's soundcloud playlists */
 router.get('/:id/scplaylists', function(req, res, next) {
   db.getSCPlaylists(req.params.id, function(playlists, error) {
-    if (error)
-      res.json({
-        "error": "failed"
-      });
-    else
+    if (error) {
+      res.json({ "error": "failed" });
+    } else {
       res.json(playlists);
+    }
   });
 });
 
 /* GET user's soundcloud playlist */
 router.get('/:uid/scplaylists/:pid', function(req, res, next) {
   db.getSCPlaylist(req.params.uid, req.params.pid, function(playlists, error) {
-    if (error)
-      res.json({
-        "error": "failed"
-      });
-    else
+    if (error) {
+      res.json({ "error": "failed" });
+    } else {
       res.json(playlists);
+    }
   });
 });
 
 /* GET user's channels */
 router.get('/:id/channels', function(req, res, next) {
   db.getChannels(req.params.id, function(channels, error) {
-    if (error)
-      res.json({
-        "error": "failed"
-      });
-    else
+    if (error) {
+      res.json({ "error": "failed" });
+    } else {
       res.json(channels);
+    }
   });
 });
 
@@ -126,10 +134,7 @@ router.get('/:id/channels', function(req, res, next) {
 router.get('/:uid/channels/:cid', function(req, res, next) {
   db.getLikedTracksByChannel(req.params.uid, req.params.cid, function(tracks, error) {
     if (error) {
-      console.log(error);
-      res.json({
-        "error": "failed"
-      });
+      res.json({ "error": "failed" });
     } else {
       res.json(tracks);
     }

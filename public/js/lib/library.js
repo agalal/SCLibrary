@@ -58,7 +58,7 @@ app.controller("LibraryCtlr", function($scope, $http){
     $scope.updateSort = function(sortBy){
       page = 1;
       offset = 0;
-      
+
       if ($scope.sortType == sortBy) {
         $scope.sortReverse = !$scope.sortReverse;
       } else {
@@ -132,7 +132,8 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     // Update the view with tracks from the selected playlist.
     $scope.loadPlaylist = function(playlist){
-        var url = 'http://localhost:3000/api/playlists/' + playlist.p._id;
+        var uid = loggedinuser._id;
+        var url = 'http://localhost:3000/api/users/' + uid + '/playlists/' + playlist.p._id;
         $http.get(url).then(function(response){
             $scope.display = response.data;
             $scope.context = 'playlists';
