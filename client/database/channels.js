@@ -22,10 +22,10 @@ module.exports = function(db) {
 
   module.getLikedTracksByChannel = function(uid, cid, done) {
     db.cypher({
-      query: 'MATCH (u:Channel)-[:LIKES_TRACK]->(t:Track)<-[:UPLOADED]-(c:Channel) ' +
+      query: 'MATCH (u:Channel)-[r:LIKES_TRACK]->(t:Track)<-[:UPLOADED]-(c:Channel) ' +
         'WHERE id(u) = {uid} ' +
         'AND id(c) = {cid} ' +
-        'RETURN t, c',
+        'RETURN t, r, c',
       params: {
         uid: parseInt(uid),
         cid: parseInt(cid)
