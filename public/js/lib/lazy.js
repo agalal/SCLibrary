@@ -1,10 +1,13 @@
+let limit = 100;
+let offset = 0;
+let page = 1;
+let flag = true;
 
 let el;
-let flag = true;
 
 $(document).arrive(".track-row", {"onceOnly": false}, function() {
   console.log("New track rows added, assigning lastElement class.")
-  let numRows = limit * page;
+  const numRows = limit * page;
   $($('.track-row')[numRows-10]).addClass('lastElement');
   el = $('.lastElement');
   flag = true;
@@ -16,7 +19,7 @@ $(document).arrive(".list", function() {
       console.log("Found element in the viewport, removing class and retreiving next page.")
       flag = false;
       $('.lastElement').removeClass('lastElement');
-      var aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+      const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
       getNextPage(function(tracks) {
         console.log("Next page found, adding to scope.")
         aScope.addToDisplay(tracks);
@@ -26,13 +29,10 @@ $(document).arrive(".list", function() {
 });
 
 function isElementInViewport (el) {
-
-    //special bonus for those using jQuery
     if (typeof jQuery === "function" && el instanceof jQuery) {
         el = el[0];
     }
-
-    var rect = el.getBoundingClientRect();
+    const rect = el.getBoundingClientRect();
     return (
         rect.top >= 0 &&
         rect.left >= 0 &&

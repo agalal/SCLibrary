@@ -1,7 +1,3 @@
-let limit = 100;
-let offset = 0;
-let page = 1;
-
 var sites = [
   { url: 'http://www.zippysharermp3.com/search/?q=',
     name: 'ZippyShare'
