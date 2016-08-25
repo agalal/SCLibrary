@@ -115,7 +115,6 @@ module.exports = function(db) {
         done(true);
       }
     });
-
   }
 
   module.addPlaylistTracks = function(user, playlists, done) {
@@ -207,10 +206,7 @@ module.exports = function(db) {
       else
         done(true);
     }
-
-
   }
-
 
   function addPlaylist(user, item, done) {
 
@@ -300,40 +296,11 @@ module.exports = function(db) {
         }
       });
     }
-
-
   };
 
-  // Given a user, find and return their entire collection of songs, along with the channels
-  // that uploaded them.
-  module.getCollection = function(uid, done) {
-    db.cypher({
-      query: 'MATCH (u:Channel), ' +
-        '(u)-[r:LIKES_TRACK]->(t)<-[:UPLOADED]-(c) ' +
-        'WHERE id(u) = ' + uid + ' ' +
-        'RETURN t, r, c ' +
-        'ORDER BY r.created_at DESC',
-      params: {
-        uid: parseInt(uid)
-      },
-    }, function(error, results) {
-      if (error) {
-        console.log(error);
-        done(null, error);
-      } else {
-        // No collection found for the user
-        if (results.length === 0) {
-          console.log("no collection found for this user");
-          // If match found, do nothing
-        } else {
-
-        }
-        done(results);
-      }
-    });
-  };
   return module;
-};
+
+}
 
 truncatePurchaseUrl = function(purchase_url) {
   if (!purchase_url) {

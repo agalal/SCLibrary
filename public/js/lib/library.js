@@ -24,6 +24,14 @@ app.directive("library", [function (){
                     $('.playlistForm').show();
                 });
 
+                // Set context to default option (library)
+                scope.context = 'library';
+
+                // Variables used for sort and search functionality
+                scope.sortType = 'r.properties.created_at';
+                scope.sortReverse = true;
+                scope.searchTerm = '';
+
                 // Load song library, and channel/playlist names
                 scope.loadLibrary();
                 scope.loadChannels();
@@ -32,15 +40,6 @@ app.directive("library", [function (){
 
             },
             post: function(scope, element, attr) {
-
-                // Set context to default option (songs)
-                scope.context = 'songs';
-
-                // Variables used for sort and search functionality
-                scope.sortType = 'r.properties.created_at';
-                scope.sortReverse = true;
-                scope.searchTerm = '';
-
                 // Draggable handles for the columns
                 scope.colSizeable = attachColHandles();
             }
@@ -57,50 +56,59 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     // Update sort variables
     $scope.updateSort = function(sortBy){
-        if ($scope.sortType == sortBy)
-            $scope.sortReverse = !$scope.sortReverse;
-        else
-            $scope.sortReverse = false;
-        $scope.sortType = sortBy;
+      page = 1;
+      offset = 0;
+
+      if ($scope.sortType == sortBy) {
+        $scope.sortReverse = !$scope.sortReverse;
+      } else {
+        $scope.sortReverse = false;
+      }
+      $scope.sortType = sortBy;
+
+      getPage(function(tracks) {
+        $scope.resetDisplay(tracks);
+      });
     }
 
     // Convert time from ms to MM:SS
     $scope.convertTime = function(time){
-        var min_sec = time / 1000 / 60;
-        var minutes = Math.floor(min_sec);
-        var seconds = ("00" + Math.floor((min_sec % 1) * 60)).slice(-2);
-        return minutes + ":" + seconds;
+      var min_sec = time / 1000 / 60;
+      var minutes = Math.floor(min_sec);
+      var seconds = ("00" + Math.floor((min_sec % 1) * 60)).slice(-2);
+      return minutes + ":" + seconds;
     }
 
     // Format date string
     $scope.formatDate = function(date){
-        return date.substring(0, 10);
+      return date.substring(0, 10);
     }
 
     // Format playlist name string
     $scope.formatName = function(name){
-        if (name.length > 26)
-            return (name.substring(0,26).trim() + "...");
-        else
-            return name;
+      if (name.length > 26) {
+        return (name.substring(0,26).trim() + "...");
+      } else {
+        return name;
+      }
     }
 
     $scope.toggleChannels = function(){
         $scope.channels_visible = !$scope.channels_visible;
-        if ($scope.channels_visible)
+        if ($scope.channels_visible) {
             $('#channel_list').show();
-        else
+        } else {
             $('#channel_list').hide();
-
+        }
     }
 
     $scope.toggleSCPlaylists = function(){
         $scope.scplaylists_visible = !$scope.scplaylists_visible;
-        if ($scope.scplaylists_visible)
+        if ($scope.scplaylists_visible) {
             $('#scplaylist_list').show();
-        else
+        } else {
             $('#scplaylist_list').hide();
-
+        }
     }
 
     // Add a playlist to the database and hide the new playlist form
@@ -124,15 +132,15 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     // Update the view with tracks from the selected playlist.
     $scope.loadPlaylist = function(playlist){
-        var url = 'http://localhost:3000/api/playlists/' + playlist.p._id;
-        $http.get(url).then(function(response){
-                $scope.display = response.data;
-                $scope.context = 'playlists';
-                $scope.currPlaylist = playlist.p._id;
-                $scope.buildDeleteFromPlaylistMenu(playlist);
-            }, function(error){
-                console.log(error);
-            })
+      $scope.context = 'playlist';
+      $scope.currPlaylist = playlist.p._id;
+      $scope.pid = playlist.p._id;
+      page = 1;
+      offset = 0;
+      getPage(function(tracks) {
+        $scope.resetDisplay(tracks);
+        $scope.buildDeleteFromPlaylistMenu(playlist);
+      });
     }
 
     // Delete playlist with permission from the user.
@@ -154,35 +162,36 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     // Update the view with tracks from the selected playlist.
     $scope.loadSCPlaylist = function(playlist){
-        var uid = loggedinuser._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/scplaylists/' + playlist.p._id;
-        $http.get(url).then(function(response){
-                console.log(response);
-                $scope.display = response.data;
-                $scope.context = 'scplaylists';
-            }, function(error){
-                console.log(error);
-            })
+      $scope.context = 'scplaylist';
+      $scope.spid = playlist.p._id;
+      page = 1;
+      offset = 0;
+      getPage(function(tracks) {
+        $scope.resetDisplay(tracks);
+      });
     }
 
     $scope.loadChannel = function(channel){
-        var uid = loggedinuser._id;
-        var cid = channel.c._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/channels/' + cid;
-        $http.get(url).then(function(response){
-            console.log(response);
-                $scope.display = response.data;
-                $scope.context = 'channels';
-            }, function(error){
-                console.log(error);
-            })
+      $scope.context = 'channel';
+      $scope.cid = channel.c._id;
+      page = 1;
+      offset = 0;
+      getPage(function(tracks) {
+        $scope.resetDisplay(tracks);
+      });
     }
 
-    // Update the view with the user's collection
-    $scope.displaySongs = function(){
-        $scope.display = $scope.collection.splice(0,1000);
-        $scope.context = 'songs';
-        $scope.currPlaylist = null;
+    $scope.updateDisplay = function(tracks){
+      $scope.display = tracks;
+      $scope.$apply();
+    }
+
+    $scope.resetDisplay = function(tracks){
+      $scope.updateDisplay(tracks);
+    }
+
+    $scope.addToDisplay = function(tracks){
+      $scope.updateDisplay($scope.display.concat(tracks));
     }
 
     $scope.displayQueue = function(){
@@ -193,14 +202,12 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     // Populate the list of songs
     $scope.loadLibrary = function(){
-        var uid = loggedinuser._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/collection/';
-        $http.get(url).then(function(response){
-            $scope.collection = response.data;
-            $scope.displaySongs();
-        }, function(error){
-            console.log(error);
-        });
+      $scope.context = 'library';
+      page = 1;
+      offset = 0;
+      getPage(function(tracks) {
+        $scope.resetDisplay(tracks);
+      });
     }
 
     // Populate the list of playlists
@@ -256,7 +263,7 @@ app.controller("LibraryCtlr", function($scope, $http){
       }
 
       // Include delete_playlist option when in a playlist context
-      if ($scope.context == 'playlists'){
+      if ($scope.context == 'playlist'){
         items.delete_playlist = {
           name: "Delete from playlist",
           callback: $scope.delete_func
@@ -486,7 +493,7 @@ function openPurchaseUrl(track){
   var url = track.t.properties.purchase_url;
   if (url) {
     if (getOpt('autocheck')) {
-      angular.element(document.getElementById('libraryCtlrDiv')).scope().toggleDownload({track});
+      aScope.toggleDownload({track});
     }
     window.open(url);
   }
@@ -506,7 +513,6 @@ function highlightRow(track){
   $('.curr-playing').removeClass('curr-playing');
   $('*[data-id="' + track.t._id + '"]').addClass('curr-playing');
 }
-
 
 $(document).ready(function(){
   $('#updatingMessage').hide();

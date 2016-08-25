@@ -8,7 +8,7 @@
         <input type="text" placeholder="Search" ng-model="searchTerm" />
     </div>
     <ul class="side">
-        <li ng-click="displaySongs()">Song Library</li>
+        <li ng-click="loadLibrary()">Song Library</li>
 
         <li ng-click="toggleChannels()">
             Channels
@@ -109,7 +109,7 @@
             </li>
         </ul>
         <ul class="list">
-            <li class="track-row" ng-repeat="track in display | orderBy:sortType:sortReverse | filter:searchTerm" ng-click="playSong(track, this)" ng-init="updateMenu()" data-track="{{track}}" data-id="{{track.t._id}}" data-purchase="{{hasPurchaseUrl(track)}}">
+            <li class="track-row" ng-repeat="track in display | filter:searchTerm" ng-click="playSong(track, this)" ng-init="updateMenu()" data-track="{{track}}" data-id="{{track.t._id}}" data-purchase="{{hasPurchaseUrl(track)}}">
                 <!--td >x</td-->
                 <ol>
                     <li class="channel" ng-bind="track.c.properties.name"></li>
