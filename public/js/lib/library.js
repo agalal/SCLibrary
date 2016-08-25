@@ -56,6 +56,9 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     // Update sort variables
     $scope.updateSort = function(sortBy){
+      page = 1;
+      offset = 0;
+      
       if ($scope.sortType == sortBy) {
         $scope.sortReverse = !$scope.sortReverse;
       } else {
@@ -63,7 +66,9 @@ app.controller("LibraryCtlr", function($scope, $http){
       }
       $scope.sortType = sortBy;
 
-      $scope.loadLibrary();
+      getPage(function(tracks) {
+        $scope.resetDisplay(tracks);
+      });
     }
 
     // Convert time from ms to MM:SS
@@ -205,6 +210,7 @@ app.controller("LibraryCtlr", function($scope, $http){
       offset = 0;
       getPage(function(tracks) {
         $scope.resetDisplay(tracks);
+        $scope.context = 'songs';
       });
     }
 
