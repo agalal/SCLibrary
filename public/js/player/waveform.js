@@ -17,6 +17,7 @@ let window_width, waveform_width;
 function setWidth() {
   window_width = $(window).width()
   waveform_width = window_width * (100 - (2 * options.wf_offset)) / 100;
+  if (toggledLib) waveform_width -= 300;
 }
 $(document).ready(setWidth);
 window.addEventListener("resize", setWidth);
@@ -79,7 +80,7 @@ function waveform() {
   }
 
   var max = d3.max(data);
-  var w = (7 - 12 / window_width)
+  var w = (7 - 12 / waveform_width)
   var h = max * 2 || 0;
 
   var x = d3.scale.linear()

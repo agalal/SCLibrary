@@ -180,7 +180,7 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     // Update the view with the user's collection
     $scope.displaySongs = function(){
-        $scope.display = $scope.collection.splice(0,300);
+        $scope.display = $scope.collection.splice(0,1000);
         $scope.context = 'songs';
         $scope.currPlaylist = null;
     }
@@ -340,7 +340,7 @@ app.controller("LibraryCtlr", function($scope, $http){
         name: "Download page",
         callback: function(key, opt){
           var track = JSON.parse(opt.$trigger[0].dataset.track);
-          $scope.openPurchaseUrl(track);
+          openPurchaseUrl(track);
         }
       }
       settings.selector = '.track-row[data-purchase="true"]';
@@ -369,7 +369,6 @@ app.controller("LibraryCtlr", function($scope, $http){
             }
             playlist_menu['playlist' + i] = next;
         }
-
         $scope.playlist_menu = playlist_menu;
 
     }
@@ -478,6 +477,9 @@ app.controller("LibraryCtlr", function($scope, $http){
       return track.t.properties.purchase_url !== undefined;
     }
 
+    $scope.openPurchaseUrl = function(track){
+      openPurchaseUrl(track);
+    }
 });
 
 function openPurchaseUrl(track){

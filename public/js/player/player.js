@@ -68,7 +68,7 @@ $('#artworkimg').click(playPause);
 $('#back-div').click(function(e) {
   //how far you clicked into the div's width by percent. 1.0 is to cast to double
   let relativePercent = e.pageX / ($(window).width() * 1.0);
-  console.log(relativePercent + '%');
+  //console.log(relativePercent + '%');
   let seekPosition = Math.round(duration * relativePercent);
   bgScroll(true, seekPosition / 1000, duration / 1000);
   console.log("seekpos: " + seekPosition);
@@ -140,7 +140,7 @@ function bgScroll(play, pos, dur) {
 
   // bkDiv.removeClass('moving'); // stop the moving
   element.classList.remove("moving");
-  console.log(dur + ' ' + pos + ' ' + play + ' ' + perShift + '+');
+  //console.log(dur + ' ' + pos + ' ' + play + ' ' + perShift + '+');
 
   // set new position as percentage
   if (dur) {
