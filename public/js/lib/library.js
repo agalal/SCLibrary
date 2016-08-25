@@ -507,7 +507,13 @@ function highlightRow(track){
   $('*[data-id="' + track.t._id + '"]').addClass('curr-playing');
 }
 
+
+$(document).ready(function(){
+  $('#updatingMessage').hide();
+})
+
 function updateCollection(){
+  $('#updatingMessage').show();
   var scuid = loggedinuser.properties.scuid
   var url = "http://localhost:3000/api/users/" + scuid + "/collection/update";
 
