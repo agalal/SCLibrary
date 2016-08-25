@@ -129,13 +129,13 @@ app.controller("LibraryCtlr", function($scope, $http){
     $scope.loadPlaylist = function(playlist){
         var url = 'http://localhost:3000/api/playlists/' + playlist.p._id;
         $http.get(url).then(function(response){
-                $scope.display = response.data;
-                $scope.context = 'playlists';
-                $scope.currPlaylist = playlist.p._id;
-                $scope.buildDeleteFromPlaylistMenu(playlist);
-            }, function(error){
-                console.log(error);
-            })
+            $scope.display = response.data;
+            $scope.context = 'playlists';
+            $scope.currPlaylist = playlist.p._id;
+            $scope.buildDeleteFromPlaylistMenu(playlist);
+        }, function(error){
+            console.log(error);
+        })
     }
 
     // Delete playlist with permission from the user.
@@ -160,12 +160,12 @@ app.controller("LibraryCtlr", function($scope, $http){
         var uid = loggedinuser._id;
         var url = 'http://localhost:3000/api/users/' + uid + '/scplaylists/' + playlist.p._id;
         $http.get(url).then(function(response){
-                console.log(response);
-                $scope.display = response.data;
-                $scope.context = 'scplaylists';
-            }, function(error){
-                console.log(error);
-            })
+            console.log(response);
+            $scope.display = response.data;
+            $scope.context = 'scplaylists';
+        }, function(error){
+            console.log(error);
+        })
     }
 
     $scope.loadChannel = function(channel){
@@ -173,12 +173,11 @@ app.controller("LibraryCtlr", function($scope, $http){
         var cid = channel.c._id;
         var url = 'http://localhost:3000/api/users/' + uid + '/channels/' + cid;
         $http.get(url).then(function(response){
-            console.log(response);
-                $scope.display = response.data;
-                $scope.context = 'channels';
-            }, function(error){
-                console.log(error);
-            })
+            $scope.display = response.data;
+            $scope.context = 'channels';
+        }, function(error){
+            console.log(error);
+        })
     }
 
     $scope.updateDisplay = function(tracks){
