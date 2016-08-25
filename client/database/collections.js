@@ -300,19 +300,21 @@ module.exports = function(db) {
 
   // Given a user, find and return their entire collection of songs, along with the channels
   // that uploaded them.
-  module.getCollection = function(uid, limit, offset, done) {
+  module.getCollection = function(uid, limit, offset, sort, reverse, done) {
     db.cypher({
       query: 'MATCH (u:Channel), ' +
         '(u)-[r:LIKES_TRACK]->(t)<-[:UPLOADED]-(c) ' +
         'WHERE id(u) = {uid} ' +
         'RETURN t, r, c ' +
-        'ORDER BY r.created_at DESC ' +
+        'ORDER BY ' + sort + ' ' + reverse + ' ' + 
         'SKIP {offset} ' +
         'LIMIT {limit}',
       params: {
         uid: parseInt(uid),
         offset: offset,
-        limit: limit
+        limit: limit,
+        sort: sort,
+        reverse: reverse
       },
     }, function(error, results) {
       if (error) {
