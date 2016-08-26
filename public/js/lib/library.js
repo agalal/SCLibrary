@@ -252,6 +252,7 @@ app.controller("LibraryCtlr", function($scope, $http){
       // Initialize rate track and search on menus
       $scope.buildRateTrackMenu();
       $scope.buildSearchOnMenu();
+      $scope.buildSearchChannelOnMenu();
 
       // Create object to hold context menu items
       var items = {};
@@ -311,10 +312,10 @@ app.controller("LibraryCtlr", function($scope, $http){
         items: $scope.search_track_menu
       }
 
-      items.search_channel_on = {
-        name: "Search channel on...",
-        items: $scope.search_channel_menu
-      }
+      // items.search_channel_on = {
+      //   name: "Search channel on...",
+      //   items: $scope.search_channel_menu
+      // }
 
       // Include link to soundcloud page
       items.soundcloud_page = {
@@ -423,7 +424,6 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     $scope.buildSearchOnMenu = function(){
       var search_track_menu = {};
-      var search_channel_menu = {};
 
       for (var i = 0; i < sites.length; i++){
         var name = sites[i].name;
@@ -435,20 +435,26 @@ app.controller("LibraryCtlr", function($scope, $http){
             searchTrackOn(track, url);
           }
         }
+        search_track_menu[name] = track;
+      }
+      $scope.search_track_menu = search_track_menu;
+    }
+
+    $scope.buildSearchChannelOnMenu = function(){
+      var search_channel_menu = {};
+
+      for (var i = 0; i < sites.length; i++){
+        var name = sites[i].name;
         var channel = {
           name: name,
           callback: function(key, opt){
             var url = sites.find(x=>x.name === key).url;
-            var channel_name = JSON.parse(opt.$trigger[0].dataset.track).c.properties.name;
-            searchChannelOn(channel_name, url);
+            var track = JSON.parse(opt.$trigger[0].dataset.track);
+            searchChannelOn(track, url);
           }
-
         }
-        search_track_menu[name] = track;
         search_channel_menu[name] = channel;
       }
-
-      $scope.search_track_menu = search_track_menu;
       $scope.search_channel_menu = search_channel_menu;
     }
 
@@ -506,6 +512,7 @@ function searchTrackOn(track, url){
 }
 
 function searchChannelOn(track, url){
+  console.log(track);
   let channel_name = track.c.properties.name;
   window.open(url + channel_name);
 }
