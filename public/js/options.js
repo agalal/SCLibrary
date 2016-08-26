@@ -7,6 +7,9 @@ var sites = [
   },
   { url: 'https://www.beatport.com/search?q=',
     name: 'Beatport'
+  },
+  { url: 'http://edmmonsters.com/?s=',
+    name: 'edmmonsters'
   }
 ];
 

@@ -490,6 +490,7 @@ app.controller("LibraryCtlr", function($scope, $http){
 });
 
 function openPurchaseUrl(track){
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
   var url = track.t.properties.purchase_url;
   if (url) {
     if (getOpt('autocheck')) {
