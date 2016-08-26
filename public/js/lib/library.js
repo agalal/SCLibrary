@@ -78,7 +78,7 @@ app.controller("LibraryCtlr", function($scope, $http){
             b_element = b_element.$$prevSibling;
             j++;
         }
-
+        console.log(track);
         loadSong(track);
     }
 
@@ -223,6 +223,13 @@ app.controller("LibraryCtlr", function($scope, $http){
         var uid = loggedinuser._id;
         var url = 'http://localhost:3000/api/users/' + uid + '/collection/';
         $http.get(url).then(function(response){
+          console.log(response);
+          var songs = "[";
+          for(var i = 0; i < response.data.length; i++){
+            songs += "'http://api.soundcloud.com/tracks/" + response.data[i].t.properties.scid + "/stream?client_id=a3629314a336fd5ed371ff0f3e46d4d0',";
+          }
+          songs += "]";
+          //console.log(songs);
             $scope.collection = response.data;
             $scope.displaySongs();
         }, function(error){
