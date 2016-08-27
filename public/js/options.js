@@ -14,7 +14,10 @@ let _options = {
   shuffle: false,
   repeat: false,
   autoplay: true,
-  autocheck: true
+  autocheck: true,
+  columns : {
+
+  }
 }
 
 function setOpt(option, value){
@@ -29,10 +32,10 @@ function getOpt(option){
   return _options[option];
 }
 
-// function toggleLib() {
-//   if (!toggledLib) $('body').addClass('toggled');
-//   else $('body').removeClass('toggled');
-// }
+function toggleLib() {
+  if (!toggledLib) $('body').addClass('toggled');
+  else $('body').removeClass('toggled');
+}
 //
 // function toggleSet() {
 //   if (!toggledSet) $('#settings').addClass('toggled');
