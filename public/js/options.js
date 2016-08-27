@@ -15,10 +15,58 @@ let _options = {
   repeat: false,
   autoplay: true,
   autocheck: true,
-  columns : {
-
-  }
-}
+  columns:
+    [{
+      name: 'channel',
+      index: 0,
+      width: 120
+    },
+    {
+      name: 'title',
+      index: 1,
+      width: 120
+    },
+    {
+      name: 'date',
+      index: 2,
+      width: 120
+    },
+    {
+      name: 'genre',
+      index: 3,
+      width: 120
+    },
+    {
+      name: 'duration',
+      index: 4,
+      width: 120
+    },
+    {
+      name: 'linked',
+      index: 5,
+      width: 120
+    },
+    {
+      name: 'playcount',
+      index: 6,
+      width: 30
+    },
+    {
+      name: 'rating',
+      index: 7,
+      width: 90
+    },
+    {
+      name: 'domain',
+      index: 8,
+      width: 120
+    },
+    {
+      name: 'downloaded',
+      index: 9,
+      width: 30
+    }]
+};
 
 function setOpt(option, value){
   _options[option] = value;

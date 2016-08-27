@@ -201,6 +201,7 @@ function snapToPercents(parentEl) {
 }
 
 function attachColHandles() {
+  getOpt('columns');
   $('.col-sizeable').each(function() {
     // multiple loops and class vs id
     $(this).children('li').each(function() {

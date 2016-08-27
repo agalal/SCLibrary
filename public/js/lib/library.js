@@ -333,7 +333,7 @@ app.controller("LibraryCtlr", function($scope, $http){
       };
 
       // Create the context menu
-      $.contextMenu(settings);
+      //$.contextMenu(settings);
 
       // Include link to purchase url and change selector for tracks with purchase_url
       settings.items.purchase_link = {
