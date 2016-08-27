@@ -17,7 +17,10 @@ let _options = {
   shuffle: false,
   repeat: false,
   autoplay: true,
-  autocheck: true
+  autocheck: true,
+  columns : {
+
+  }
 }
 
 function setOpt(option, value){

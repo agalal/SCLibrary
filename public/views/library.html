@@ -1,4 +1,4 @@
-<div class="left-side-wrapper">
+<div class="left-side-wrapper collapse" id="left-side">
     <div class="user-wrapper">
       <a class="btn btn-default pull-right" href="/logout/">Logout</a>
       <a class="user-img" style="background-image: none;"></a>
@@ -15,18 +15,19 @@
             <span id="channel-carat-down" class="fa fa-caret-down"></span>
             <span id="channel-carat-up" class="fa fa-caret-up"></span>
         </li>
-        <div id="channel-list">
-        </div>
+
+        <li id="channel-list" class="scroll-container">
+        </li>
 
         <li>Playlists</li>
-        <span class="addPlaylist">+ Add Playlist</span>
+        <li><span class="addPlaylist">+ Add Playlist</span></li>
         <form class="playlistForm" id="playlist-form">
             <input type="text" id="playlist-input" name="text" />
             <!--<input type="submit" id="submit" value="Submit" />-->
         </form>
 
-        <ul id="playlist-list">
-        </ul>
+        <li id="playlist-list">
+        </li>
 
         <li id="scplaylist-toggle">
             SC Playlists
@@ -34,59 +35,60 @@
             <span id="scplaylist-carat-up" class="fa fa-caret-up"></span>
         </li>
 
-        <ul id="scplaylist-list">
-        </ul>
+        <li id="scplaylist-list">
+        </li>
 
         <li id="queue-link">Queue</li>
     </ul>
 </div>
+<ul class="header">
+    <li>
+        <ol class="col-sizeable">
+            <li class="text-center" ng-click="updateSort('c.properties.name')">
+                <a also-resize="channel" class="dark">Channel</a>
+                <span ng-show="sortType == 'c.properties.name' && !sortReverse" class="fa fa-caret-down"></span>
+                <span ng-show="sortType == 'c.properties.name' && sortReverse" class="fa fa-caret-up"></span>
+            <li class="text-center" ng-click="updateSort('t.properties.name')">
+                <a also-resize="title" class="dark">Title</a>
+                <span ng-show="sortType == 't.properties.name' && !sortReverse" class="fa fa-caret-down"></span>
+                <span ng-show="sortType == 't.properties.name' && sortReverse" class="fa fa-caret-up"></span>
+            <li class="text-center" ng-click="updateSort('t.properties.created_at')">
+                <a also-resize="date" class="dark">Date Created</a>
+                <span ng-show="sortType == 't.properties.created_at' && !sortReverse" class="fa fa-caret-down"></span>
+                <span ng-show="sortType == 't.properties.created_at' && sortReverse" class="fa fa-caret-up"></span>
+            <li class="text-center" ng-click="updateSort('t.properties.genre')">
+                <a also-resize="genre" class="dark">Genre</a>
+                <span ng-show="sortType == 't.properties.genre' && !sortReverse" class="fa fa-caret-down"></span>
+                <span ng-show="sortType == 't.properties.genre' && sortReverse" class="fa fa-caret-up"></span>
+            <li class="text-center" ng-click="updateSort('t.properties.duration')">
+                <a also-resize="duration" class="dark">Duration</a>
+                <span ng-show="sortType == 't.properties.duration' && !sortReverse" class="fa fa-caret-down"></span>
+                <span ng-show="sortType == 't.properties.duration' && sortReverse" class="fa fa-caret-up"></span>
+            <li class="text-center" ng-click="updateSort('r.properties.created_at')">
+                <a also-resize="liked" class="dark">Date Liked</a>
+                <span ng-show="sortType == 'r.properties.created_at' && !sortReverse" class="fa fa-caret-down"></span>
+                <span ng-show="sortType == 'r.properties.created_at' && sortReverse" class="fa fa-caret-up"></span>
+            <li class="text-center" ng-click="updateSort('r.properties.play_count')">
+                <a also-resize="playcount" class="dark">Play Count</a>
+                <span ng-show="sortType == 'r.properties.play_count' && !sortReverse" class="fa fa-caret-down"></span>
+                <span ng-show="sortType == 'r.properties.play_count' && sortReverse" class="fa fa-caret-up"></span>
+            <li class="text-center" ng-click="updateSort('r.properties.rating')">
+                <a also-resize="rating" class="dark">Rating</a>
+                <span ng-show="sortType == 'r.properties.rating' && !sortReverse" class="fa fa-caret-down"></span>
+                <span ng-show="sortType == 'r.properties.rating' && sortReverse" class="fa fa-caret-up"></span>
+            <li class="text-center" ng-click="updateSort('t.properties.purchase_url_domain')">
+                <a also-resize="domain" class="dark">Domain</a>
+                <span ng-show="sortType == 'r.properties.purchase_url_domain' && !sortReverse" class="fa fa-caret-down"></span>
+                <span ng-show="sortType == 'r.properties.purchase_url_domain' && sortReverse" class="fa fa-caret-up"></span>
+            <li class="text-center downloaded" ng-click="updateSort('r.properties.downloaded')">
+                <a also-resize="downloaded" class="dark"><i style="height:1em; width:1em;display:inline-block;background-image:url(/images/sc_icons/download.svg);"></i></a>
+                <span ng-show="sortType == 'r.properties.downloaded' && !sortReverse" class="fa fa-caret-down"></span>
+                <span ng-show="sortType == 'r.properties.downloaded' && sortReverse" class="fa fa-caret-up"></span>
+        </ol>
+</ul>
+
 <div class="library-wrapper">
     <table cellpadding="0" cellspacing="0" id="lib-view" style="clear:both;">
-        <ul class="header">
-            <li>
-                <ol class="col-sizeable">
-                    <li class="text-center" ng-click="updateSort('c.properties.name')">
-                        <a also-resize="channel" class="dark">Channel</a>
-                        <span ng-show="sortType == 'c.properties.name' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'c.properties.name' && sortReverse" class="fa fa-caret-up"></span>
-                    <li class="text-center" ng-click="updateSort('t.properties.name')">
-                        <a also-resize="title" class="dark">Title</a>
-                        <span ng-show="sortType == 't.properties.name' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 't.properties.name' && sortReverse" class="fa fa-caret-up"></span>
-                    <li class="text-center" ng-click="updateSort('t.properties.created_at')">
-                        <a also-resize="date" class="dark">Date Created</a>
-                        <span ng-show="sortType == 't.properties.created_at' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 't.properties.created_at' && sortReverse" class="fa fa-caret-up"></span>
-                    <li class="text-center" ng-click="updateSort('t.properties.genre')">
-                        <a also-resize="genre" class="dark">Genre</a>
-                        <span ng-show="sortType == 't.properties.genre' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 't.properties.genre' && sortReverse" class="fa fa-caret-up"></span>
-                    <li class="text-center" ng-click="updateSort('t.properties.duration')">
-                        <a also-resize="duration" class="dark">Duration</a>
-                        <span ng-show="sortType == 't.properties.duration' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 't.properties.duration' && sortReverse" class="fa fa-caret-up"></span>
-                    <li class="text-center" ng-click="updateSort('r.properties.created_at')">
-                        <a also-resize="liked" class="dark">Date Liked</a>
-                        <span ng-show="sortType == 'r.properties.created_at' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'r.properties.created_at' && sortReverse" class="fa fa-caret-up"></span>
-                    <li class="text-center" ng-click="updateSort('r.properties.play_count')">
-                        <a also-resize="playcount" class="dark">Play Count</a>
-                        <span ng-show="sortType == 'r.properties.play_count' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'r.properties.play_count' && sortReverse" class="fa fa-caret-up"></span>
-                    <li class="text-center" ng-click="updateSort('r.properties.rating')">
-                        <a also-resize="rating" class="dark">Rating</a>
-                        <span ng-show="sortType == 'r.properties.rating' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'r.properties.rating' && sortReverse" class="fa fa-caret-up"></span>
-                    <li class="text-center" ng-click="updateSort('t.properties.purchase_url_domain')">
-                        <a also-resize="domain" class="dark">Domain</a>
-                        <span ng-show="sortType == 'r.properties.purchase_url_domain' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'r.properties.purchase_url_domain' && sortReverse" class="fa fa-caret-up"></span>
-                    <li class="text-center downloaded" ng-click="updateSort('r.properties.downloaded')">
-                        <a also-resize="downloaded" class="dark"><i style="height:1em; width:1em;display:inline-block;background-image:url(/images/sc_icons/download.svg);"></i></a>
-                        <span ng-show="sortType == 'r.properties.downloaded' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'r.properties.downloaded' && sortReverse" class="fa fa-caret-up"></span>
-                </ol>
-        </ul>
         <ul class="list">
             <li class="track-row" ng-repeat="track in display | filter:searchTerm" ng-click="playSong(track, this)" ng-init="updateMenu()" data-track="{{track}}" data-id="{{track.t._id}}" data-purchase="{{hasPurchaseUrl(track)}}">
                 <!--td >x</td-->
@@ -98,13 +100,21 @@
                     <li class="duration" ng-bind="convertTime(track.t.properties.duration)">
                     <li class="liked" ng-bind="formatDate(track.r.properties.created_at)">
                     <li class="playcount" ng-bind="track.r.properties.play_count">
-                    <li class="rating" ng-bind="track.r.properties.rating">
+                    <li class="rating">
+                      <fieldset class="stars">
+                        <!-- <legend>Please rate:</legend> -->
+                        <input type="radio" id="star5-{{$index}}" name="rating-{{$index}}" value="5" /><label for="star5-{{$index}}" ng-model="track.r.properties.rating"></label>
+                        <input type="radio" id="star4-{{$index}}" name="rating-{{$index}}" value="4" /><label for="star4-{{$index}}" ng-model="track.r.properties.rating"></label>
+                        <input type="radio" id="star3-{{$index}}" name="rating-{{$index}}" value="3" /><label for="star3-{{$index}}" ng-model="track.r.properties.rating"></label>
+                        <input type="radio" id="star2-{{$index}}" name="rating-{{$index}}" value="2" /><label for="star2-{{$index}}" ng-model="track.r.properties.rating"></label>
+                        <input type="radio" id="star1-{{$index}}" name="rating-{{$index}}" value="1" /><label for="star1-{{$index}}" ng-model="track.r.properties.rating"></label>
+                    </fieldset>
                     <li class="domain" ng-click="$event.stopPropagation()">
                         <a ng-click="openPurchaseUrl(track)">
                           {{track.t.properties.purchase_url_domain}}
                         </a>
                     <li class="downloaded" style="height:100%" ng-click="toggleDownload(this); $event.stopPropagation()">
-                      <input type="checkbox" class="downloaded" ng-checked="track.r.properties.downloaded"></input>
+                      <input type="checkbox" class="dwnld" ng-checked="track.r.properties.downloaded"></input>
 
                 </ol>
         </ul>
