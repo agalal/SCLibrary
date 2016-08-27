@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var db = require('../../client/database');
 var request = require('request');
+//Pull dominant colors from image for a track
+Vibrant = require('node-vibrant')
 
 router.get('/:id/waveform', function(req, res, next) {
 	db.getTrack(req.params.id, function(track, error){
@@ -22,6 +24,21 @@ router.get('/:id/waveform', function(req, res, next) {
 		            res.json(json.samples);
 		        }
 		    });
+		}
+	});
+});
+
+router.get('/:id/palette', function(req, res, next) {
+	db.getTrack(req.params.id, function(track, error){
+		if (error){
+			res.json(error);
+		} else {
+	      Vibrant.from(track[0].n.properties.artwork_url).getPalette (function(err, palette){
+	        if (err){
+	          return res.json(err);
+	        }
+	        return res.json(palette);
+	      });
 		}
 	});
 });

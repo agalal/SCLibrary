@@ -8,7 +8,7 @@ let options = {
   height: .3
 };
 
-let refresh = false
+let refresh = false;
 let wform_data = [];
 let sub, lows, mids1, mids2, highs1, highs2, highs3;
 
@@ -40,9 +40,13 @@ function loadWaveform(track_id) {
   });
 }
 
-// Repeatedly redraw the waveform at the refresh rate
+// Repeatedly update the waveform in the player.
 setInterval(function() {
   if (refresh) waveform();
+  if (palette_refresh) {
+    palette_refresh = false;
+    updateColorPalette();
+  }
 }, options.refresh_rate);
 
 // Helper function used to take weighted average of the seven frequency ranges
