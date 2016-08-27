@@ -788,7 +788,7 @@ library#libraryCtlrDiv {
     display: block;
     overflow-y: hidden;
     overflow-x: visible;
-    height: auto;
+    height: c;
 }
 
 #left-side li {
@@ -800,13 +800,16 @@ library#libraryCtlrDiv {
     border: 1px solid rgba(66,66,66,0.2);
     max-height: 33vh;
     overflow-y: scroll;
-    width: 100%;
+    width: calc(100% - 14px) !important;
+    border-radius: 5px;
+    margin: 7px;
 }
 
 li
 
 .stars {
-    display: inline-block;
+    display: inline;
+    max-height: 100%;
 }
 
 /* :not(:checked) is a filter, so that browsers that don’t support :checked don’t
@@ -816,6 +819,7 @@ li
     position:absolute;
     top:-9999px;
     clip:rect(0,0,0,0);
+    display: none;
 }
 
 .stars:not(:checked) > label {
@@ -853,8 +857,7 @@ li
 
 .stars > label:active {
     position:relative;
-    top:2px;
-    left:2px;
+    text-shadow: 1px 2;
 }
 );
 }
