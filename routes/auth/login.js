@@ -29,6 +29,7 @@ router.post('/submit/', ensureLoggedOut, function(req, res, next) {
       req.session.account = results.account;
       req.session.user = results.users[0].u;
       res.redirect('/library/');
+      return;
     } else {
       message = "You don't have any soundcloud accounts associated with your username";
     }

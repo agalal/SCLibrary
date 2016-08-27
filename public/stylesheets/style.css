@@ -160,6 +160,10 @@ a.dark {
 
 /*alternating colors*/
 
+li.track-row:hover {
+    background-color: lightblue;
+}
+
 li.track-row:nth-of-type(2n) {
     background-color: #F6F6F6;
 }
@@ -207,7 +211,6 @@ ul.header ol > li {
     border-bottom: #afafaf 1px solid;
     color: #333;
     padding: 4px 3px;
-    background-color: #e3ecee;
     left: 0 !important;
 }
 
@@ -700,7 +703,6 @@ div#behind-vid {
 #login-panel.loaded {
   opacity: 1.0;
 }
-
 
 .modal-content {
     box-shadow: none !important;

@@ -29,6 +29,7 @@ document.body.onkeydown = document.body.onkeyup = function(e) {
 }
 
 function trackClickListener(track, element){
+  console.log(track);
   if (map[49]) {
     openPurchaseUrl(track);
   } else if (map[50]) {

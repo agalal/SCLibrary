@@ -8,7 +8,7 @@ let options = {
   height: .3
 };
 
-let refresh = false
+let refresh = false;
 let wform_data = [];
 let sub, lows, mids1, mids2, highs1, highs2, highs3;
 
@@ -17,6 +17,7 @@ let window_width, waveform_width;
 function setWidth() {
   window_width = $(window).width()
   waveform_width = window_width * (100 - (2 * options.wf_offset)) / 100;
+  if (toggledLib) waveform_width -= 300;
 }
 $(document).ready(setWidth);
 window.addEventListener("resize", setWidth);
@@ -39,9 +40,13 @@ function loadWaveform(track_id) {
   });
 }
 
-// Repeatedly redraw the waveform at the refresh rate
+// Repeatedly update the waveform in the player.
 setInterval(function() {
   if (refresh) waveform();
+  if (palette_refresh) {
+    palette_refresh = false;
+    updateColorPalette();
+  }
 }, options.refresh_rate);
 
 // Helper function used to take weighted average of the seven frequency ranges
@@ -79,7 +84,7 @@ function waveform() {
   }
 
   var max = d3.max(data);
-  var w = (7 - 12 / window_width)
+  var w = (7 - 12 / waveform_width)
   var h = max * 2 || 0;
 
   var x = d3.scale.linear()
