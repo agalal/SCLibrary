@@ -19,6 +19,7 @@
     "morgan": "~1.6.1",
     "neo4j": "2.0.0-RC2",
     "node-soundcloud": "0.0.5",
+    "node-vibrant": "^2.1.2",
     "q": "^1.4.1",
     "request": "^2.72.0",
     "requestify": "^0.1.17",

@@ -202,30 +202,12 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     // Populate the list of songs
     $scope.loadLibrary = function(){
-<<<<<<< HEAD
       $scope.context = 'library';
       page = 1;
       offset = 0;
       getPage(function(tracks) {
         $scope.resetDisplay(tracks);
       });
-=======
-        var uid = loggedinuser._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/collection/';
-        $http.get(url).then(function(response){
-          console.log(response);
-          var songs = "[";
-          for(var i = 0; i < response.data.length; i++){
-            songs += "'http://api.soundcloud.com/tracks/" + response.data[i].t.properties.scid + "/stream?client_id=a3629314a336fd5ed371ff0f3e46d4d0',";
-          }
-          songs += "]";
-          //console.log(songs);
-            $scope.collection = response.data;
-            $scope.displaySongs();
-        }, function(error){
-            console.log(error);
-        });
->>>>>>> 69bb548a66024c6206790bfbcac8d6c364f128a8
     }
 
     // Populate the list of playlists

@@ -17,7 +17,6 @@ var admin = require('./auth/admin');
 var http = require('http');
 var https = require('https');
 var fs = require('fs');
-var GoogleSearch = require('google-search');
 var $ = require('jQuery');
 
 /*var googleSearch = new GoogleSearch({
