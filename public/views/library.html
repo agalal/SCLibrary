@@ -8,12 +8,12 @@
         <input type="text" placeholder="Search" ng-model="searchTerm" />
     </div>
     <ul class="side">
-        <li ng-click="loadLibrary()">Song Library</li>
+        <li id='library-toggle'>Song Library</li>
 
-        <li ng-click="toggleChannels()">
+        <li id="channels-toggle">
             Channels
-            <span ng-show="channels_visible" class="fa fa-caret-down"></span>
-            <span ng-show="!channels_visible" class="fa fa-caret-up"></span>
+            <span id="channels-carat-down" class="fa fa-caret-down"></span>
+            <span id="channels-carat-up" class="fa fa-caret-up"></span>
         </li>
         <div id="channel_list">
             <ul>

@@ -13,9 +13,6 @@ app.directive("library", [function (){
         link: {
             pre: function(scope, element, attr) {
 
-                $('#channel_list').hide();
-                scope.channels_visible = false;
-
                 $('#scplaylist_list').hide();
                 scope.scplaylists_visible = false;
 
@@ -33,7 +30,7 @@ app.directive("library", [function (){
                 scope.searchTerm = '';
 
                 // Load song library, and channel/playlist names
-                scope.loadLibrary();
+                loadLibrary();
                 scope.loadChannels();
                 scope.loadPlaylists();
                 scope.loadSCPlaylists();
@@ -91,15 +88,6 @@ app.controller("LibraryCtlr", function($scope, $http){
       } else {
         return name;
       }
-    }
-
-    $scope.toggleChannels = function(){
-        $scope.channels_visible = !$scope.channels_visible;
-        if ($scope.channels_visible) {
-            $('#channel_list').show();
-        } else {
-            $('#channel_list').hide();
-        }
     }
 
     $scope.toggleSCPlaylists = function(){
@@ -198,16 +186,6 @@ app.controller("LibraryCtlr", function($scope, $http){
         $scope.display = queue;
         $scope.context = 'queue';
         $scope.currPlaylist = null;
-    }
-
-    // Populate the list of songs
-    $scope.loadLibrary = function(){
-      $scope.context = 'library';
-      page = 1;
-      offset = 0;
-      getPage(function(tracks) {
-        $scope.resetDisplay(tracks);
-      });
     }
 
     // Populate the list of playlists
@@ -494,6 +472,17 @@ app.controller("LibraryCtlr", function($scope, $http){
       openPurchaseUrl(track);
     }
 });
+
+// Populate the list of songs
+function loadLibrary(){
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  aScope.context = 'library';
+  page = 1;
+  offset = 0;
+  getPage(function(tracks) {
+    aScope.resetDisplay(tracks);
+  });
+}
 
 function openPurchaseUrl(track){
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
