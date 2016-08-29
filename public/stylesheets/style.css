@@ -125,6 +125,8 @@ input.search {
     height: calc(100vh - 330px);
     float: left;
     clear: both;
+    white-space: nowrap;
+    overflow-x: hidden;
 }
 * {
     font-family: 'Oxygen', sans-serif;
@@ -145,8 +147,6 @@ ul.list {
     overflow: visible;
     height: auto;
     font-size: 14px;
-    float: left;
-    clear: left;
     margin: 0;
 }
 table {
@@ -231,7 +231,6 @@ ul.list li > ol > li {
     overflow: hidden;
     padding: .1em .2em;
     height: 100%;
-    float: left;
 }
 ul.header ol > li {
     border: 1px solid #e3e3e3;
@@ -379,7 +378,7 @@ div#library {
     width: 100vw;
     overflow-x: hidden;
     height: calc( 100vh - 300px);
-    overflow-y: visible;
+    overflow-y: hidden;
     z-index: 2;
 }
 
@@ -495,9 +494,9 @@ span.track-title {
 }
 
 body {
-    overflow-x: hidden;
+    overflow: hidden;
     display: inline-block;
-    height: 100vh;
+    height: 101vh;
     width: 100vw;
 }
 
