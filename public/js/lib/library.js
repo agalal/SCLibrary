@@ -13,9 +13,6 @@ app.directive("library", [function (){
         link: {
             pre: function(scope, element, attr) {
 
-                $('#channel_list').hide();
-                scope.channels_visible = false;
-
                 $('#scplaylist_list').hide();
                 scope.scplaylists_visible = false;
 
@@ -33,9 +30,9 @@ app.directive("library", [function (){
                 scope.searchTerm = '';
 
                 // Load song library, and channel/playlist names
-                scope.loadLibrary();
-                scope.loadChannels();
-                scope.loadPlaylists();
+                loadLibrary();
+                loadChannels();
+                loadPlaylists();
                 scope.loadSCPlaylists();
 
             },
@@ -93,15 +90,6 @@ app.controller("LibraryCtlr", function($scope, $http){
       }
     }
 
-    $scope.toggleChannels = function(){
-        $scope.channels_visible = !$scope.channels_visible;
-        if ($scope.channels_visible) {
-            $('#channel_list').show();
-        } else {
-            $('#channel_list').hide();
-        }
-    }
-
     $scope.toggleSCPlaylists = function(){
         $scope.scplaylists_visible = !$scope.scplaylists_visible;
         if ($scope.scplaylists_visible) {
@@ -109,25 +97,6 @@ app.controller("LibraryCtlr", function($scope, $http){
         } else {
             $('#scplaylist_list').hide();
         }
-    }
-
-    // Add a playlist to the database and hide the new playlist form
-    $scope.createPlaylist = function(){
-        console.log(loggedinuser);
-        var url = 'http://localhost:3000/api/playlists/';
-        var data = {
-            name: $scope.playlistInput,
-            uid: loggedinuser._id
-        }
-        $http.post(url, data).then(function(response){
-            console.log(response);
-            $scope.loadPlaylists();
-        }, function(error){
-            console.log(error);
-        });
-
-        $('.playlistForm').hide();
-        $scope.playlistInput = '';
     }
 
     // Update the view with tracks from the selected playlist.
@@ -153,7 +122,7 @@ app.controller("LibraryCtlr", function($scope, $http){
                 if ($scope.currPlaylist == id){
                     $scope.displaySongs();
                 }
-                $scope.loadPlaylists();
+                loadPlaylists();
             }, function(error){
                 console.log(error);
             })
@@ -164,16 +133,6 @@ app.controller("LibraryCtlr", function($scope, $http){
     $scope.loadSCPlaylist = function(playlist){
       $scope.context = 'scplaylist';
       $scope.spid = playlist.p._id;
-      page = 1;
-      offset = 0;
-      getPage(function(tracks) {
-        $scope.resetDisplay(tracks);
-      });
-    }
-
-    $scope.loadChannel = function(channel){
-      $scope.context = 'channel';
-      $scope.cid = channel.c._id;
       page = 1;
       offset = 0;
       getPage(function(tracks) {
@@ -200,46 +159,12 @@ app.controller("LibraryCtlr", function($scope, $http){
         $scope.currPlaylist = null;
     }
 
-    // Populate the list of songs
-    $scope.loadLibrary = function(){
-      $scope.context = 'library';
-      page = 1;
-      offset = 0;
-      getPage(function(tracks) {
-        $scope.resetDisplay(tracks);
-      });
-    }
-
-    // Populate the list of playlists
-    $scope.loadPlaylists = function(){
-        var uid = loggedinuser._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/playlists/';
-        $http.get(url).then(function(response){
-            $scope.playlists = response.data;
-            $scope.buildAddToPlaylistMenu(response.data);
-            $scope.updateMenu();
-        }, function(error){
-            console.log(error);
-        });
-    }
-
     // Populate the list of playlists
     $scope.loadSCPlaylists = function(){
         var uid = loggedinuser._id;
         var url = 'http://localhost:3000/api/users/' + uid + '/scplaylists/';
         $http.get(url).then(function(response){
             $scope.scplaylists = response.data;
-        }, function(error){
-            console.log(error);
-        });
-    }
-
-    // Populate the list of playlists
-    $scope.loadChannels = function(){
-        var uid = loggedinuser._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/channels/';
-        $http.get(url).then(function(response){
-            $scope.channels = response.data;
         }, function(error){
             console.log(error);
         });
@@ -494,6 +419,80 @@ app.controller("LibraryCtlr", function($scope, $http){
       openPurchaseUrl(track);
     }
 });
+
+// Populate the list of songs
+function loadLibrary(){
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  aScope.context = 'library';
+  page = 1;
+  offset = 0;
+  getPage(function(tracks) {
+    aScope.resetDisplay(tracks);
+  });
+}
+
+// Populate the list of playlists
+function loadChannels(){
+  var uid = loggedinuser._id;
+  var url = 'http://localhost:3000/api/users/' + uid + '/channels/';
+
+  $.get(url, function(data) {
+    var list = `<ul><div>`;
+    for (let i = 0; i < data.length; i++){
+      const properties = data[i].c.properties;
+      const cid = data[i].c._id;
+      const name = properties.name;
+      list += `<div class='channel-name' data-id='${cid}'>${name}</div>`;
+    }
+    list += "</div></ul>"
+    document.getElementById('channel-list').innerHTML = list;
+    $('.channel-name').click(function() {
+      loadChannel($(this).data('id'));
+    })
+  });
+}
+
+function loadChannel(cid){
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  aScope.context = 'channel';
+  aScope.cid = cid;
+  page = 1;
+  offset = 0;
+  getPage(function(tracks) {
+    aScope.resetDisplay(tracks);
+  });
+}
+
+// Populate the list of playlists
+function loadPlaylists(){
+    const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+    var uid = loggedinuser._id;
+    var url = 'http://localhost:3000/api/users/' + uid + '/playlists/';
+
+    $.get(url, function(data){
+        aScope.playlists = data;
+        aScope.$apply();
+        aScope.buildAddToPlaylistMenu(data);
+        aScope.updateMenu();
+    });
+}
+
+// Add a playlist to the database and hide the new playlist form
+function createPlaylist(){
+    var url = 'http://localhost:3000/api/playlists/';
+    const name = $('#playlist-input').val();
+    var data = {
+        name: name,
+        uid: loggedinuser._id
+    }
+    $.post(url, data, function( data ) {
+      loadPlaylists();
+      $('#playlist-form').hide();
+      $('#playlist-input').val('');
+    });
+}
+
+
 
 function openPurchaseUrl(track){
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
