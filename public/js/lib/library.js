@@ -14,7 +14,6 @@ app.directive("library", [function (){
             pre: function(scope, element, attr) {
 
                 $('#scplaylist_list').hide();
-                scope.scplaylists_visible = false;
 
                 $('.playlistForm').hide();
                 $('.addPlaylist').click(function(){
@@ -33,7 +32,7 @@ app.directive("library", [function (){
                 loadLibrary();
                 loadChannels();
                 loadPlaylists();
-                scope.loadSCPlaylists();
+                loadSCPlaylists();
 
             },
             post: function(scope, element, attr) {
@@ -81,35 +80,6 @@ app.controller("LibraryCtlr", function($scope, $http){
       return date.substring(0, 10);
     }
 
-    // Format playlist name string
-    $scope.formatName = function(name){
-      if (name.length > 26) {
-        return (name.substring(0,26).trim() + "...");
-      } else {
-        return name;
-      }
-    }
-
-    $scope.toggleSCPlaylists = function(){
-        $scope.scplaylists_visible = !$scope.scplaylists_visible;
-        if ($scope.scplaylists_visible) {
-            $('#scplaylist_list').show();
-        } else {
-            $('#scplaylist_list').hide();
-        }
-    }
-
-    // Update the view with tracks from the selected playlist.
-    $scope.loadSCPlaylist = function(playlist){
-      $scope.context = 'scplaylist';
-      $scope.spid = playlist.p._id;
-      page = 1;
-      offset = 0;
-      getPage(function(tracks) {
-        $scope.resetDisplay(tracks);
-      });
-    }
-
     $scope.updateDisplay = function(tracks){
       $scope.display = tracks;
       $scope.$apply();
@@ -121,23 +91,6 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     $scope.addToDisplay = function(tracks){
       $scope.updateDisplay($scope.display.concat(tracks));
-    }
-
-    $scope.displayQueue = function(){
-        $scope.display = queue;
-        $scope.context = 'queue';
-        $scope.currPlaylist = null;
-    }
-
-    // Populate the list of playlists
-    $scope.loadSCPlaylists = function(){
-        var uid = loggedinuser._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/scplaylists/';
-        $http.get(url).then(function(response){
-            $scope.scplaylists = response.data;
-        }, function(error){
-            console.log(error);
-        });
     }
 
     $scope.updateMenu = function(){
@@ -175,8 +128,7 @@ app.controller("LibraryCtlr", function($scope, $http){
             var i = 0;
             for (i = 0; i < queue.length; i++){
               if (track.t._id == queue[i].t._id){
-                queue.splice(i, 1);
-                $scope.display = queue.splice(i, 1);
+                $scope.updateDisplay(queue.splice(i, 1));
                 break;
               }
             }
@@ -260,8 +212,6 @@ app.controller("LibraryCtlr", function($scope, $http){
             var next =  {
                 name: playlist.p.properties.name,
                 callback: function(key, opt){
-                    console.log(key);
-                    console.log(opt);
                     var pid = $('#' + key).data("id");
                     var tid = JSON.parse(opt.$trigger[0].dataset.track).t._id;
                     var url = 'http://localhost:3000/api/playlists/' + pid + '/add/' + tid;
@@ -486,6 +436,27 @@ function deletePlaylist(pid){
   }
 }
 
+// Update the view with tracks from the selected playlist.
+function loadSCPlaylist(spid){
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  aScope.context = 'scplaylist';
+  aScope.spid = spid;
+  page = 1;
+  offset = 0;
+  getPage(function(tracks) {
+    aScope.resetDisplay(tracks);
+  });
+}
+
+// Populate the list of playlists
+function loadSCPlaylists(){
+  var uid = loggedinuser._id;
+  var url = 'http://localhost:3000/api/users/' + uid + '/scplaylists/';
+  $.get(url, function(data){
+    buildSCPlaylistList(data);
+  });
+}
+
 function openPurchaseUrl(track){
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
   var url = track.t.properties.purchase_url;
@@ -503,7 +474,6 @@ function searchTrackOn(track, url){
 }
 
 function searchChannelOn(track, url){
-  console.log(track);
   let channel_name = track.c.properties.name;
   window.open(url + channel_name);
 }

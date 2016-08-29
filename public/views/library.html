@@ -28,19 +28,16 @@
         <ul id="playlist-list">
         </ul>
 
-        <li ng-click="toggleSCPlaylists()">
+        <li id="scplaylist-toggle">
             SC Playlists
-            <span ng-show="scplaylists_visible" class="fa fa-caret-down"></span>
-            <span ng-show="!scplaylists_visible" class="fa fa-caret-up"></span>
+            <span id="scplaylist-carat-down" class="fa fa-caret-down"></span>
+            <span id="scplaylist-carat-up" class="fa fa-caret-up"></span>
         </li>
 
-        <div id="scplaylist_list">
-            <ul ng-repeat="playlist in scplaylists | orderBy:p.properties.name | filter:searchTerm">
-                <li id="playlist{{$index}}" ng-click="loadSCPlaylist(playlist)" data-playlist="{{playlist}}" ng-bind="formatName(playlist.p.properties.name)"></li>
-            </ul>
-        </div>
+        <ul id="scplaylist-list">
+        </ul>
 
-        <li ng-click="displayQueue()">Queue</li>
+        <li id="queue-link">Queue</li>
     </ul>
 </div>
 <div class="library-wrapper">
