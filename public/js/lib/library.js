@@ -100,36 +100,6 @@ app.controller("LibraryCtlr", function($scope, $http){
     }
 
     // Update the view with tracks from the selected playlist.
-    $scope.loadPlaylist = function(playlist){
-      $scope.context = 'playlist';
-      $scope.currPlaylist = playlist.p._id;
-      $scope.pid = playlist.p._id;
-      page = 1;
-      offset = 0;
-      getPage(function(tracks) {
-        $scope.resetDisplay(tracks);
-        $scope.buildDeleteFromPlaylistMenu(playlist);
-      });
-    }
-
-    // Delete playlist with permission from the user.
-    $scope.deletePlaylist = function(playlist){
-        if (confirm("Are you sure you want to delete?") == true){
-            var id = playlist.p._id;
-            var url = 'http://localhost:3000/api/playlists/' + id;
-            $http.delete(url).then(function(response){
-                console.log(response);
-                if ($scope.currPlaylist == id){
-                    $scope.displaySongs();
-                }
-                loadPlaylists();
-            }, function(error){
-                console.log(error);
-            })
-        }
-    }
-
-    // Update the view with tracks from the selected playlist.
     $scope.loadSCPlaylist = function(playlist){
       $scope.context = 'scplaylist';
       $scope.spid = playlist.p._id;
@@ -290,7 +260,9 @@ app.controller("LibraryCtlr", function($scope, $http){
             var next =  {
                 name: playlist.p.properties.name,
                 callback: function(key, opt){
-                    var pid = JSON.parse($('#' + key).attr("data-playlist")).p._id;
+                    console.log(key);
+                    console.log(opt);
+                    var pid = $('#' + key).data("id");
                     var tid = JSON.parse(opt.$trigger[0].dataset.track).t._id;
                     var url = 'http://localhost:3000/api/playlists/' + pid + '/add/' + tid;
                     $http.post(url, {}).then(function(response){
@@ -306,14 +278,15 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     }
 
-    $scope.buildDeleteFromPlaylistMenu = function(playlist){
+    $scope.buildDeleteFromPlaylistMenu = function(){
         $scope.delete_func =  function(key, opt){
-            var pid = playlist.p._id;
+            console.log("hi");
+            var pid = $scope.pid;
             var tid = JSON.parse(opt.$trigger[0].dataset.track).t._id;
             var url = 'http://localhost:3000/api/playlists/' + pid + '/remove/' + tid;
             $http.delete(url).then(function(response){
                 console.log(response);
-                $scope.loadPlaylist(playlist);
+                loadPlaylist(pid);
             }, function(error){
                 console.log(error);
             });
@@ -437,18 +410,7 @@ function loadChannels(){
   var url = 'http://localhost:3000/api/users/' + uid + '/channels/';
 
   $.get(url, function(data) {
-    var list = `<ul><div>`;
-    for (let i = 0; i < data.length; i++){
-      const properties = data[i].c.properties;
-      const cid = data[i].c._id;
-      const name = properties.name;
-      list += `<div class='channel-name' data-id='${cid}'>${name}</div>`;
-    }
-    list += "</div></ul>"
-    document.getElementById('channel-list').innerHTML = list;
-    $('.channel-name').click(function() {
-      loadChannel($(this).data('id'));
-    })
+    buildChannelList(data);
   });
 }
 
@@ -465,34 +427,64 @@ function loadChannel(cid){
 
 // Populate the list of playlists
 function loadPlaylists(){
-    const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-    var uid = loggedinuser._id;
-    var url = 'http://localhost:3000/api/users/' + uid + '/playlists/';
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  var uid = loggedinuser._id;
+  var url = 'http://localhost:3000/api/users/' + uid + '/playlists/';
 
-    $.get(url, function(data){
-        aScope.playlists = data;
-        aScope.$apply();
-        aScope.buildAddToPlaylistMenu(data);
-        aScope.updateMenu();
-    });
+  $.get(url, function(data){
+    buildPlaylistList(data);
+    aScope.buildAddToPlaylistMenu(data);
+    aScope.updateMenu();
+  });
+}
+
+// Update the view with tracks from the selected playlist.
+function loadPlaylist(pid){
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  aScope.context = 'playlist';
+  aScope.currPlaylist = pid;
+  aScope.pid = pid;
+  page = 1;
+  offset = 0;
+  getPage(function(tracks) {
+    aScope.resetDisplay(tracks);
+    aScope.buildDeleteFromPlaylistMenu();
+  });
 }
 
 // Add a playlist to the database and hide the new playlist form
 function createPlaylist(){
-    var url = 'http://localhost:3000/api/playlists/';
-    const name = $('#playlist-input').val();
-    var data = {
-        name: name,
-        uid: loggedinuser._id
-    }
-    $.post(url, data, function( data ) {
-      loadPlaylists();
-      $('#playlist-form').hide();
-      $('#playlist-input').val('');
-    });
+  var url = 'http://localhost:3000/api/playlists/';
+  const name = $('#playlist-input').val();
+  var data = {
+    name: name,
+    uid: loggedinuser._id
+  }
+  $.post(url, data, function( data ) {
+    loadPlaylists();
+    $('#playlist-form').hide();
+    $('#playlist-input').val('');
+  });
 }
 
-
+// Delete playlist with permission from the user.
+function deletePlaylist(pid){
+  console.log(pid);
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  if (confirm("Are you sure you want to delete?") == true){
+    var url = 'http://localhost:3000/api/playlists/' + pid;
+    $.ajax({
+      url: url,
+      type: 'DELETE',
+      success: function(){
+        if (aScope.currPlaylist == pid){
+          loadLibrary();
+        }
+        loadPlaylists();
+      }
+    });
+  }
+}
 
 function openPurchaseUrl(track){
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();

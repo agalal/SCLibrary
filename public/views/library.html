@@ -25,9 +25,7 @@
             <!--<input type="submit" id="submit" value="Submit" />-->
         </form>
 
-        <ul ng-repeat="playlist in playlists | orderBy:p.properties.name | filter:searchTerm">
-            <li id="playlist{{$index}}" ng-click="loadPlaylist(playlist)" data-playlist="{{playlist}}" ng-bind="playlist.p.properties.name"></li>
-            <span ng-click="deletePlaylist(playlist)" >X</span>
+        <ul id="playlist-list">
         </ul>
 
         <li ng-click="toggleSCPlaylists()">
