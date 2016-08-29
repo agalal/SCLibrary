@@ -180,7 +180,7 @@ function bgScroll(play, pos, dur) {
 }
 
 function updateChildren(childClass, w) {
-  // resize col's below
+  // resize col's below by class
   $('.' + childClass).css('width', w);
 }
 
@@ -201,7 +201,7 @@ function snapToPercents(parentEl) {
 }
 
 function attachColHandles() {
-  getOpt('columns');
+  var cols = getOpt('columns');
   $('.col-sizeable').each(function() {
     // multiple loops and class vs id
     $(this).children('li').each(function() {
