@@ -34,6 +34,7 @@
             <span id="scplaylist-carat-down" class="fa fa-caret-down"></span>
             <span id="scplaylist-carat-up" class="fa fa-caret-up"></span>
         </li>
+
         <li id="scplaylist-list">
         </li>
 
@@ -107,7 +108,7 @@
                         <input type="radio" id="star3-{{$index}}" name="rating-{{$index}}" value="3" /><label for="star3-{{$index}}" ng-model="track.r.properties.rating"></label>
                         <input type="radio" id="star2-{{$index}}" name="rating-{{$index}}" value="2" /><label for="star2-{{$index}}" ng-model="track.r.properties.rating"></label>
                         <input type="radio" id="star1-{{$index}}" name="rating-{{$index}}" value="1" /><label for="star1-{{$index}}" ng-model="track.r.properties.rating"></label>
-                    </fieldset>
+                      </fieldset>
                     <li class="domain" ng-click="$event.stopPropagation()">
                         <a ng-click="openPurchaseUrl(track)">
                           {{track.t.properties.purchase_url_domain}}

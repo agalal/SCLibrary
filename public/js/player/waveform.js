@@ -17,7 +17,6 @@ let window_width, waveform_width;
 function setWidth() {
   window_width = $(window).width()
   waveform_width = window_width * (100 - (2 * options.wf_offset)) / 100;
-  if (toggledLib) waveform_width -= 300;
 }
 $(document).ready(setWidth);
 window.addEventListener("resize", setWidth);
