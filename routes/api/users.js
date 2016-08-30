@@ -33,7 +33,8 @@ router.get('/:id/collection', function(req, res, next) {
     'limit': parseInt(req.query.limit),
     'offset': parseInt(req.query.offset),
     'sort': req.query.sort,
-    'reverse': req.query.reverse
+    'reverse': req.query.reverse,
+    'search': req.query.q
   }
   // Get the collection from the database and render the json.
   db.getTrackPage(options, function(page) {

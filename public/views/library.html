@@ -5,7 +5,9 @@
       <a href="user.permalink" class="pull-right username"></a>
     </div>
     <div class="search-wrapper">
-        <input type="text" placeholder="Search" ng-model="searchTerm" />
+      <form id="search-form">
+        <input type="text" placeholder="Search" id="search-bar"/>
+      </form>
     </div>
     <ul class="side">
         <li id='library-toggle'>Song Library</li>
@@ -90,7 +92,7 @@
 <div class="library-wrapper">
     <table cellpadding="0" cellspacing="0" id="lib-view" style="clear:both;">
         <ul class="list">
-            <li class="track-row" ng-repeat="track in display | filter:searchTerm" ng-click="playSong(track, this)" ng-init="updateMenu()" data-track="{{track}}" data-id="{{track.t._id}}" data-purchase="{{hasPurchaseUrl(track)}}">
+            <li class="track-row" ng-repeat="track in display" ng-click="playSong(track, this)" ng-init="updateMenu()" data-track="{{track}}" data-id="{{track.t._id}}" data-purchase="{{hasPurchaseUrl(track)}}">
                 <!--td >x</td-->
                 <ol>
                     <li class="channel" ng-bind="track.c.properties.name">

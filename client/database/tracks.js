@@ -8,30 +8,38 @@ module.exports = function(db) {
     const context = options.context;
     const sort = options.sort;
     const reverse = options.reverse;
+    const uid = options.uid;
+    const cid = options.cid;
+    const pid = options.pid;
+    const spid = options.spid;
+    const offset = options.offset;
+    const limit = options.limit;
+    const search = options.search;
 
+    // Order of operations is fucked up.
     let query = "";
-    query += 'MATCH (u:Channel)-[r:LIKES_TRACK]->(t)<-[:UPLOADED]-(c:Channel) ';
-    if (context == 'playlist') query += ', (p:Playlist)-[:CONTAINS]->(t) ';
-    else if (context == 'scplaylist') query += ', (s:SCPlaylist)-[:CONTAINS]->(t) ';
-    query += 'WHERE id(u) = {uid} ';
-    if (context == 'channel') query += 'AND id(c) = {cid} ';
-    else if (context == 'playlist') query += 'AND id(p) = {pid} ';
-    else if (context == 'scplaylist') query += 'AND id(s) = {spid} ';
-    query += 'RETURN t, r, c ' +
-             'ORDER BY ' + sort + ' ' + reverse + ' ' +
-             'SKIP {offset} ' +
-             'LIMIT {limit}';
+    query += `MATCH (u:Channel)-[r:LIKES_TRACK]->(t)<-[:UPLOADED]-(c:Channel) `;
+    if (context == `playlist`) query += `, (p:Playlist)-[:CONTAINS]->(t) `;
+    else if (context == `scplaylist`) query += `, (s:SCPlaylist)-[:CONTAINS]->(t) `;
+    query += `WHERE id(u) = ${uid} `;
+    if (context == `channel`) query += `AND id(c) = ${cid} `;
+    else if (context == `playlist`) query += `AND id(p) = ${pid} `;
+    else if (context == `scplaylist`) query += `AND id(s) = ${spid} `;
+    if (search != undefined) {
+      let term = `(?i).*${search}.*`;
+      query += `AND c.name =~ '${term}' `;
+      query += `OR t.name =~ '${term}' `;
+      query += `OR t.tag_list =~ '${term}' `;
+      query += `OR t.genre =~ '${term}' `;
+      query += `OR t.purchase_url_domain =~ '${term}' `;
+    }
+    query += `RETURN t, r, c ` +
+             `ORDER BY ` + sort + ` ` + reverse + ` ` +
+             `SKIP ${offset} ` +
+             `LIMIT ${limit}`;
 
     db.cypher({
       query: query,
-      params: {
-        uid: options.uid,
-        cid: options.cid,
-        pid: options.pid,
-        spid: options.spid,
-        offset: options.offset,
-        limit: options.limit
-      },
     },
     function(error, results) {
       if (error) {

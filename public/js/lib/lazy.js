@@ -56,6 +56,18 @@ function isElementInViewport (el) {
     );
 }
 
+let term = "";
+$(document).arrive('#search-form', function() {
+  $('#search-form').submit(function() {
+    term = $('#search-bar').val();
+    getPage(function(tracks) {
+      const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+      aScope.resetDisplay(tracks);
+    });
+  })
+})
+
+
 // retreive a page of tracks from the database
 function getPage(done) {
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
@@ -73,6 +85,8 @@ function getPage(done) {
   if (context == 'channel') url += '&cid=' + aScope.cid;
   else if (context == 'playlist') url += '&pid=' + aScope.pid;
   else if (context == 'scplaylist') url += '&spid=' + aScope.spid;
+
+  if (term != "") url += `&q=${term}`;
   $.get(url, function(data) {
     done(data);
   });
