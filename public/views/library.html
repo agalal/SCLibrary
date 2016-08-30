@@ -100,7 +100,7 @@
                     <li class="duration" ng-bind="convertTime(track.t.properties.duration)">
                     <li class="liked" ng-bind="formatDate(track.r.properties.created_at)">
                     <li class="playcount" ng-bind="track.r.properties.play_count">
-                    <li class="rating">
+                    <li class="rating" ng-click="$event.stopPropagation()">
                       <fieldset class="stars">
                         <!-- <legend>Please rate:</legend> -->
                         <input type="radio" id="star5-{{$index}}" name="rating-{{$index}}" value="5" /><label for="star5-{{$index}}" ng-model="track.r.properties.rating"></label>
