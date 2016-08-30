@@ -1,3 +1,6 @@
+var credential = require('credential');
+var password_hash = require('../database/passhash.js')(credential);
+
 module.exports = function(db) {
 
   var module = {};
@@ -16,6 +19,7 @@ module.exports = function(db) {
       } else {
         if (results.length === 0) {
           //Account does not exist, create a new one
+          password = password_hash.hashPass(password);
           db.cypher({
             query: 'CREATE (a:Account {username:{name}, password:{pw}, type:"user", approved:false })-[:REQUESTS]->' +
               '(r:Request {username:{sc_name}, complete:false}) ' +
@@ -44,35 +48,43 @@ module.exports = function(db) {
 
   module.login = function(username, password, done) {
     db.cypher({
-      query: 'MATCH (a:Account {username:{name}, password:{pw} })' +
-        'RETURN a',
+      query: 'MATCH (a:Account {username:{name})' +
+        'RETURN a.password',
       params: {
         name: username,
-        pw: password
       }
-    }, function(error, account) {
+    }, function(error, dbPass) {
       if (error) {
         done(null, error);
       } else {
-        db.cypher({
-          query: 'MATCH (a:Account {username:{name}, password:{pw} })-[:CONNECTED_TO]->(u:Channel) ' +
-            'RETURN u',
-          params: {
-            name: username,
-            pw: password
-          }
-        }, function(error, users) {
-          if (error) {
-            done(null, error);
+        // check password_hash
+        password_hash.verifyPass(password, dbPass, function (success) {
+          if (success) {
+            // hashed pass matched db password hash
+            db.cypher({
+              query: 'MATCH (a:Account {username:{name}, password:{pw} })-[:CONNECTED_TO]->(u:Channel) ' +
+                'RETURN u',
+              params: {
+                name: username,
+                pw: password
+              }
+            }, function(error, users) {
+              if (error) {
+                done(null, error);
+              } else {
+                var results = {
+                  account: account[0],
+                  users: users
+                };
+                //Account was successfully created
+                done(results);
+              }
+            });
           } else {
-            var results = {
-              account: account[0],
-              users: users
-            };
-            //Account was successfully created
-            done(results);
+            // didn't match, but no error
           }
         });
+
 
       }
     });
