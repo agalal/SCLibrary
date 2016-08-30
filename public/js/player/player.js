@@ -1,10 +1,19 @@
 // Send a song to the player and save the next 20 songs for an autoplay queue
 
 function playPause() {
+  var showIcon = 250;
   if (!audioPlayer.paused) {
     audioPlayer.pause();
+    $('#pause-modal').modal("show");
+    setTimeout(function () {
+      $('#pause-modal').modal('hide');
+    }, showIcon);
     bgScroll(false);
   } else {
+    $('#play-modal').modal("show");
+    setTimeout(function () {
+      $('#play-modal').modal('hide');
+    }, showIcon);
     bgScroll(true);
     audioPlayer.play();
   }
@@ -222,28 +231,16 @@ function bgScroll(play, pos, dur) {
   }
 }
 
+function updateChildren(childClass, w) {
+  // resize col's below by class
+  $('.' + childClass).css('width', w);
+}
+
 // used to track resize direction
 var left = false;
 
 function snapToPercents(parentEl) {
-  var parWid = parentEl.width();
-  var colCt = parentEl.children().length;
-  var catchAdd = 0;
-  var j = 0;
-  parentEl.children('li').each(function() {
-    // iterate through li + siblings
-    var eachC = "." + $(this).find('a').attr('also-resize');
-    if (j == colCt - 1) {
-      // force clearing
-      var catchAll = 100.0 - catchAdd;
-      //console.log(catchAdd + " + " + catchAll);
-      $(this).css('width', catchAll.toString() + "%");
-    } else {
-      var perW = ($(this).width() / parWid) * 100;
-      $(this).css('width', perW.toString() + "%");
-      //console.log(j + " - " + perW.toString() + "%");
-      catchAdd += perW;
-    }
+
     // resize col's below
     $(eachC).each(function() {
       if (j == colCt - 1) {
@@ -253,25 +250,18 @@ function snapToPercents(parentEl) {
       }
     });
     j++;
-  });
 }
 
 function attachColHandles() {
+  var cols = getOpt('columns');
   $('.col-sizeable').each(function() {
     // multiple loops and class vs id
     $(this).children('li').each(function() {
       // elements with class matching col header
       // are resized in stop fn
       var thisClass = "." + $(this).find('a').text().toLowerCase();
+      var handles = 'se';
 
-      // keep handles off first/last cols
-      if ($(this).is('li:last-of-type')) {
-        var handles = 'sw';
-      } else if ($(this).is('li:first-of-type')) {
-        var handles = 'se';
-      } else {
-        var handles = 'se, sw';
-      }
 
       // make each col-header resizable
       $(this).resizable({
@@ -299,49 +289,23 @@ function attachColHandles() {
           var colCount;
           // behaviour varies by drag side
           if (!left) {
-            colCount = $(this).nextAll('li').length;
-            cumW = 0;
-            $(this).prevAll().each(function() {
-              // sum col widths to the left
-              cumW += $(this).width();
-            });
-            cumW += $(this).width();
-            $(this).nextAll().each(function() {
-              // set decreased width to other headers
-              $(this).width(((headerW - cumW) / colCount) - 5);
-            });
           } else {
             // left-side drag
-            colCount = $(this).prevAll().length;
-            cumW = 0;
-            $(this).nextAll().each(function() {
-              // sum col widths to the right
-              // round to assist clearing
-              cumW += $(this).width();
-            });
-            cumW += $(this).width();
-
-            var k = 0;
-            var runW = 0;
-            $(this).prevAll().each(function() {
-              // set decreased width to other headers
-              var nowW = (headerW - cumW) / colCount;
-              $(this).width(nowW);
-              runW += nowW;
-              if (k == 1) {
-                // absorb error for clearing
-                $(this).width(headerW - (cumW + runW));
-              }
-              k++;
-            });
           }
         }
+      });
+
+      // stop resizing from causing sort
+      $('ui-resizable-handle').click(function (event) {
+        event.stopPropogation();
       });
 
       // bind a function to update lower widths
       $(this).on('resizestop', function() {
         left = false; // reset global hack for dir
-        snapToPercents($(this).parent());
+        //snapToPercents($(this).parent());
+        console.log($(this).find('a').attr('also-resize') + ' : ' + $(this).css('width'));
+        updateChildren($(this).find('a').attr('also-resize'), $(this).css('width'));
       });
     });
   });

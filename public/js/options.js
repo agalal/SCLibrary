@@ -18,7 +18,7 @@ let _options = {
   repeat: false,
   autoplay: true,
   autocheck: true
-}
+};
 
 function setOpt(option, value){
   _options[option] = value;
@@ -32,19 +32,16 @@ function getOpt(option){
   return _options[option];
 }
 
-var toggledLib = false;
 function toggleLib() {
-   if (!toggledLib) $('body').addClass('toggled');
-   else $('body').removeClass('toggled');
-   toggledLib = !toggledLib;
+  if (!toggledLib) $('body').addClass('toggled');
+  else $('body').removeClass('toggled');
 }
+//
+// function toggleSet() {
+//   if (!toggledSet) $('#settings').addClass('toggled');
+//   else $('#settings').removeClass('toggled');
+// }
 
-var toggledSet = false;
-function toggleSet() {
-   if (!toggledSet) $('#settings').addClass('toggled');
-   else $('#settings').removeClass('toggled');
-   toggledSet = !toggledSet;
-}
 
 function toggleAuto() {
   if (!getOpt('autoplay')) $('#autoplay-toggle').addClass('toggled');

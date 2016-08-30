@@ -23,7 +23,7 @@ $(document).arrive(".track-row", {"onceOnly": false}, function() {
 // wait for the library list container to show up on the screen before assigning the scroll handler
 $(document).arrive(".list", function() {
   // assign the scroll handler to the list container
-  $('.list').on('scroll', function() {
+  $('.library-wrapper').on('scroll', function() {
     // check that the element is in the viewport and also that we are ready to look for the target
     if (isElementInViewport(lazyLoadTarget) && flag){
       // set the flag to false to signify that we do not want to look for the target again until it has been reassigned

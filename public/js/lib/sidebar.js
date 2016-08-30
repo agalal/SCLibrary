@@ -1,6 +1,57 @@
 let channels_visible = false;
 let scplaylists_visible = false;
 
+let columns = [{
+    name: 'channel',
+    index: 0,
+    width: 120
+  },
+  {
+    name: 'title',
+    index: 1,
+    width: 120
+  },
+  {
+    name: 'date',
+    index: 2,
+    width: 120
+  },
+  {
+    name: 'genre',
+    index: 3,
+    width: 120
+  },
+  {
+    name: 'duration',
+    index: 4,
+    width: 120
+  },
+  {
+    name: 'linked',
+    index: 5,
+    width: 120
+  },
+  {
+    name: 'playcount',
+    index: 6,
+    width: 30
+  },
+  {
+    name: 'rating',
+    index: 7,
+    width: 90
+  },
+  {
+    name: 'domain',
+    index: 8,
+    width: 120
+  },
+  {
+    name: 'downloaded',
+    index: 9,
+    width: 30
+  }];
+
 $(document).arrive("#channel-list", {"onceOnly": false}, function() {
   $('#channel-list').hide();
   $('#channel-carat-up').hide();
@@ -61,14 +112,14 @@ $(document).arrive('#library-toggle', function() {
 });
 
 function buildChannelList(channels){
-  var list = `<ul><div>`;
+  var list = `<ul class="sublist">`;
   for (let i = 0; i < channels.length; i++){
     const properties = channels[i].c.properties;
     const cid = channels[i].c._id;
     const name = properties.name;
-    list += `<div class='channel-name' data-id='${cid}'>${name}</div>`;
+    list += `<li class='channel-name' data-id='${cid}'>${name}</li>`;
   }
-  list += "</div></ul>"
+  list += "</ul>"
   document.getElementById('channel-list').innerHTML = list;
   $('.channel-name').click(function() {
     loadChannel($(this).data('id'));
@@ -76,7 +127,7 @@ function buildChannelList(channels){
 }
 
 function buildPlaylistList(playlists){
-  var list = '';
+  var list = '<ul>';
   for (let i = 0; i < playlists.length; i++){
     const properties = playlists[i].p.properties;
     const pid = playlists[i].p._id;
@@ -84,6 +135,7 @@ function buildPlaylistList(playlists){
     list += `<li class='playlist-name' id='playlist${i}' data-id='${pid}'>${name}</li>`;
     list += `<span class='delete-playlist' data-id='${pid}'>X</span><br>`;
   }
+  list += '</ul>'
   document.getElementById('playlist-list').innerHTML = list;
   $('.playlist-name').click(function() {
     loadPlaylist($(this).data('id'));
@@ -92,13 +144,14 @@ function buildPlaylistList(playlists){
 }
 
 function buildSCPlaylistList(playlists){
-  var list = '';
+  var list = '<ul class="sublist">';
   for (let i = 0; i < playlists.length; i++){
     const properties = playlists[i].p.properties;
     const pid = playlists[i].p._id;
     const name = formatName(properties.name);
     list += `<li class='scplaylist-name' data-id='${pid}'>${name}</li>`;
   }
+  list += '</ul>';
   document.getElementById('scplaylist-list').innerHTML = list;
   $('.scplaylist-name').click(function() {
     loadSCPlaylist($(this).data('id'));

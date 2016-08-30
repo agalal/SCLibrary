@@ -35,13 +35,31 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="play-modal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content play-modal">
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="pause-modal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content pause-modal">
+
+        </div>
+    </div>
+</div>
 <!-- End Modals -->
 
 <div id="player" position="relative">
     <!-- Top wrapper area, contains toggle/setting buttons, genres -->
 
     <div id="top-wrapper">
-        <a class="pull-left" id="toggle" href="javascript:toggleLib();"></a>
+        <a class="pull-left" id="toggle" data-toggle="collapse" data-target="#left-side"></a>
         <ol class="genre-wrapper">
             <li class="genre-btn"></li>
         </ol>
@@ -105,3 +123,4 @@
 <script type='text/javascript' src="/js/player/waveform.js"></script>
 
 <script type='text/javascript' src="/bower_components/bootstrap/js/modal.js"></script>
+<script type='text/javascript' src="/bower_components/bootstrap/js/collapse.js"></script>
