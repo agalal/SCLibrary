@@ -13,34 +13,29 @@ app.directive("library", [function (){
         link: {
             pre: function(scope, element, attr) {
 
-                $('#channel_list').hide();
-                scope.channels_visible = false;
-
                 $('#scplaylist_list').hide();
-                scope.scplaylists_visible = false;
 
                 $('.playlistForm').hide();
                 $('.addPlaylist').click(function(){
                     $('.playlistForm').show();
                 });
 
-                // Load song library, and channel/playlist names
-                scope.loadLibrary();
-                scope.loadChannels();
-                scope.loadPlaylists();
-                scope.loadSCPlaylists();
-
-            },
-            post: function(scope, element, attr) {
-
-                // Set context to default option (songs)
-                scope.context = 'songs';
+                // Set context to default option (library)
+                scope.context = 'library';
 
                 // Variables used for sort and search functionality
                 scope.sortType = 'r.properties.created_at';
                 scope.sortReverse = true;
                 scope.searchTerm = '';
 
+                // Load song library, and channel/playlist names
+                loadLibrary();
+                loadChannels();
+                loadPlaylists();
+                loadSCPlaylists();
+
+            },
+            post: function(scope, element, attr) {
                 // Draggable handles for the columns
                 scope.colSizeable = attachColHandles();
             }
@@ -57,185 +52,45 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     // Update sort variables
     $scope.updateSort = function(sortBy){
-        if ($scope.sortType == sortBy)
-            $scope.sortReverse = !$scope.sortReverse;
-        else
-            $scope.sortReverse = false;
-        $scope.sortType = sortBy;
+      page = 1;
+      offset = 0;
+
+      if ($scope.sortType == sortBy) {
+        $scope.sortReverse = !$scope.sortReverse;
+      } else {
+        $scope.sortReverse = false;
+      }
+      $scope.sortType = sortBy;
+
+      getPage(function(tracks) {
+        $scope.resetDisplay(tracks);
+      });
     }
 
     // Convert time from ms to MM:SS
     $scope.convertTime = function(time){
-        var min_sec = time / 1000 / 60;
-        var minutes = Math.floor(min_sec);
-        var seconds = ("00" + Math.floor((min_sec % 1) * 60)).slice(-2);
-        return minutes + ":" + seconds;
+      var min_sec = time / 1000 / 60;
+      var minutes = Math.floor(min_sec);
+      var seconds = ("00" + Math.floor((min_sec % 1) * 60)).slice(-2);
+      return minutes + ":" + seconds;
     }
 
     // Format date string
     $scope.formatDate = function(date){
-        return date.substring(0, 10);
+      return date.substring(0, 10);
     }
 
-    // Format playlist name string
-    $scope.formatName = function(name){
-        if (name.length > 26)
-            return (name.substring(0,26).trim() + "...");
-        else
-            return name;
+    $scope.updateDisplay = function(tracks){
+      $scope.display = tracks;
+      $scope.$apply();
     }
 
-    $scope.toggleChannels = function(){
-        $scope.channels_visible = !$scope.channels_visible;
-        if ($scope.channels_visible)
-            $('#channel_list').show();
-        else
-            $('#channel_list').hide();
-
+    $scope.resetDisplay = function(tracks){
+      $scope.updateDisplay(tracks);
     }
 
-    $scope.toggleSCPlaylists = function(){
-        $scope.scplaylists_visible = !$scope.scplaylists_visible;
-        if ($scope.scplaylists_visible)
-            $('#scplaylist_list').show();
-        else
-            $('#scplaylist_list').hide();
-
-    }
-
-    // Add a playlist to the database and hide the new playlist form
-    $scope.createPlaylist = function(){
-        console.log(loggedinuser);
-        var url = 'http://localhost:3000/api/playlists/';
-        var data = {
-            name: $scope.playlistInput,
-            uid: loggedinuser._id
-        }
-        $http.post(url, data).then(function(response){
-            console.log(response);
-            $scope.loadPlaylists();
-        }, function(error){
-            console.log(error);
-        });
-
-        $('.playlistForm').hide();
-        $scope.playlistInput = '';
-    }
-
-    // Update the view with tracks from the selected playlist.
-    $scope.loadPlaylist = function(playlist){
-        var url = 'http://localhost:3000/api/playlists/' + playlist.p._id;
-        $http.get(url).then(function(response){
-                $scope.display = response.data;
-                $scope.context = 'playlists';
-                $scope.currPlaylist = playlist.p._id;
-                $scope.buildDeleteFromPlaylistMenu(playlist);
-            }, function(error){
-                console.log(error);
-            })
-    }
-
-    // Delete playlist with permission from the user.
-    $scope.deletePlaylist = function(playlist){
-        if (confirm("Are you sure you want to delete?") == true){
-            var id = playlist.p._id;
-            var url = 'http://localhost:3000/api/playlists/' + id;
-            $http.delete(url).then(function(response){
-                console.log(response);
-                if ($scope.currPlaylist == id){
-                    $scope.displaySongs();
-                }
-                $scope.loadPlaylists();
-            }, function(error){
-                console.log(error);
-            })
-        }
-    }
-
-    // Update the view with tracks from the selected playlist.
-    $scope.loadSCPlaylist = function(playlist){
-        var uid = loggedinuser._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/scplaylists/' + playlist.p._id;
-        $http.get(url).then(function(response){
-                console.log(response);
-                $scope.display = response.data;
-                $scope.context = 'scplaylists';
-            }, function(error){
-                console.log(error);
-            })
-    }
-
-    $scope.loadChannel = function(channel){
-        var uid = loggedinuser._id;
-        var cid = channel.c._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/channels/' + cid;
-        $http.get(url).then(function(response){
-            console.log(response);
-                $scope.display = response.data;
-                $scope.context = 'channels';
-            }, function(error){
-                console.log(error);
-            })
-    }
-
-    // Update the view with the user's collection
-    $scope.displaySongs = function(){
-        $scope.display = $scope.collection.splice(0,300);
-        $scope.context = 'songs';
-        $scope.currPlaylist = null;
-    }
-
-    $scope.displayQueue = function(){
-        $scope.display = queue;
-        $scope.context = 'queue';
-        $scope.currPlaylist = null;
-    }
-
-    // Populate the list of songs
-    $scope.loadLibrary = function(){
-        var uid = loggedinuser._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/collection/';
-        $http.get(url).then(function(response){
-            $scope.collection = response.data;
-            $scope.displaySongs();
-        }, function(error){
-            console.log(error);
-        });
-    }
-
-    // Populate the list of playlists
-    $scope.loadPlaylists = function(){
-        var uid = loggedinuser._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/playlists/';
-        $http.get(url).then(function(response){
-            $scope.playlists = response.data;
-            $scope.buildAddToPlaylistMenu(response.data);
-            $scope.updateMenu();
-        }, function(error){
-            console.log(error);
-        });
-    }
-
-    // Populate the list of playlists
-    $scope.loadSCPlaylists = function(){
-        var uid = loggedinuser._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/scplaylists/';
-        $http.get(url).then(function(response){
-            $scope.scplaylists = response.data;
-        }, function(error){
-            console.log(error);
-        });
-    }
-
-    // Populate the list of playlists
-    $scope.loadChannels = function(){
-        var uid = loggedinuser._id;
-        var url = 'http://localhost:3000/api/users/' + uid + '/channels/';
-        $http.get(url).then(function(response){
-            $scope.channels = response.data;
-        }, function(error){
-            console.log(error);
-        });
+    $scope.addToDisplay = function(tracks){
+      $scope.updateDisplay($scope.display.concat(tracks));
     }
 
     $scope.updateMenu = function(){
@@ -245,6 +100,7 @@ app.controller("LibraryCtlr", function($scope, $http){
       // Initialize rate track and search on menus
       $scope.buildRateTrackMenu();
       $scope.buildSearchOnMenu();
+      $scope.buildSearchChannelOnMenu();
 
       // Create object to hold context menu items
       var items = {};
@@ -256,7 +112,7 @@ app.controller("LibraryCtlr", function($scope, $http){
       }
 
       // Include delete_playlist option when in a playlist context
-      if ($scope.context == 'playlists'){
+      if ($scope.context == 'playlist'){
         items.delete_playlist = {
           name: "Delete from playlist",
           callback: $scope.delete_func
@@ -272,8 +128,7 @@ app.controller("LibraryCtlr", function($scope, $http){
             var i = 0;
             for (i = 0; i < queue.length; i++){
               if (track.t._id == queue[i].t._id){
-                queue.splice(i, 1);
-                $scope.display = queue.splice(i, 1);
+                $scope.updateDisplay(queue.splice(i, 1));
                 break;
               }
             }
@@ -304,10 +159,10 @@ app.controller("LibraryCtlr", function($scope, $http){
         items: $scope.search_track_menu
       }
 
-      items.search_channel_on = {
-        name: "Search channel on...",
-        items: $scope.search_channel_menu
-      }
+      // items.search_channel_on = {
+      //   name: "Search channel on...",
+      //   items: $scope.search_channel_menu
+      // }
 
       // Include link to soundcloud page
       items.soundcloud_page = {
@@ -340,7 +195,7 @@ app.controller("LibraryCtlr", function($scope, $http){
         name: "Download page",
         callback: function(key, opt){
           var track = JSON.parse(opt.$trigger[0].dataset.track);
-          $scope.openPurchaseUrl(track);
+          openPurchaseUrl(track);
         }
       }
       settings.selector = '.track-row[data-purchase="true"]';
@@ -357,7 +212,7 @@ app.controller("LibraryCtlr", function($scope, $http){
             var next =  {
                 name: playlist.p.properties.name,
                 callback: function(key, opt){
-                    var pid = JSON.parse($('#' + key).attr("data-playlist")).p._id;
+                    var pid = $('#' + key).data("id");
                     var tid = JSON.parse(opt.$trigger[0].dataset.track).t._id;
                     var url = 'http://localhost:3000/api/playlists/' + pid + '/add/' + tid;
                     $http.post(url, {}).then(function(response){
@@ -369,19 +224,19 @@ app.controller("LibraryCtlr", function($scope, $http){
             }
             playlist_menu['playlist' + i] = next;
         }
-
         $scope.playlist_menu = playlist_menu;
 
     }
 
-    $scope.buildDeleteFromPlaylistMenu = function(playlist){
+    $scope.buildDeleteFromPlaylistMenu = function(){
         $scope.delete_func =  function(key, opt){
-            var pid = playlist.p._id;
+            console.log("hi");
+            var pid = $scope.pid;
             var tid = JSON.parse(opt.$trigger[0].dataset.track).t._id;
             var url = 'http://localhost:3000/api/playlists/' + pid + '/remove/' + tid;
             $http.delete(url).then(function(response){
                 console.log(response);
-                $scope.loadPlaylist(playlist);
+                loadPlaylist(pid);
             }, function(error){
                 console.log(error);
             });
@@ -417,7 +272,6 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     $scope.buildSearchOnMenu = function(){
       var search_track_menu = {};
-      var search_channel_menu = {};
 
       for (var i = 0; i < sites.length; i++){
         var name = sites[i].name;
@@ -429,20 +283,26 @@ app.controller("LibraryCtlr", function($scope, $http){
             searchTrackOn(track, url);
           }
         }
+        search_track_menu[name] = track;
+      }
+      $scope.search_track_menu = search_track_menu;
+    }
+
+    $scope.buildSearchChannelOnMenu = function(){
+      var search_channel_menu = {};
+
+      for (var i = 0; i < sites.length; i++){
+        var name = sites[i].name;
         var channel = {
           name: name,
           callback: function(key, opt){
             var url = sites.find(x=>x.name === key).url;
-            var channel_name = JSON.parse(opt.$trigger[0].dataset.track).c.properties.name;
-            searchChannelOn(channel_name, url);
+            var track = JSON.parse(opt.$trigger[0].dataset.track);
+            searchChannelOn(track, url);
           }
-
         }
-        search_track_menu[name] = track;
         search_channel_menu[name] = channel;
       }
-
-      $scope.search_track_menu = search_track_menu;
       $scope.search_channel_menu = search_channel_menu;
     }
 
@@ -478,13 +338,131 @@ app.controller("LibraryCtlr", function($scope, $http){
       return track.t.properties.purchase_url !== undefined;
     }
 
+    $scope.openPurchaseUrl = function(track){
+      openPurchaseUrl(track);
+    }
 });
 
+// Populate the list of songs
+function loadLibrary(){
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  aScope.context = 'library';
+  page = 1;
+  offset = 0;
+  getPage(function(tracks) {
+    aScope.resetDisplay(tracks);
+  });
+}
+
+// Populate the list of playlists
+function loadChannels(){
+  var uid = loggedinuser._id;
+  var url = 'http://localhost:3000/api/users/' + uid + '/channels/';
+
+  $.get(url, function(data) {
+    buildChannelList(data);
+  });
+}
+
+function loadChannel(cid){
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  aScope.context = 'channel';
+  aScope.cid = cid;
+  page = 1;
+  offset = 0;
+  getPage(function(tracks) {
+    aScope.resetDisplay(tracks);
+  });
+}
+
+// Populate the list of playlists
+function loadPlaylists(){
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  var uid = loggedinuser._id;
+  var url = 'http://localhost:3000/api/users/' + uid + '/playlists/';
+
+  $.get(url, function(data){
+    buildPlaylistList(data);
+    aScope.buildAddToPlaylistMenu(data);
+    aScope.updateMenu();
+  });
+}
+
+// Update the view with tracks from the selected playlist.
+function loadPlaylist(pid){
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  aScope.context = 'playlist';
+  aScope.currPlaylist = pid;
+  aScope.pid = pid;
+  page = 1;
+  offset = 0;
+  getPage(function(tracks) {
+    aScope.resetDisplay(tracks);
+    aScope.buildDeleteFromPlaylistMenu();
+  });
+}
+
+// Add a playlist to the database and hide the new playlist form
+function createPlaylist(){
+  var url = 'http://localhost:3000/api/playlists/';
+  const name = $('#playlist-input').val();
+  var data = {
+    name: name,
+    uid: loggedinuser._id
+  }
+  $.post(url, data, function( data ) {
+    loadPlaylists();
+    $('#playlist-form').hide();
+    $('#playlist-input').val('');
+  });
+}
+
+// Delete playlist with permission from the user.
+function deletePlaylist(pid){
+  console.log(pid);
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  if (confirm("Are you sure you want to delete?") == true){
+    var url = 'http://localhost:3000/api/playlists/' + pid;
+    $.ajax({
+      url: url,
+      type: 'DELETE',
+      success: function(){
+        if (aScope.currPlaylist == pid){
+          loadLibrary();
+        }
+        loadPlaylists();
+      }
+    });
+  }
+}
+
+// Update the view with tracks from the selected playlist.
+function loadSCPlaylist(spid){
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  aScope.context = 'scplaylist';
+  aScope.spid = spid;
+  page = 1;
+  offset = 0;
+  getPage(function(tracks) {
+    aScope.resetDisplay(tracks);
+  });
+}
+
+// Populate the list of playlists
+function loadSCPlaylists(){
+  var uid = loggedinuser._id;
+  var url = 'http://localhost:3000/api/users/' + uid + '/scplaylists/';
+  $.get(url, function(data){
+    buildSCPlaylistList(data);
+  });
+}
+
 function openPurchaseUrl(track){
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
   var url = track.t.properties.purchase_url;
   if (url) {
     if (getOpt('autocheck')) {
-      angular.element(document.getElementById('libraryCtlrDiv')).scope().toggleDownload({track});
+      aScope.toggleDownload({track});
     }
     window.open(url);
   }
@@ -505,7 +483,12 @@ function highlightRow(track){
   $('*[data-id="' + track.t._id + '"]').addClass('curr-playing');
 }
 
+$(document).ready(function(){
+  $('#updatingMessage').hide();
+})
+
 function updateCollection(){
+  $('#updatingMessage').show();
   var scuid = loggedinuser.properties.scuid
   var url = "http://localhost:3000/api/users/" + scuid + "/collection/update";
 

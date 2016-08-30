@@ -8,47 +8,36 @@
         <input type="text" placeholder="Search" ng-model="searchTerm" />
     </div>
     <ul class="side">
-        <li ng-click="displaySongs()">Song Library</li>
+        <li id='library-toggle'>Song Library</li>
 
-        <li ng-click="toggleChannels()">
+        <li id="channel-toggle">
             Channels
-            <span ng-show="channels_visible" class="fa fa-caret-down"></span>
-            <span ng-show="!channels_visible" class="fa fa-caret-up"></span>
+            <span id="channel-carat-down" class="fa fa-caret-down"></span>
+            <span id="channel-carat-up" class="fa fa-caret-up"></span>
         </li>
-        <li id="channel_list" class="scroll-container">
-            <ul class="sublist">
-                <li ng-repeat="channel in channels | filter:searchTerm">
-                    <a id="channel{{$index}}" ng-click="loadChannel(channel)" data-playlist="{{channel}}" ng-bind="channel.c.properties.name"></a>
-            </ul>
+
+        <li id="channel-list" class="scroll-container">
         </li>
 
         <li>Playlists</li>
         <li><span class="addPlaylist">+ Add Playlist</span></li>
-        <form ng-submit="createPlaylist()" class="playlistForm">
-            <input type="text" ng-model="playlistInput" name="text" />
+        <form class="playlistForm" id="playlist-form">
+            <input type="text" id="playlist-input" name="text" />
             <!--<input type="submit" id="submit" value="Submit" />-->
         </form>
 
-        <li>
-          <ul ng-repeat="playlist in playlists | orderBy:p.properties.name | filter:searchTerm">
-            <li id="playlist{{$index}}" ng-click="loadPlaylist(playlist)" data-playlist="{{playlist}}" ng-bind="playlist.p.properties.name"></li>
-            <span ng-click="deletePlaylist(playlist)" >X</span>
-          </ul>
+        <li id="playlist-list">
         </li>
 
-        <li ng-click="toggleSCPlaylists()">
+        <li id="scplaylist-toggle">
             SC Playlists
-            <span ng-show="scplaylists_visible" class="fa fa-caret-down"></span>
-            <span ng-show="!scplaylists_visible" class="fa fa-caret-up"></span>
+            <span id="scplaylist-carat-down" class="fa fa-caret-down"></span>
+            <span id="scplaylist-carat-up" class="fa fa-caret-up"></span>
+        </li>
+        <li id="scplaylist-list">
         </li>
 
-        <div id="scplaylist_list" class="scroll-container">
-            <ul class="sublist">
-                <li ng-repeat="playlist in scplaylists | orderBy:p.properties.name | filter:searchTerm" id="playlist{{$index}}" ng-click="loadSCPlaylist(playlist)" data-playlist="{{playlist}}" ng-bind="formatName(playlist.p.properties.name)"></li>
-            </ul>
-        </div>
-
-        <li ng-click="displayQueue()">Queue</li>
+        <li id="queue-link">Queue</li>
     </ul>
 </div>
 <ul class="header">
@@ -100,7 +89,7 @@
 <div class="library-wrapper">
     <table cellpadding="0" cellspacing="0" id="lib-view" style="clear:both;">
         <ul class="list">
-            <li class="track-row" ng-repeat="track in display | orderBy:sortType:sortReverse | filter:searchTerm" ng-click="playSong(track, this)" ng-init="updateMenu()" data-track="{{track}}" data-id="{{track.t._id}}" data-purchase="{{hasPurchaseUrl(track)}}">
+            <li class="track-row" ng-repeat="track in display | filter:searchTerm" ng-click="playSong(track, this)" ng-init="updateMenu()" data-track="{{track}}" data-id="{{track.t._id}}" data-purchase="{{hasPurchaseUrl(track)}}">
                 <!--td >x</td-->
                 <ol>
                     <li class="channel" ng-bind="track.c.properties.name">
@@ -110,7 +99,7 @@
                     <li class="duration" ng-bind="convertTime(track.t.properties.duration)">
                     <li class="liked" ng-bind="formatDate(track.r.properties.created_at)">
                     <li class="playcount" ng-bind="track.r.properties.play_count">
-                    <li class="rating">
+                    <li class="rating" ng-click="$event.stopPropagation()">
                       <fieldset class="stars">
                         <!-- <legend>Please rate:</legend> -->
                         <input type="radio" id="star5-{{$index}}" name="rating-{{$index}}" value="5" /><label for="star5-{{$index}}" ng-model="track.r.properties.rating"></label>
