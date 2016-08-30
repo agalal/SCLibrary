@@ -1,19 +1,23 @@
-module.exports = function(credential) {
+
+module.exports = function() {
+  var credential = require('credential');
+
+  var pw = credential();
 
   var module = {};
 
   module.hashPass = function (toHash, callback) {
-    cerendital.hash(toHash, function (error, hash) {
+    pw.hash(toHash, function (error, hash) {
       if(error)
           throw new Error('Something went wrong with pass hashing!');
-      // TODO the following line is extremely unsafe. Remove @hack
-      console.log(hash);
-      callback(hash);
+
+      callback(JSON.stringify(hash));
     });
   };
 
   module.verifyPass = function (pass, dbPass, callback) {
-    credential.verify(dbPass, pass, function(error, verified) {
+    dbHash = JSON.parse(dbPass);
+    pw.verify(dbHash, pass, function(error, verified) {
         if(error)
             throw new Error('Something went wrong!');
         if(!verified) {
@@ -23,6 +27,7 @@ module.exports = function(credential) {
         }
     });
   };
+
 
   return module;
 }

@@ -1,5 +1,3 @@
-
-
 /*Google font collection*/
 
 @import url(https://fonts.googleapis.com/css?family=Source+Code+Pro:300|Oxygen:400,300);
@@ -27,11 +25,6 @@ aside {
 }
 
 /*End bootstrap delete*/
-
-/*Hide all scrollbars */
-*::-webkit-scrollbar {
-    width: 0 !important;
-}
 
 a.btn:hover,
 a.btn:focus {
@@ -103,51 +96,47 @@ input.search {
 
 .left-side-wrapper {
     width: 300px;
-    height: 66vh;
-    background-color: #fff;
+    height: 100vh;
+    display: inline-block;
+    background-color: #e3ecee;
+    position: fixed;
     color: #232323;
     overflow-y: scroll;
     position: fixed;
-    top: 60px;
-    left: 30px;
-    border: 1px solid rgba(66,66,66,0.2);
-    z-index: 2;
-    border-radius: 2px;
-    padding: 15px;
-    transition: all .5s ease;
+    top: 0;
 }
 .library-wrapper {
-    width: auto;
+    width: 100vw;
+    float: right;
     clear: none;
     transform: translate(300px, 0);
-    overflow-y: scroll;
-    font-size: 0;
-    height: calc(100vh - 330px);
-    float: left;
-    clear: both;
-    white-space: nowrap;
-    overflow-x: hidden;
+    overflow-y: hidden;
 }
 * {
     font-family: 'Oxygen', sans-serif;
     font-weight: 300;
 }
+.toggled ul.header > li > ol > li.ui-resizable:last-of-type {
+  transform: translate(calc(100vw - 300px - 100%), 0);
+}
+ul.header > li > ol > li.ui-resizable:last-of-type {
+  position: absolute;
+  top: 0;
+  float: none;
+  transform: translate(calc(100vw - 100%), 0);
+}
+ul.header > li {
 
-
-ul.header > li {left: 0 !important;height: 30px !important;}
+    left: 0 !important;
+}
 ul.header {
     /* Fix header row */
-    position: relative;
-    margin-bottom: 0;
-    font-size: 14px;
-    float: left;
-    top: 0;
+    position: fixed;
 }
 ul.list {
-    overflow: visible;
-    height: auto;
-    font-size: 14px;
-    margin: 0;
+    margin-top: 30px;
+    overflow-y: scroll !important;
+    height: calc(100vh - 300px);
 }
 table {
     width: 100%;
@@ -171,43 +160,29 @@ a.dark {
 
 /*alternating colors*/
 
-li.track-row:nth-of-type(2n), .sublist li:nth-of-type(2n) {
+li.track-row:hover {
+    background-color: lightblue;
+}
+
+li.track-row:nth-of-type(2n) {
     background-color: #F6F6F6;
 }
-li.track-row:nth-of-type(2n+1), .sublist li:nth-of-type(2n+1) {
+li.track-row:nth-of-type(2n+1) {
     background-color: #fff;
 }
-
-li.track-row.curr-playing,
-li.track-row:hover {
+li.track-row.curr-playing {
   background-color: #2980B9;
-}
-
-li.rating:hover .stars label{
-  opacity: 1.0;
-  transform: scale(1.0,1.0);
-}
-.stars > input:checked ~ label {
-  opacity: 1.0;
-  transform: scale(1.0,1.0);
-}
-.stars:not(:checked) > label {
-  opacity: 0.0;
-  transform: scale(0.0,0.0);
-  transform-origin: 50% 50%;
-  transition: all .25s ease;
 }
 
 ul.list > li,
 ul.header > li {
-    width: auto;
+    width: 100%;
     height: 25px;
-    float: left;
-    clear: left;
 }
 ul > li,
 ul > li > ol > li {
     display: inline-block;
+    float: left;
 }
 ul.list,
 ul.header,
@@ -215,14 +190,13 @@ ul.header,
 li > ol,
 ul.list li > ol {
     list-style: none;
-    width: auto;
+    width: 100%;
     padding: 0;
     display: inline-block;
-    white-space: nowrap;
 }
 ul.header li > ol > li,
 ul.list li > ol > li {
-    width: 60px;
+    width: 10%;
     margin: 0;
 }
 ul.list li > ol > li {
@@ -237,7 +211,7 @@ ul.header ol > li {
     border-bottom: #afafaf 1px solid;
     color: #333;
     padding: 4px 3px;
-    background-color: #e3ecee;
+    left: 0 !important;
 }
 
 /* Player styles */
@@ -376,10 +350,9 @@ ul.sub > li {
 div#library {
     display: inline-block;
     width: 100vw;
-    overflow-x: hidden;
-    height: calc( 100vh - 300px);
-    overflow-y: hidden;
-    z-index: 2;
+    position: fixed;
+    top: 300px;
+    overflow-y: visible;
 }
 
 input[type=text] {
@@ -396,7 +369,6 @@ ul.side {
     -webkit-font-smoothing: antialiased;
     font-size: 14px;
     padding: 0 10px;
-    width: 100%;
 }
 
 div#art-bk {
@@ -419,7 +391,19 @@ body #player {
   transition: all 1s cubic-bezier(0.39, 0.58, 0.57, 1);
 }
 
+body.toggled .left-side-wrapper {
+    max-width: 300px;
+}
+body.toggled .library-wrapper,
+body.toggled #player {
+    width: calc(100vw - 300px) !important;
+    overflow: hidden;
+}
+body.toggled #player {
+  transform: translate3d(300px, 0, 0);
+}
 body div.left-side-wrapper {
+    max-width: 0px;
 }
 body div.library-wrapper,
 body #player {
@@ -484,6 +468,10 @@ span.track-channel {
     display: inline-block;
 }
 
+.toggled span.track-title,
+.toggled span.track-channel {
+    width: calc(95% - 400px);
+}
 
 span.track-channel {
     transform: translate(25px, 30px);
@@ -494,10 +482,7 @@ span.track-title {
 }
 
 body {
-    overflow: hidden;
-    display: inline-block;
-    height: 101vh;
-    width: 100vw;
+    overflow-x: hidden;
 }
 
 
@@ -522,9 +507,26 @@ div.charts {
 
 ol.col-sizeable {
     background-color: #e3ecee;
-    white-space: nowrap;
 }
 
+body.toggled .left-side-wrapper * {
+    opacity: 1.0;
+    transition: opacity .5s ease 1s;
+}
+
+body:not(.toggled) .left-side-wrapper * {
+    opacity: 0.0;
+    transition: opacity .5s ease;
+}
+
+
+ul.list::-webkit-scrollbar {
+    width: 0 !important;
+}
+
+.left-side-wrapper::-webkit-scrollbar {
+    width: 0 !important;
+}
 a#prev-song {
   left: 15px;
   background-image: url(../../images/sc_icons/caret-left.svg);
@@ -702,183 +704,10 @@ div#behind-vid {
   opacity: 1.0;
 }
 
-
 .modal-content {
     box-shadow: none !important;
 }
 
 .context-menu-item {
   clear: left;
-}
-
-
-ul.list > li > ol {
-    height: 25px !important;
-}
-
-.play-modal {
-    background-image: url(/images/sc_icons/play.svg);
-}
-.pause-modal {
-    background-image: url(/images/sc_icons/pause.svg);
-}
-.modal-content.play-modal,
-.modal-content.pause-modal {
-    background-color: transparent;
-    height: 33vw;
-    width: 100%;
-    background-repeat: no-repeat;
-    background-size: contain;
-    opacity: 0.8;
-    display: inline-block;
-    background-position: 50% 50%;
-    border: none;
-}
-.modal#play-modal, .modal#pause-modal {
-
-}
-.modal.in {
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-}
-
-
-.left-side-wrapper.collapse:not(.in) {
-    max-height: 0;
-    /* height: 0 !important; */
-    display: block !important;
-    padding: 0;
-    border: 0;
-}
-
-.left-side-wrapper.collapse.in {
-    max-height: calc(100vh - 90px);
-    height: auto;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0.0;
-  }
-  100% {
-    opacity: 1.0;
-  }
-}
-
-div#left-side.collapse.collapsing * {
-  animation: fadeIn .5s ease;
-  animation-fill-mode: both;
-}
-
-@keyframes spin {
-  from {
-    opacity: 1.0;
-  }  to {
-    opacity: 1.0;
-  }
-}
-
-div#left-side.collapse.in {
-  animation: spin 60s infinite linear;
-}
-
-library#libraryCtlrDiv {
-    position: relative;
-    display: block;
-    overflow-y: hidden;
-    overflow-x: visible;
-    height: c;
-}
-
-#left-side li {
-    float: left;
-    clear: left;
-}
-
-.scroll-container {
-    border: 1px solid rgba(66,66,66,0.2);
-    max-height: 33vh;
-    overflow-y: scroll;
-    width: calc(100% - 14px) !important;
-    border-radius: 5px;
-    margin: 7px;
-}
-
-li
-
-.stars {
-    display: inline;
-    max-height: 100%;
-}
-
-/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t
-   follow these rules. Every browser that supports :checked also supports :not(), so
-   it doesn’t make the test unnecessarily selective */
-.stars:not(:checked) > input {
-    position:absolute;
-    top:-9999px;
-    clip:rect(0,0,0,0);
-    display: none;
-}
-
-.stars:not(:checked) > label {
-    float:right;
-    width:1em;
-    padding: .2em .1em;
-    overflow:hidden;
-    white-space:nowrap;
-    cursor:pointer;
-    font-size: 100%;
-    line-height:1.2;
-    color:#ddd;
-}
-
-.stars:not(:checked) > label:before {
-    content: '★ ';
-}
-
-.stars > input:checked ~ label {
-    color: #888;
-}
-
-.stars:not(:checked) > label:hover,
-.stars:not(:checked) > label:hover ~ label {
-    color: #888;
-}
-
-.stars > input:checked + label:hover,
-.stars > input:checked + label:hover ~ label,
-.stars > input:checked ~ label:hover,
-.stars > input:checked ~ label:hover ~ label,
-.stars > label:hover ~ input:checked ~ label {
-    color: #888;
-}
-
-.stars > label:active {
-    position:relative;
-    text-shadow: 1px 2;
-}
-);
-}
-
-.stars > label:active {
-    position:relative;
-    top:2px;
-    left:2px;
-}
-
-
-li.rating {
-    text-align: center;
-}
-
-
-.sublist li {
-    width: 100%;
-    padding: 4px 7px;
-}
-
-ul.sublist {
-    padding: 0;
 }
