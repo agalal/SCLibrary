@@ -222,7 +222,7 @@ ul.list li > ol {
 }
 ul.header li > ol > li,
 ul.list li > ol > li {
-    width: 60px;
+    width: 120px;
     margin: 0;
 }
 ul.list li > ol > li {
