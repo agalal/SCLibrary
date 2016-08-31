@@ -343,12 +343,36 @@ app.controller("LibraryCtlr", function($scope, $http){
     }
 });
 
+let term = "";
+$(document).arrive('#search-form', function() {
+  $('#search-form').submit(loadSearch)
+});
+
+function clearSearch() {
+  term = "";
+  $('#search-bar').val("");
+}
+
+function resetPaging() {
+  page = 1;
+  offset = 0;
+}
+
+function loadSearch() {
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  term = $('#search-bar').val();
+  resetPaging();
+  getPage(function(tracks) {
+    aScope.resetDisplay(tracks);
+  });
+}
+
 // Populate the list of songs
 function loadLibrary(){
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
   aScope.context = 'library';
-  page = 1;
-  offset = 0;
+  resetPaging();
+  clearSearch();
   getPage(function(tracks) {
     aScope.resetDisplay(tracks);
   });
@@ -368,8 +392,8 @@ function loadChannel(cid){
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
   aScope.context = 'channel';
   aScope.cid = cid;
-  page = 1;
-  offset = 0;
+  resetPaging();
+  clearSearch();
   getPage(function(tracks) {
     aScope.resetDisplay(tracks);
   });
@@ -394,8 +418,8 @@ function loadPlaylist(pid){
   aScope.context = 'playlist';
   aScope.currPlaylist = pid;
   aScope.pid = pid;
-  page = 1;
-  offset = 0;
+  resetPaging();
+  clearSearch();
   getPage(function(tracks) {
     aScope.resetDisplay(tracks);
     aScope.buildDeleteFromPlaylistMenu();
@@ -441,8 +465,8 @@ function loadSCPlaylist(spid){
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
   aScope.context = 'scplaylist';
   aScope.spid = spid;
-  page = 1;
-  offset = 0;
+  resetPaging();
+  clearSearch();
   getPage(function(tracks) {
     aScope.resetDisplay(tracks);
   });

@@ -27,20 +27,18 @@ module.exports = function(db) {
     else if (context == `scplaylist`) query += `AND id(s) = ${spid} `;
     if (search != undefined) {
       let term = `(?i).*${search}.*`;
-      query += `AND c.name =~ '${term}' `;
+      query += `AND (c.name =~ '${term}' `;
       query += `OR t.name =~ '${term}' `;
       query += `OR t.tag_list =~ '${term}' `;
       query += `OR t.genre =~ '${term}' `;
-      query += `OR t.purchase_url_domain =~ '${term}' `;
+      query += `OR t.purchase_url_domain =~ '${term}') `;
     }
     query += `RETURN t, r, c ` +
              `ORDER BY ` + sort + ` ` + reverse + ` ` +
              `SKIP ${offset} ` +
              `LIMIT ${limit}`;
 
-    db.cypher({
-      query: query,
-    },
+    db.cypher({ query },
     function(error, results) {
       if (error) {
         console.log(error);
