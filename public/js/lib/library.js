@@ -502,11 +502,6 @@ function searchChannelOn(track, url){
   window.open(url + channel_name);
 }
 
-function highlightRow(track){
-  $('.curr-playing').removeClass('curr-playing');
-  $('*[data-id="' + track.t._id + '"]').addClass('curr-playing');
-}
-
 $(document).ready(function(){
   $('#updatingMessage').hide();
 })
