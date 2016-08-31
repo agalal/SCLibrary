@@ -130,10 +130,22 @@ app.controller("LibraryCtlr", function($scope, $http){
     }
 });
 
-let term = "";
-$(document).arrive('#search-form', function() {
-  $('#search-form').submit(loadSearch)
+$(document).on('change', '.stars > input', function() {
+  const tid = $(this).parent().data('id');
+  const rating = $(this).val();
+  rateTrack(tid, rating);
 });
+
+function rateTrack(tid, rating){
+  var body = { id: loggedinuser._id, rating: rating };
+  var url = 'http://localhost:3000/api/tracks/' + tid + '/rate';
+  $.post(url, body, function( data ) {
+    // Do nothing
+  });
+}
+
+let term = "";
+$(document).on('submit', '#search-form', loadSearch);
 
 function clearSearch() {
   term = "";
@@ -169,7 +181,6 @@ function loadLibrary(){
 function loadChannels(){
   var uid = loggedinuser._id;
   var url = 'http://localhost:3000/api/users/' + uid + '/channels/';
-
   $.get(url, function(data) {
     buildChannelList(data);
   });

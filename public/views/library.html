@@ -103,13 +103,13 @@
                     <li class="liked" ng-bind="formatDate(track.r.properties.created_at)">
                     <li class="playcount" ng-bind="track.r.properties.play_count">
                     <li class="rating" ng-click="$event.stopPropagation()">
-                      <fieldset class="stars">
+                      <fieldset class="stars" data-id="{{track.t._id}}">
                         <!-- <legend>Please rate:</legend> -->
-                        <input type="radio" id="star5-{{$index}}" name="rating-{{$index}}" value="5" /><label for="star5-{{$index}}" ng-model="track.r.properties.rating"></label>
-                        <input type="radio" id="star4-{{$index}}" name="rating-{{$index}}" value="4" /><label for="star4-{{$index}}" ng-model="track.r.properties.rating"></label>
-                        <input type="radio" id="star3-{{$index}}" name="rating-{{$index}}" value="3" /><label for="star3-{{$index}}" ng-model="track.r.properties.rating"></label>
-                        <input type="radio" id="star2-{{$index}}" name="rating-{{$index}}" value="2" /><label for="star2-{{$index}}" ng-model="track.r.properties.rating"></label>
-                        <input type="radio" id="star1-{{$index}}" name="rating-{{$index}}" value="1" /><label for="star1-{{$index}}" ng-model="track.r.properties.rating"></label>
+                        <input type="radio" id="star5-{{$index}}" name="rating-{{$index}}" value="5" ng-model="track.r.properties.rating"/><label for="star5-{{$index}}"></label>
+                        <input type="radio" id="star4-{{$index}}" name="rating-{{$index}}" value="4" ng-model="track.r.properties.rating"/><label for="star4-{{$index}}"></label>
+                        <input type="radio" id="star3-{{$index}}" name="rating-{{$index}}" value="3" ng-model="track.r.properties.rating"/><label for="star3-{{$index}}"></label>
+                        <input type="radio" id="star2-{{$index}}" name="rating-{{$index}}" value="2" ng-model="track.r.properties.rating"/><label for="star2-{{$index}}"></label>
+                        <input type="radio" id="star1-{{$index}}" name="rating-{{$index}}" value="1" ng-model="track.r.properties.rating"/><label for="star1-{{$index}}"></label>
                       </fieldset>
                     <li class="domain" ng-click="$event.stopPropagation()">
                         <a ng-click="openPurchaseUrl(track)">
