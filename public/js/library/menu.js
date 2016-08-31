@@ -8,7 +8,6 @@ function updateMenu(){
   $.contextMenu( 'destroy' );
 
   // Initialize rate track and search on menus
-  buildRateTrackMenu();
   buildSearchOnMenu();
   buildSearchChannelOnMenu();
 
@@ -64,12 +63,6 @@ function updateMenu(){
         queue.push(track);
       }
     }
-  }
-
-  // Include rate_track option in every context
-  items.rate_track = {
-    name: "Rate track...",
-    items: rating_menu
   }
 
   // Include separator
@@ -142,29 +135,6 @@ function buildAddToPlaylistMenu(result){
     }
     playlist_menu['playlist' + i] = next;
   }
-}
-
-function buildRateTrackMenu(){
-  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-  rating_menu = {};
-  for (var i = 0; i <= 5; i++){
-    var next =  {
-      name: "" + i + " stars",
-      callback: function(key, opt){
-        var tid = JSON.parse(opt.$trigger[0].dataset.track).t._id;
-        var body = { id: loggedinuser._id, rating: key };
-        var url = 'http://localhost:3000/api/tracks/' + tid + '/rate';
-        $.post(url, body, function( data ) {
-          for (var i = 0; i < aScope.display.length; i++){
-            var track = aScope.display[i];
-            if (track.t._id == tid) track.r.properties.rating = key;
-          }
-        });
-      }
-    }
-    rating_menu[i] = next;
-  }
-  rating_menu[0].name = "Clear rating"
 }
 
 function buildSearchOnMenu(){
