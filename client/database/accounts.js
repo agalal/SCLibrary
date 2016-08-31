@@ -1,6 +1,5 @@
 var password_hash = require('../database/passhash.js')();
 
-
 module.exports = function(db) {
   const util = require('util');
 
@@ -62,7 +61,6 @@ module.exports = function(db) {
       } else {
 
         var dbPass = response[0].a.properties.password;
-
 
         // check password_hash
         password_hash.verifyPass(password, dbPass, function (success) {
@@ -233,7 +231,6 @@ module.exports = function(db) {
         done(results);
       }
     });
-
   }
 
   return module;
