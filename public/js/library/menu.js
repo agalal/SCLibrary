@@ -57,7 +57,7 @@ function updateMenu(){
   }
   else {
     items.add_queue = {
-      name: "Add to Queue",
+      name: "Add to queue",
       callback: function(key, opt){
         var track = JSON.parse(opt.$trigger[0].dataset.track);
         queue.push(track);
@@ -67,6 +67,22 @@ function updateMenu(){
 
   // Include separator
   items.sep1 = "---------";
+
+  if (context != 'channel'){
+
+    items.tracks_by_channel = {
+      name: "Tracks by channel",
+      callback: function(key, opt){
+        var track = JSON.parse(opt.$trigger[0].dataset.track);
+        var cid = track.c._id;
+        loadChannel(cid);
+      }
+    }
+
+    // Include separator
+    items.sep2 = "---------";
+  }
+
 
   items.search_track_on = {
     name: "Search on...",

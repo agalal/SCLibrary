@@ -85,6 +85,7 @@
   font-family: sans-serif; }
 
 .context-menu-list {
+  width: 150px;
   background: #FFF;
   border: 1px solid #bebebe;
   border-radius: 0.2em;
