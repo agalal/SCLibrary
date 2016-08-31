@@ -1,4 +1,4 @@
-// Send a song to the player and save the next 20 songs for an autoplay queue
+let duration;
 
 function playPause() {
   var showIcon = 250;
@@ -75,14 +75,15 @@ $('#artworkimg').click(playPause);
 
 //TODO: Seeking should be based on the width of the waveform, not the window's width.
 $('#back-div').click(function(e) {
-  //how far you clicked into the div's width by percent. 1.0 is to cast to double
-  let relativePercent = e.pageX / ($(window).width() * 1.0);
-  //console.log(relativePercent + '%');
-  let seekPosition = Math.round(duration * relativePercent);
-  bgScroll(true, seekPosition / 1000, duration / 1000);
-  console.log("seekpos: " + seekPosition);
-  audioPlayer.currentTime = seekPosition / 1000.0;
-  audioPlayer.play();
+  if (duration !== undefined){
+    //how far you clicked into the div's width by percent. 1.0 is to cast to double
+    let relativePercent = e.pageX / ($(window).width() * 1.0);
+    //console.log(relativePercent + '%');
+    let seekPosition = Math.round(duration * relativePercent);
+    bgScroll(true, seekPosition / 1000, duration / 1000);
+    audioPlayer.currentTime = seekPosition / 1000.0;
+    audioPlayer.play();
+  }
 });
 
 let audioPlayer = new Audio();
@@ -118,8 +119,6 @@ function loadSong(track) {
   audioPlayer.play();
   loadWaveform(track.t._id);
   var colors = loadArtworkPalette(track.t._id);
-console.log("colors:");
-  console.log(colors);
 
   $(".track-title").text(track.t.properties.name);
   $(".track-channel").text(track.c.properties.name);
@@ -153,8 +152,6 @@ function loadArtworkPalette(track_id){
     dataType: "json",
     //async: false,
     success: function(data){
-      console.log("data:");
-      console.log(data);
       color_palette = data;
       palette_refresh = true;
     },
@@ -168,7 +165,6 @@ function loadArtworkPalette(track_id){
 function updateColorPalette(){
   //TODO: someone make this actually do cool things, this is just a test example, some1 replace this
   if(color_palette != null){
-    console.log("updateColorPalette()");
     //Some colors aren't guaranteed to exist, not sure why need to look more into this TODO
     if(color_palette.LightMuted != null){
       var lightMuted = color_palette.LightMuted;
