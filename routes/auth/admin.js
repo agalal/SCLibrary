@@ -13,22 +13,20 @@ router.get('/', function(req, res, next) {
     var account = req.session.account;
     console.log(account);
     if (account.a.properties.type == 'admin'){
-        res.redirect('/admin/panel/');
-    }
-    else {
+      res.redirect('/admin/panel/');
+    } else {
       var message = 'This account does not belong to an administrator.';
       res.render('adminlogin', {msg: message});
     }
+  } else {
+    res.render('adminlogin', {msg: null});
   }
-  res.render('adminlogin', {msg: null});
 });
 
 /* GET admin login/submit page. */
 router.get('/submit/', ensureLoggedOut, function(req, res, next) {
-
   var name = req.query.name;
   var password = req.query.password;
-
   db.loginToAccount(name, password, function(results, error){
     if (error){
       var message = 'There was an error when trying to login to your account.';
@@ -40,7 +38,6 @@ router.get('/submit/', ensureLoggedOut, function(req, res, next) {
     }
     else {
       req.session.account = results.account;
-      console.log(results.account);
       if (results.account.a.properties.type == 'admin'){
         res.redirect('/admin/panel/');
       }
@@ -50,14 +47,11 @@ router.get('/submit/', ensureLoggedOut, function(req, res, next) {
       }
     }
   })
-  
 });
-
 
 /* GET admin panel. */
 router.get('/panel/', ensureLoggedIn, requiresAdmin, function(req, res, next) {
   res.render('panel', {msg: null});
 });
-
 
 module.exports = router;
