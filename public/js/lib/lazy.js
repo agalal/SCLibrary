@@ -68,11 +68,13 @@ function getPage(done) {
     reverse = "ASC";
   }
   let context = aScope.context;
-  var url = 'http://localhost:3000/api/users/' + uid + '/collection/?limit=' + limit;
-      url += '&offset=' + offset + '&sort=' + sort + '&reverse=' + reverse + '&context=' + context;
-  if (context == 'channel') url += '&cid=' + aScope.cid;
-  else if (context == 'playlist') url += '&pid=' + aScope.pid;
-  else if (context == 'scplaylist') url += '&spid=' + aScope.spid;
+  var url = `http://localhost:3000/api/users/${uid}/collection/?limit=${limit}`;
+      url += `&offset=${offset}&sort=${sort}&reverse=${reverse}&context=${context}`;
+  if (context == 'channel') url += `&cid=${aScope.cid}`;
+  else if (context == 'playlist') url += `&pid=${aScope.pid}`;
+  else if (context == 'scplaylist') url += `&spid=${aScope.spid}`;
+  if (term != "") url += `&q=${term}`;
+
   $.get(url, function(data) {
     done(data);
   });
