@@ -52,8 +52,7 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     // Update sort variables
     $scope.updateSort = function(sortBy){
-      page = 1;
-      offset = 0;
+      resetPaging();
 
       if ($scope.sortType == sortBy) {
         $scope.sortReverse = !$scope.sortReverse;
@@ -83,6 +82,7 @@ app.controller("LibraryCtlr", function($scope, $http){
     $scope.updateDisplay = function(tracks){
       $scope.display = tracks;
       $scope.$apply();
+      updateMenu();
     }
 
     $scope.resetDisplay = function(tracks){
@@ -91,219 +91,6 @@ app.controller("LibraryCtlr", function($scope, $http){
 
     $scope.addToDisplay = function(tracks){
       $scope.updateDisplay($scope.display.concat(tracks));
-    }
-
-    $scope.updateMenu = function(){
-      // Destroy the current context menu
-      $.contextMenu( 'destroy' );
-
-      // Initialize rate track and search on menus
-      $scope.buildRateTrackMenu();
-      $scope.buildSearchOnMenu();
-      $scope.buildSearchChannelOnMenu();
-
-      // Create object to hold context menu items
-      var items = {};
-
-      // Include add_playlist option in every context
-      items.add_playlist = {
-        name: "Add to playlist...",
-        items: $scope.playlist_menu
-      }
-
-      // Include delete_playlist option when in a playlist context
-      if ($scope.context == 'playlist'){
-        items.delete_playlist = {
-          name: "Delete from playlist",
-          callback: $scope.delete_func
-        };
-      }
-
-      // Include delete_queue when in queue context, add_queue when not in queue context
-      if ($scope.context == 'queue'){
-        items.delete_queue = {
-          name: "Delete from queue",
-          callback: function(key, opt){
-            var track = JSON.parse(opt.$trigger[0].dataset.track);
-            var i = 0;
-            for (i = 0; i < queue.length; i++){
-              if (track.t._id == queue[i].t._id){
-                $scope.updateDisplay(queue.splice(i, 1));
-                break;
-              }
-            }
-          }
-        };
-      }
-      else {
-        items.add_queue = {
-          name: "Add to Queue",
-          callback: function(key, opt){
-            var track = JSON.parse(opt.$trigger[0].dataset.track);
-            queue.push(track);
-          }
-        }
-      }
-
-      // Include rate_track option in every context
-      items.rate_track = {
-        name: "Rate track...",
-        items: $scope.rating_menu
-      }
-
-      // Include separator
-      items.sep1 = "---------";
-
-      items.search_track_on = {
-        name: "Search on...",
-        items: $scope.search_track_menu
-      }
-
-      // items.search_channel_on = {
-      //   name: "Search channel on...",
-      //   items: $scope.search_channel_menu
-      // }
-
-      // Include link to soundcloud page
-      items.soundcloud_page = {
-        name: "Soundcloud page",
-        callback: function(key, opt){
-          var track = JSON.parse(opt.$trigger[0].dataset.track);
-          var url = track.t.properties.url;
-          window.open(url);
-        }
-      }
-
-      var settings = {
-        selector: '.track-row[data-purchase="false"]',
-        items: items,
-        reposition: true,
-        autoHide: true,
-        determinePosition: function($menu){
-          // Position using jQuery.ui.position
-          // http://api.jqueryui.com/position/
-          $menu.css('display', 'block')
-            .position({ my: "right bottom", at: "left top", of: this, collision: "fit"});
-        }
-      };
-
-      // Create the context menu
-      //$.contextMenu(settings);
-
-      // Include link to purchase url and change selector for tracks with purchase_url
-      settings.items.purchase_link = {
-        name: "Download page",
-        callback: function(key, opt){
-          var track = JSON.parse(opt.$trigger[0].dataset.track);
-          openPurchaseUrl(track);
-        }
-      }
-      settings.selector = '.track-row[data-purchase="true"]';
-
-      // Create the context menu
-      $.contextMenu(settings);
-    }
-
-    $scope.buildAddToPlaylistMenu = function(result){
-        var playlist_menu = {};
-
-        for (var i = 0; i < result.length; i++){
-            var playlist = result[i];
-            var next =  {
-                name: playlist.p.properties.name,
-                callback: function(key, opt){
-                    var pid = $('#' + key).data("id");
-                    var tid = JSON.parse(opt.$trigger[0].dataset.track).t._id;
-                    var url = 'http://localhost:3000/api/playlists/' + pid + '/add/' + tid;
-                    $http.post(url, {}).then(function(response){
-                        console.log(response);
-                    }, function(error){
-                        console.log(error);
-                    })
-                }
-            }
-            playlist_menu['playlist' + i] = next;
-        }
-        $scope.playlist_menu = playlist_menu;
-
-    }
-
-    $scope.buildDeleteFromPlaylistMenu = function(){
-        $scope.delete_func =  function(key, opt){
-            console.log("hi");
-            var pid = $scope.pid;
-            var tid = JSON.parse(opt.$trigger[0].dataset.track).t._id;
-            var url = 'http://localhost:3000/api/playlists/' + pid + '/remove/' + tid;
-            $http.delete(url).then(function(response){
-                console.log(response);
-                loadPlaylist(pid);
-            }, function(error){
-                console.log(error);
-            });
-        }
-    }
-
-    $scope.buildRateTrackMenu = function(){
-      var rating_menu = {};
-
-      for (var i = 0; i <= 5; i++){
-          var next =  {
-              name: "" + i + " stars",
-              callback: function(key, opt){
-                var tid = JSON.parse(opt.$trigger[0].dataset.track).t._id;
-                var body = { id: loggedinuser._id, rating: key };
-                var url = 'http://localhost:3000/api/tracks/' + tid + '/rate';
-                $http.post(url, body).then(function(response){
-                  for (var i = 0; i < $scope.display.length; i++){
-                    var track = $scope.display[i];
-                    if (track.t._id == tid) track.r.properties.rating = key;
-                  }
-                }, function(error){
-                  console.log(error);
-                });
-              }
-          }
-          rating_menu[i] = next;
-      }
-
-      rating_menu[0].name = "Clear rating"
-      $scope.rating_menu = rating_menu;
-    }
-
-    $scope.buildSearchOnMenu = function(){
-      var search_track_menu = {};
-
-      for (var i = 0; i < sites.length; i++){
-        var name = sites[i].name;
-        var track = {
-          name: name,
-          callback: function(key, opt){
-            var url = sites.find(x=>x.name === key).url;
-            var track = JSON.parse(opt.$trigger[0].dataset.track);
-            searchTrackOn(track, url);
-          }
-        }
-        search_track_menu[name] = track;
-      }
-      $scope.search_track_menu = search_track_menu;
-    }
-
-    $scope.buildSearchChannelOnMenu = function(){
-      var search_channel_menu = {};
-
-      for (var i = 0; i < sites.length; i++){
-        var name = sites[i].name;
-        var channel = {
-          name: name,
-          callback: function(key, opt){
-            var url = sites.find(x=>x.name === key).url;
-            var track = JSON.parse(opt.$trigger[0].dataset.track);
-            searchChannelOn(track, url);
-          }
-        }
-        search_channel_menu[name] = channel;
-      }
-      $scope.search_channel_menu = search_channel_menu;
     }
 
     $scope.incPlayCount = function(track){
@@ -407,8 +194,8 @@ function loadPlaylists(){
 
   $.get(url, function(data){
     buildPlaylistList(data);
-    aScope.buildAddToPlaylistMenu(data);
-    aScope.updateMenu();
+    buildAddToPlaylistMenu(data);
+    updateMenu();
   });
 }
 
@@ -422,7 +209,6 @@ function loadPlaylist(pid){
   clearSearch();
   getPage(function(tracks) {
     aScope.resetDisplay(tracks);
-    aScope.buildDeleteFromPlaylistMenu();
   });
 }
 
