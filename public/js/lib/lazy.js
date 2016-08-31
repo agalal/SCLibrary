@@ -15,9 +15,11 @@ $(document).arrive(".track-row", {"onceOnly": false}, function() {
   offset = limit * page;
   // reassign the class
   $($('.track-row')[offset-10]).addClass('lazyLoadTarget');
-  lazyLoadTarget = $('.lazyLoadTarget');
+  lazyLoadTarget = $('.lazyLoadTarget')[0];
   // set the flag to true to signify we are ready to look for the target again
-  flag = true;
+  if (lazyLoadTarget !== undefined) {
+    flag = true;
+  }
 });
 
 // wait for the library list container to show up on the screen before assigning the scroll handler
@@ -25,7 +27,7 @@ $(document).arrive(".list", function() {
   // assign the scroll handler to the list container
   $('.library-wrapper').on('scroll', function() {
     // check that the element is in the viewport and also that we are ready to look for the target
-    if (isElementInViewport(lazyLoadTarget) && flag){
+    if (flag && isElementInViewport(lazyLoadTarget)){
       // set the flag to false to signify that we do not want to look for the target again until it has been reassigned
       flag = false;
       // remove the lazyLoadTarget class from it's current track row
@@ -44,9 +46,6 @@ $(document).arrive(".list", function() {
 
 // helper function used to calculate whether a given element is visible on the viewport
 function isElementInViewport (el) {
-    if (typeof jQuery === "function" && el instanceof jQuery) {
-        el = el[0];
-    }
     const rect = el.getBoundingClientRect();
     return (
         rect.top >= 0 &&
