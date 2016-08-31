@@ -1,30 +1,46 @@
 var map = [];
+
+let searchFocus = false;
+$(document).on('focus', '#search-bar', function() {
+  searchFocus = true;
+});
+$(document).on('focusout', '#search-bar', function() {
+  searchFocus = false;
+});
+
 document.body.onkeydown = document.body.onkeyup = function(e) {
   e = e || event; // to deal with IE
   map[e.keyCode] = (e.type == 'keydown');
-  if (map[32]) {
-    playPause();
-  }
-  if (map[39] && map[16]) {
-    fastForward(8);
-  }
-  if (map[39] && !map[16]) {
-    fastForward(.5);
-  }
-  if (map[37] && map[16]) {
-    rewind(8);
-  }
-  if (map[37] && !map[16]) {
-    rewind(.5);
-  }
-  if (map[188]) {
-    previousSong();
-  }
-  if (map[190]) {
-    nextSong();
-  }
-  if (map[191]) {
-    randomSong();
+  if (searchFocus) {
+    // If search is in focus, don't do anything
+    return;
+  } else {
+    // Otherwise, prevent the default functionality and execute the shortcut
+    e.preventDefault();
+    if (map[32]) {
+      playPause();
+    }
+    if (map[39] && map[16]) {
+      fastForward(8);
+    }
+    if (map[39] && !map[16]) {
+      fastForward(.5);
+    }
+    if (map[37] && map[16]) {
+      rewind(8);
+    }
+    if (map[37] && !map[16]) {
+      rewind(.5);
+    }
+    if (map[188]) {
+      previousSong();
+    }
+    if (map[190]) {
+      nextSong();
+    }
+    if (map[191]) {
+      randomSong();
+    }
   }
 }
 
