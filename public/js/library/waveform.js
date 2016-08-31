@@ -8,7 +8,7 @@ let options = {
   height: .3
 };
 
-let refresh = false
+let refresh = false;
 let wform_data = [];
 let sub, lows, mids1, mids2, highs1, highs2, highs3;
 
@@ -39,9 +39,13 @@ function loadWaveform(track_id) {
   });
 }
 
-// Repeatedly redraw the waveform at the refresh rate
+// Repeatedly update the waveform in the player.
 setInterval(function() {
   if (refresh) waveform();
+  if (palette_refresh) {
+    palette_refresh = false;
+    updateColorPalette();
+  }
 }, options.refresh_rate);
 
 // Helper function used to take weighted average of the seven frequency ranges
@@ -79,7 +83,7 @@ function waveform() {
   }
 
   var max = d3.max(data);
-  var w = (7 - 12 / window_width)
+  var w = (7 - 12 / waveform_width)
   var h = max * 2 || 0;
 
   var x = d3.scale.linear()
@@ -108,15 +112,16 @@ function waveform() {
     })
     .attr("y", function(d, i) {
       var height = y(d * options.bar_height) / h;
-      if (i % 9 === 0) height *= composite(1, 3, 4, 6, 1, 0, 0); //15
-      if (i % 9 === 1) height *= composite(2, 2, 7, 3, 1, 0, 0); //15
-      if (i % 9 === 2) height *= composite(4, 6, 3, 2, 0, 0, 0); //15
-      if (i % 9 === 3) height *= composite(8, 4, 2, 1, 0, 0, 0); //15
-      if (i % 9 === 4) height *= composite(10, 2, 1, 0, 0, 1, 1); //15
-      if (i % 9 === 5) height *= composite(8, 2, 0, 0, 0, 2, 3); //15
-      if (i % 9 === 6) height *= composite(3, 0, 0, 0, 1, 3, 8); //15
-      if (i % 9 === 7) height *= composite(2, 0, 0, 1, 2, 8, 2); //15
-      if (i % 9 === 8) height *= composite(0, 0, 1, 5, 7, 2, 0); //15
+      if (i % 10 === 0) height *= composite(1, 3, 4, 6, 1, 0, 0); //15
+      if (i % 10 === 1) height *= composite(2, 2, 7, 3, 1, 0, 0); //15
+      if (i % 10 === 2) height *= composite(4, 6, 3, 2, 0, 0, 0); //15
+      if (i % 10 === 3) height *= composite(8, 4, 2, 1, 0, 0, 0); //15
+      if (i % 10 === 4) height *= composite(10, 2, 1, 0, 0, 1, 1); //15
+      if (i % 10 === 5) height *= composite(8, 2, 0, 0, 0, 2, 3); //15
+      if (i % 10 === 6) height *= composite(3, 0, 0, 0, 1, 3, 8); //15
+      if (i % 10 === 7) height *= composite(2, 0, 0, 1, 2, 8, 2); //15
+      if (i % 10 === 8) height *= composite(0, 0, 1, 5, 7, 2, 0); //15
+      if (i % 10 === 9) height *= composite(0, 2, 5, 6, 2, 0, 0); //15
       return h - Math.pow(Math.max(height, .01), 1.5);
     })
     .attr("width", function(d) {
@@ -125,15 +130,16 @@ function waveform() {
     })
     .attr("height", function(d, i) {
       var height = y(d * options.bar_height) / h;
-      if (i % 9 === 0) height *= composite(1, 3, 4, 6, 1, 0, 0); //15
-      if (i % 9 === 1) height *= composite(2, 2, 7, 3, 1, 0, 0); //15
-      if (i % 9 === 2) height *= composite(4, 6, 3, 2, 0, 0, 0); //15
-      if (i % 9 === 3) height *= composite(8, 4, 2, 1, 0, 0, 0); //15
-      if (i % 9 === 4) height *= composite(10, 2, 1, 0, 0, 1, 1); //15
-      if (i % 9 === 5) height *= composite(8, 2, 0, 0, 0, 2, 3); //15
-      if (i % 9 === 6) height *= composite(3, 0, 0, 0, 1, 3, 8); //15
-      if (i % 9 === 7) height *= composite(2, 0, 0, 1, 2, 8, 2); //15
-      if (i % 9 === 8) height *= composite(0, 0, 1, 5, 7, 2, 0); //15
+      if (i % 10 === 0) height *= composite(1, 3, 4, 6, 1, 0, 0); //15
+      if (i % 10 === 1) height *= composite(2, 2, 7, 3, 1, 0, 0); //15
+      if (i % 10 === 2) height *= composite(4, 6, 3, 2, 0, 0, 0); //15
+      if (i % 10 === 3) height *= composite(8, 4, 2, 1, 0, 0, 0); //15
+      if (i % 10 === 4) height *= composite(10, 2, 1, 0, 0, 1, 1); //15
+      if (i % 10 === 5) height *= composite(8, 2, 0, 0, 0, 2, 3); //15
+      if (i % 10 === 6) height *= composite(3, 0, 0, 0, 1, 3, 8); //15
+      if (i % 10 === 7) height *= composite(2, 0, 0, 1, 2, 8, 2); //15
+      if (i % 10 === 8) height *= composite(0, 0, 1, 5, 7, 2, 0); //15
+      if (i % 10 === 9) height *= composite(0, 2, 5, 6, 2, 0, 0); //15
       return Math.pow(Math.max(height, .01), 1.5) + options.bar_y_offset;
     });
 }

@@ -7,6 +7,9 @@ var sites = [
   },
   { url: 'https://www.beatport.com/search?q=',
     name: 'Beatport'
+  },
+  { url: 'http://edmmonsters.com/?s=',
+    name: 'edmmonsters'
   }
 ];
 
@@ -14,58 +17,7 @@ let _options = {
   shuffle: false,
   repeat: false,
   autoplay: true,
-  autocheck: true,
-  columns:
-    [{
-      name: 'channel',
-      index: 0,
-      width: 120
-    },
-    {
-      name: 'title',
-      index: 1,
-      width: 120
-    },
-    {
-      name: 'date',
-      index: 2,
-      width: 120
-    },
-    {
-      name: 'genre',
-      index: 3,
-      width: 120
-    },
-    {
-      name: 'duration',
-      index: 4,
-      width: 120
-    },
-    {
-      name: 'linked',
-      index: 5,
-      width: 120
-    },
-    {
-      name: 'playcount',
-      index: 6,
-      width: 30
-    },
-    {
-      name: 'rating',
-      index: 7,
-      width: 90
-    },
-    {
-      name: 'domain',
-      index: 8,
-      width: 120
-    },
-    {
-      name: 'downloaded',
-      index: 9,
-      width: 30
-    }]
+  autocheck: true
 };
 
 function setOpt(option, value){
@@ -89,6 +41,7 @@ function toggleLib() {
 //   if (!toggledSet) $('#settings').addClass('toggled');
 //   else $('#settings').removeClass('toggled');
 // }
+
 
 function toggleAuto() {
   if (!getOpt('autoplay')) $('#autoplay-toggle').addClass('toggled');

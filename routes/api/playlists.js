@@ -7,16 +7,6 @@ router.get('/', function(req, res, next) {
 	res.json({ error: 'you must supply a playlist id' });
 });
 
-/* GET playlist */
-router.get('/:id', function(req, res, next) {
-	db.getPlaylist(req.params.id, function(collection, error){
-		if (error)
-			res.json({"error":"failed"});
-		else
-			res.json(collection);
-	});
-});
-
 /* POST new playlist */
 router.post('/', function(req, res, next){
 	db.createPlaylist(req.body.name, req.body.uid, function(error){

@@ -196,7 +196,11 @@ ul.list li > ol {
 }
 ul.header li > ol > li,
 ul.list li > ol > li {
+<<<<<<< HEAD
     width: 10%;
+=======
+    width: 110px;
+>>>>>>> master
     margin: 0;
 }
 ul.list li > ol > li {
