@@ -1,7 +1,3 @@
-var autoqueue = [];
-var queue = [];
-var backqueue = [];
-
 // Set context to default option (library)
 let curr_context = 'library';
 
