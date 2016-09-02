@@ -13,13 +13,6 @@ app.directive("library", [function (){
         link: {
             pre: function(scope, element, attr) {
 
-                $('#scplaylist_list').hide();
-
-                $('.playlistForm').hide();
-                $('.addPlaylist').click(function(){
-                    $('.playlistForm').show();
-                });
-
                 // Set context to default option (library)
                 scope.context = 'library';
 
@@ -226,15 +219,15 @@ function loadPlaylist(pid){
 // Add a playlist to the database and hide the new playlist form
 function createPlaylist(){
   var url = 'http://localhost:3000/api/playlists/';
-  const name = $('#playlist-input').val();
+  const name = $('#add-playlist-input').val();
   var data = {
     name: name,
     uid: loggedinuser._id
   }
   $.post(url, data, function( data ) {
     loadPlaylists();
-    $('#playlist-form').hide();
-    $('#playlist-input').val('');
+    $('#add-playlist-input').hide();
+    $('#add-playlist-input').val('');
   });
 }
 

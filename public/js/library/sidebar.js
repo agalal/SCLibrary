@@ -1,21 +1,31 @@
 let channels_visible = false;
 let scplaylists_visible = false;
+let playlists_visible = false;
 
-$(document).arrive("#channel-list", {"onceOnly": false}, function() {
+$(document).arrive("#channel-list", {"onceOnly": true}, function() {
   $('#channel-list').hide();
   $('#channel-carat-up').hide();
   $('#channel-toggle').click(toggleChannels);
-
-  $('#playlist-form').submit(createPlaylist);
 });
 
-$(document).arrive("#scplaylist-list", {"onceOnly": false}, function() {
+$(document).arrive("#scplaylist-list", {"onceOnly": true}, function() {
   $('#scplaylist-list').hide();
   $('#scplaylist-carat-up').hide();
   $('#scplaylist-toggle').click(toggleSCPlaylists);
 });
 
-$(document).arrive('#playlist-list', function() {
+$(document).arrive('#playlist-list', {"onceOnly": true}, function() {
+  $('#playlist-list').hide();
+  $('#playlist-carat-up').hide();
+  $('#playlist-toggle').click(togglePlaylists);
+
+  $('#add-playlist-form').hide();
+  $('#add-playlist-input').hide();
+  $('#add-playlist-btn').click(function(){
+      $('#add-playlist-input').show();
+  });
+  $('#add-playlist-form').submit(createPlaylist);
+
   attachDeletePlaylistHandler();
 });
 
@@ -56,6 +66,21 @@ function toggleChannels(){
     }
 }
 
+function togglePlaylists(){
+    playlists_visible = !playlists_visible;
+    if (playlists_visible) {
+        $('#playlist-list').show();
+        $('#add-playlist-form').show();
+        $('#playlist-carat-up').show();
+        $('#playlist-carat-down').hide();
+    } else {
+        $('#playlist-list').hide();
+        $('#add-playlist-form').hide();
+        $('#playlist-carat-up').hide();
+        $('#playlist-carat-down').show();
+    }
+}
+
 $(document).arrive('#library-toggle', function() {
   $('#library-toggle').click(loadLibrary);
 });
@@ -76,13 +101,12 @@ function buildChannelList(channels){
 }
 
 function buildPlaylistList(playlists){
-  var list = '<ul>';
+  var list = '<ul class="sublist">';
   for (let i = 0; i < playlists.length; i++){
     const properties = playlists[i].p.properties;
     const pid = playlists[i].p._id;
     const name = formatName(properties.name);
-    list += `<li class='playlist-name' id='playlist${i}' data-id='${pid}'>${name}</li>`;
-    list += `<span class='delete-playlist' data-id='${pid}'>X</span><br>`;
+    list += `<li class='playlist-name' id='playlist${i}' data-id='${pid}'>${name}<span class='delete-playlist' data-id='${pid}'>X</span><br></li>`;
   }
   list += '</ul>'
   document.getElementById('playlist-list').innerHTML = list;
