@@ -142,6 +142,6 @@ function formatName(name){
 
 function displayQueue(){
     const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-    aScope.context = 'queue';
+    curr_context = 'queue';
     aScope.updateDisplay(queue);
 }

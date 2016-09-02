@@ -60,7 +60,6 @@ function isElementInViewport (el) {
 
 // retreive a page of tracks from the database
 function getPage(done) {
-  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
   var uid = loggedinuser._id;
   let sort = sortType.substring(0,1) + sortType.substring(12)
   let reverse;
@@ -69,12 +68,12 @@ function getPage(done) {
   } else {
     reverse = "ASC";
   }
-  let context = aScope.context;
+  let context = curr_context;
   var url = `http://localhost:3000/api/users/${uid}/collection/?limit=${limit}`;
       url += `&offset=${offset}&sort=${sort}&reverse=${reverse}&context=${context}`;
-  if (context == 'channel') url += `&cid=${aScope.cid}`;
-  else if (context == 'playlist') url += `&pid=${aScope.pid}`;
-  else if (context == 'scplaylist') url += `&spid=${aScope.spid}`;
+  if (context == 'channel') url += `&cid=${curr_cid}`;
+  else if (context == 'playlist') url += `&pid=${curr_pid}`;
+  else if (context == 'scplaylist') url += `&spid=${curr_spid}`;
   if (term != "") url += `&q=${term}`;
 
   $.get(url, function(data) {

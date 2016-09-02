@@ -2,7 +2,7 @@ let playlist_menu, rating_menu, search_track_menu, search_channel_menu;
 
 function updateMenu(){
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-  const context = aScope.context;
+  const context = curr_context;
 
   // Destroy the current context menus
   $.contextMenu( 'destroy' );
@@ -25,7 +25,7 @@ function updateMenu(){
     items.delete_playlist = {
       name: "Delete from playlist",
       callback: function(key, opt){
-        var pid = aScope.pid;
+        var pid = curr_pid;
         var tid = JSON.parse(opt.$trigger[0].dataset.track).t._id;
         var url = 'http://localhost:3000/api/playlists/' + pid + '/remove/' + tid;
         $.ajax({

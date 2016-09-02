@@ -2,6 +2,9 @@ var autoqueue = [];
 var queue = [];
 var backqueue = [];
 
+// Set context to default option (library)
+let curr_context = 'library';
+
 var app = angular.module("Library", []);
 
 // Library directive - html Element
@@ -12,9 +15,6 @@ app.directive("library", [function (){
         scope: false,
         link: {
             pre: function(scope, element, attr) {
-
-                // Set context to default option (library)
-                scope.context = 'library';
 
                 // Load song library, and channel/playlist names
                 loadLibrary();
@@ -96,7 +96,7 @@ function loadSearch() {
 // Populate the list of songs
 function loadLibrary(){
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-  aScope.context = 'library';
+  curr_context = 'library';
   resetPaging();
   clearSearch();
   getPage(function(tracks) {
@@ -113,10 +113,13 @@ function loadChannels(){
   });
 }
 
+let curr_pid, curr_cid, curr_spid;
+
+
 function loadChannel(cid){
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-  aScope.context = 'channel';
-  aScope.cid = cid;
+  curr_context = 'channel';
+  curr_cid = cid;
   resetPaging();
   clearSearch();
   getPage(function(tracks) {
@@ -126,7 +129,6 @@ function loadChannel(cid){
 
 // Populate the list of playlists
 function loadPlaylists(){
-  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
   var uid = loggedinuser._id;
   var url = 'http://localhost:3000/api/users/' + uid + '/playlists/';
 
@@ -140,9 +142,8 @@ function loadPlaylists(){
 // Update the view with tracks from the selected playlist.
 function loadPlaylist(pid){
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-  aScope.context = 'playlist';
-  aScope.currPlaylist = pid;
-  aScope.pid = pid;
+  curr_context = 'playlist';
+  curr_pid = pid;
   resetPaging();
   clearSearch();
   getPage(function(tracks) {
@@ -167,15 +168,13 @@ function createPlaylist(){
 
 // Delete playlist with permission from the user.
 function deletePlaylist(pid){
-  console.log(pid);
-  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
   if (confirm("Are you sure you want to delete?") == true){
     var url = 'http://localhost:3000/api/playlists/' + pid;
     $.ajax({
       url: url,
       type: 'DELETE',
       success: function(){
-        if (aScope.currPlaylist == pid){
+        if (curr_pid == pid){
           loadLibrary();
         }
         loadPlaylists();
@@ -187,8 +186,8 @@ function deletePlaylist(pid){
 // Update the view with tracks from the selected playlist.
 function loadSCPlaylist(spid){
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-  aScope.context = 'scplaylist';
-  aScope.spid = spid;
+  curr_context = 'scplaylist';
+  curr_spid = spid;
   resetPaging();
   clearSearch();
   getPage(function(tracks) {
