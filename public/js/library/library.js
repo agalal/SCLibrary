@@ -200,6 +200,26 @@ function loadSCPlaylists(){
   });
 }
 
+function loadDeleted(){
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  curr_context = 'deleted';
+  resetPaging();
+  clearSearch();
+  getPage(function(tracks) {
+    aScope.resetDisplay(tracks);
+  });
+}
+
+function loadDownloadList(){
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  curr_context = 'download';
+  resetPaging();
+  clearSearch();
+  getPage(function(tracks) {
+    aScope.resetDisplay(tracks);
+  });
+}
+
 function incPlayCount(track){
   var tid = track.t._id;
   var body = { id: loggedinuser._id };

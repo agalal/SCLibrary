@@ -60,12 +60,23 @@ function updateMenu(){
     }
   }
 
-  items.delete_library = {
-    name: "Delete from library",
-    callback: function(key, opt){
-      var track = JSON.parse(opt.$trigger[0].dataset.track);
-      const tid = track.t._id;
-      toggleDelete(tid);
+  if (context == 'deleted') {
+    items.readd_library = {
+      name: "Re-add to library",
+      callback: function(key, opt){
+        var track = JSON.parse(opt.$trigger[0].dataset.track);
+        const tid = track.t._id;
+        toggleDelete(tid);
+      }
+    }
+  } else {
+    items.delete_library = {
+      name: "Delete from library",
+      callback: function(key, opt){
+        var track = JSON.parse(opt.$trigger[0].dataset.track);
+        const tid = track.t._id;
+        toggleDelete(tid);
+      }
     }
   }
 

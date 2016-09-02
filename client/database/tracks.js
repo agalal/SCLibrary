@@ -33,7 +33,9 @@ module.exports = function(db) {
       query += `OR t.genre =~ '${term}' `;
       query += `OR t.purchase_url_domain =~ '${term}') `;
     }
-    query += `AND r.deleted = false `;
+    if (context == 'deleted') query += `AND r.deleted = true `;
+    else query += `AND r.deleted = false `;
+    if (context == 'download') query += `AND r.downloaded = false `;
     query += `RETURN t, r, c ` +
              `ORDER BY ` + sort + ` ` + reverse + ` ` +
              `SKIP ${offset} ` +
