@@ -43,22 +43,6 @@ app.controller("LibraryCtlr", function($scope, $http){
         trackClickListener(track, element)
     }
 
-    // Update sort variables
-    $scope.updateSort = function(sortBy){
-      resetPaging();
-
-      if ($scope.sortType == sortBy) {
-        $scope.sortReverse = !$scope.sortReverse;
-      } else {
-        $scope.sortReverse = false;
-      }
-      $scope.sortType = sortBy;
-
-      getPage(function(tracks) {
-        $scope.resetDisplay(tracks);
-      });
-    }
-
     // Convert time from ms to MM:SS
     $scope.convertTime = function(time){
       var min_sec = time / 1000 / 60;
@@ -101,11 +85,6 @@ $(document).on('submit', '#search-form', loadSearch);
 function clearSearch() {
   term = "";
   $('#search-bar').val("");
-}
-
-function resetPaging() {
-  page = 1;
-  offset = 0;
 }
 
 function loadSearch() {

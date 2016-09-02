@@ -51,6 +51,30 @@ let columns = [
   }
 ];
 
+$(document).on('click', '.col-header', function() {
+  const sortBy = $(this).data('sort');
+  updateSort(sortBy);
+});
+
+// Update sort variables
+function updateSort(sortBy){
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+
+  resetPaging();
+
+  if (aScope.sortType == sortBy) {
+    aScope.sortReverse = !aScope.sortReverse;
+  } else {
+    aScope.sortReverse = false;
+  }
+  aScope.sortType = sortBy;
+
+  getPage(function(tracks) {
+    aScope.resetDisplay(tracks);
+  });
+}
+
+
 function highlightRow(track){
   $('.curr-playing').removeClass('curr-playing');
   $('*[data-id="' + track.t._id + '"]').addClass('curr-playing');

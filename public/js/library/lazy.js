@@ -3,6 +3,11 @@ let limit = 100;
 let offset;
 let page;
 
+function resetPaging() {
+  page = 1;
+  offset = 0;
+}
+
 // this flag serves as a lock to make sure that the isElementInViewport event does not fire multiple times
 let flag = true;
 

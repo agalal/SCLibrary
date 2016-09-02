@@ -50,43 +50,43 @@
 <ul class="header">
     <li>
         <ol class="col-sizeable">
-            <li class="text-center" ng-click="updateSort('c.properties.name')">
+            <li class="col-header text-center" data-sort='c.properties.name'>
                 <a also-resize="channel" class="dark">Channel</a>
                 <span ng-show="sortType == 'c.properties.name' && !sortReverse" class="fa fa-caret-down"></span>
                 <span ng-show="sortType == 'c.properties.name' && sortReverse" class="fa fa-caret-up"></span>
-            <li class="text-center" ng-click="updateSort('t.properties.name')">
+            <li class="col-header text-center" data-sort='t.properties.name'>
                 <a also-resize="title" class="dark">Title</a>
                 <span ng-show="sortType == 't.properties.name' && !sortReverse" class="fa fa-caret-down"></span>
                 <span ng-show="sortType == 't.properties.name' && sortReverse" class="fa fa-caret-up"></span>
-            <li class="text-center" ng-click="updateSort('t.properties.created_at')">
+            <li class="col-header text-center" data-sort='t.properties.created_at'>
                 <a also-resize="date" class="dark">Date Created</a>
                 <span ng-show="sortType == 't.properties.created_at' && !sortReverse" class="fa fa-caret-down"></span>
                 <span ng-show="sortType == 't.properties.created_at' && sortReverse" class="fa fa-caret-up"></span>
-            <li class="text-center" ng-click="updateSort('t.properties.genre')">
+            <li class="col-header text-center" data-sort='t.properties.genre'>
                 <a also-resize="genre" class="dark">Genre</a>
                 <span ng-show="sortType == 't.properties.genre' && !sortReverse" class="fa fa-caret-down"></span>
                 <span ng-show="sortType == 't.properties.genre' && sortReverse" class="fa fa-caret-up"></span>
-            <li class="text-center" ng-click="updateSort('t.properties.duration')">
+            <li class="col-header text-center" data-sort='t.properties.duration'>
                 <a also-resize="duration" class="dark">Duration</a>
                 <span ng-show="sortType == 't.properties.duration' && !sortReverse" class="fa fa-caret-down"></span>
                 <span ng-show="sortType == 't.properties.duration' && sortReverse" class="fa fa-caret-up"></span>
-            <li class="text-center" ng-click="updateSort('r.properties.created_at')">
+            <li class="col-header text-center" data-sort='r.properties.created_at'>
                 <a also-resize="liked" class="dark">Date Liked</a>
                 <span ng-show="sortType == 'r.properties.created_at' && !sortReverse" class="fa fa-caret-down"></span>
                 <span ng-show="sortType == 'r.properties.created_at' && sortReverse" class="fa fa-caret-up"></span>
-            <li class="text-center" ng-click="updateSort('r.properties.play_count')">
+            <li class="col-header text-center" data-sort='r.properties.play_count'>
                 <a also-resize="playcount" class="dark">Play Count</a>
                 <span ng-show="sortType == 'r.properties.play_count' && !sortReverse" class="fa fa-caret-down"></span>
                 <span ng-show="sortType == 'r.properties.play_count' && sortReverse" class="fa fa-caret-up"></span>
-            <li class="text-center" ng-click="updateSort('r.properties.rating')">
+            <li class="col-header text-center" data-sort='r.properties.rating'>
                 <a also-resize="rating" class="dark">Rating</a>
                 <span ng-show="sortType == 'r.properties.rating' && !sortReverse" class="fa fa-caret-down"></span>
                 <span ng-show="sortType == 'r.properties.rating' && sortReverse" class="fa fa-caret-up"></span>
-            <li class="text-center" ng-click="updateSort('t.properties.purchase_url_domain')">
+            <li class="col-header text-center" data-sort='t.properties.purchase_url_domain'>
                 <a also-resize="domain" class="dark">Domain</a>
                 <span ng-show="sortType == 'r.properties.purchase_url_domain' && !sortReverse" class="fa fa-caret-down"></span>
                 <span ng-show="sortType == 'r.properties.purchase_url_domain' && sortReverse" class="fa fa-caret-up"></span>
-            <li class="text-center downloaded" ng-click="updateSort('r.properties.downloaded')">
+            <li class="col-header text-center" data-sort='r.properties.downloaded'>
                 <a also-resize="downloaded" class="dark"><i style="height:1em; width:1em;display:inline-block;background-image:url(/images/sc_icons/download.svg);"></i></a>
                 <span ng-show="sortType == 'r.properties.downloaded' && !sortReverse" class="fa fa-caret-down"></span>
                 <span ng-show="sortType == 'r.properties.downloaded' && sortReverse" class="fa fa-caret-up"></span>
