@@ -29,3 +29,13 @@ function displayQueue(){
     curr_context = 'queue';
     aScope.updateDisplay(queue);
 }
+
+function deleteFromQueue(tid){
+  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+  for (var i = 0; i < queue.length; i++){
+    if (tid == queue[i].t._id){
+      aScope.updateDisplay(queue.splice(i, 1));
+      break;
+    }
+  }
+}

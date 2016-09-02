@@ -82,8 +82,8 @@ function clearSearch() {
 
 function loadSearch() {
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-  term = $('#search-bar').val();
   resetPaging();
+  term = $('#search-bar').val();
   getPage(function(tracks) {
     aScope.resetDisplay(tracks);
   });

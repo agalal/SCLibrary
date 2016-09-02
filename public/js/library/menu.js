@@ -45,13 +45,8 @@ function updateMenu(){
       name: "Delete from queue",
       callback: function(key, opt){
         var track = JSON.parse(opt.$trigger[0].dataset.track);
-        var i = 0;
-        for (i = 0; i < queue.length; i++){
-          if (track.t._id == queue[i].t._id){
-            aScope.updateDisplay(queue.splice(i, 1));
-            break;
-          }
-        }
+        const tid = track.t._id;
+        deleteFromQueue(tid);
       }
     };
   }
