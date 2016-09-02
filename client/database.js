@@ -41,5 +41,6 @@ module.exports = {
   getTrackPage: tracks.getTrackPage,
   rateTrack: tracks.rateTrack,
   incPlayCount: tracks.incPlayCount,
-  toggleDLStatus: tracks.toggleDLStatus
+  toggleDLStatus: tracks.toggleDLStatus,
+  toggleDeletedStatus: tracks.toggleDeletedStatus
 }

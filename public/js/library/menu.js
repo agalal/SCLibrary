@@ -60,6 +60,15 @@ function updateMenu(){
     }
   }
 
+  items.delete_library = {
+    name: "Delete from library",
+    callback: function(key, opt){
+      var track = JSON.parse(opt.$trigger[0].dataset.track);
+      const tid = track.t._id;
+      toggleDelete(tid);
+    }
+  }
+
   // Include separator
   items.sep1 = "---------";
 
