@@ -82,7 +82,7 @@ module.exports = function(db) {
       'MERGE (c:Channel { name: {channel} }) ' +
       'ON MATCH SET c.channel_url = {channel_url}, c.avatar_url = {avatar_url}, c.scid = {uid} ' +
       'MERGE (u)-[r1:LIKES_TRACK]->(t) ' +
-      'ON CREATE SET r1.created_at = {date_liked}, r1.play_count = 0, r1.rating = 0, r1.downloaded = false ' +
+      'ON CREATE SET r1.created_at = {date_liked}, r1.play_count = 0, r1.rating = 0, r1.downloaded = false, r1.deleted = false ' +
       'MERGE (c)-[r2:UPLOADED]->(t) ' +
       'RETURN u, r1, c, r2, t';
 
@@ -118,7 +118,6 @@ module.exports = function(db) {
   }
 
   module.addPlaylistTracks = function(user, playlists, done) {
-
     if (playlists.length === 0) {
       done(true);
     } else {
@@ -158,7 +157,7 @@ module.exports = function(db) {
         'MERGE (c:Channel { name: {channel} }) ' +
         'ON MATCH SET c.channel_url = {channel_url}, c.avatar_url = {avatar_url}, c.scid = {uid} ' +
         'MERGE (u)-[r1:LIKES_TRACK]->(t) ' +
-        'ON CREATE SET r1.created_at = {date_liked}, r1.play_count = 0, r1.rating = 0, r1.downloaded = false ' +
+        'ON CREATE SET r1.created_at = {date_liked}, r1.play_count = 0, r1.rating = 0, r1.downloaded = false, r1.deleted = false ' +
         'MERGE (p)-[r2:CONTAINS]->(t) ' +
         'MERGE (c)-[r3:UPLOADED]->(t) ' +
         'RETURN p, r1, r2, c, r3, t';
@@ -209,7 +208,6 @@ module.exports = function(db) {
   }
 
   function addPlaylist(user, item, done) {
-
     var playlist = item.playlist;
 
     var query = 'MATCH (u:Channel {name: {name}}) ' +
@@ -253,7 +251,6 @@ module.exports = function(db) {
   // Check for the existence of a [:LIKES] relationship between a channel and a track.
   // Return true if it exists, false if it does not.
   module.checkExistence = function(scuid, item, done) {
-
     if (item.track) {
       db.cypher({
         query: 'MATCH (u:Channel {scuid: {scuid} }), (t:Track {scid: {scid} } ), (u)-[:LIKES_TRACK]->(t) return u, t',
@@ -299,7 +296,6 @@ module.exports = function(db) {
   };
 
   return module;
-
 }
 
 truncatePurchaseUrl = function(purchase_url) {

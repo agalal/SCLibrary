@@ -259,6 +259,14 @@ function toggleDownload(tid){
   });
 }
 
+function toggleDelete(tid){
+  var body = { id: loggedinuser._id };
+  var url = 'http://localhost:3000/api/tracks/' + tid + '/deleted';
+  $.post(url, body, function( data ) {
+    $('.track-row[data-id="' + tid + '"]').hide();
+  });
+}
+
 function searchTrackOn(track, url){
   let tags = parseForTags(track);
   window.open(url + tags);

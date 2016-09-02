@@ -33,6 +33,7 @@ module.exports = function(db) {
       query += `OR t.genre =~ '${term}' `;
       query += `OR t.purchase_url_domain =~ '${term}') `;
     }
+    query += `AND r.deleted = false `;
     query += `RETURN t, r, c ` +
              `ORDER BY ` + sort + ` ` + reverse + ` ` +
              `SKIP ${offset} ` +
@@ -101,6 +102,22 @@ module.exports = function(db) {
         'WHERE id(t) = ' + parseInt(tid) + ' ' +
         'AND id(u) = ' + parseInt(uid) + ' ' +
         'SET r.downloaded = not(r.downloaded) ' +
+        'RETURN r'
+    }, function(error, results) {
+      if (error) {
+        done(null, error);
+      } else {
+        done(results);
+      }
+    });
+  }
+
+  module.toggleDeletedStatus = function(tid, uid, done) {
+    db.cypher({
+      query: 'MATCH (u:Channel)-[r:LIKES_TRACK]->(t:Track) ' +
+        'WHERE id(t) = ' + parseInt(tid) + ' ' +
+        'AND id(u) = ' + parseInt(uid) + ' ' +
+        'SET r.deleted = not(r.deleted) ' +
         'RETURN r'
     }, function(error, results) {
       if (error) {
