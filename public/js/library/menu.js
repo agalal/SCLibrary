@@ -125,7 +125,9 @@ function updateMenu(){
     name: "Download page",
     callback: function(key, opt){
       var track = JSON.parse(opt.$trigger[0].dataset.track);
-      openPurchaseUrl(track);
+      const tid = track.t._id;
+      const url = track.t.properties.purchase_url;
+      openPurchaseUrl(tid, url);
     }
   }
   settings.selector = '.track-row[data-purchase="true"]';

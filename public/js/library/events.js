@@ -51,10 +51,16 @@ document.body.onkeydown = document.body.onkeyup = function(e) {
   }
 }
 
-function trackClickListener(track, element){
+$(document).on('click', '.track-row', function() {
+  const tid = $(this).data('id');
+  const url = $(this).data('url');
   if (map[49]) {
-    openPurchaseUrl(track);
-  } else if (map[50]) {
+    openPurchaseUrl(tid, url);
+  }
+})
+
+function trackClickListener(track, element){
+  if (map[50]) {
     // Search track on zippyshare
     const url = sites[0].url;
     searchTrackOn(track, url);

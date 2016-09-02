@@ -75,7 +75,9 @@ app.controller("LibraryCtlr", function($scope, $http){
     }
 
     $scope.openPurchaseUrl = function(track){
-      openPurchaseUrl(track);
+      const tid = track.t._id;
+      const url = track.t.properties.purchase_url;
+      openPurchaseUrl(tid, url);
     }
 });
 
@@ -238,12 +240,9 @@ function rateTrack(tid, rating){
   });
 }
 
-function openPurchaseUrl(track){
-  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-  var url = track.t.properties.purchase_url;
+function openPurchaseUrl(tid, url){
   if (url) {
     if (getOpt('autocheck')) {
-      const tid = track.t._id;
       toggleDownload(tid);
     }
     window.open(url);
