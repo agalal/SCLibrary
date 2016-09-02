@@ -83,6 +83,8 @@ function togglePlaylists(){
 
 $(document).arrive('#library-toggle', function() {
   $('#library-toggle').click(loadLibrary);
+  $('#download-toggle').click(loadDownloadList);
+  $('#deleted-toggle').click(loadDeleted);
 });
 
 function buildChannelList(channels){
