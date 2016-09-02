@@ -109,8 +109,7 @@ function loadSong(track) {
   var artworkurl = track.t.properties.artwork_url;
   var waveformurl = track.t.properties.waveform_url;
 
-  angular.element(document.getElementById('libraryCtlrDiv')).scope().incPlayCount(track);
-
+  incPlayCount(track);
   highlightRow(track);
 
   audioPlayer.src = 'http://api.soundcloud.com/tracks/' + trackid + '/stream' + '?client_id=a3629314a336fd5ed371ff0f3e46d4d0';

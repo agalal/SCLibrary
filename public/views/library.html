@@ -107,7 +107,7 @@
                     <li class="liked" ng-bind="formatDate(track.r.properties.created_at)">
                     <li class="playcount" ng-bind="track.r.properties.play_count">
                     <li class="rating" ng-click="$event.stopPropagation()">
-                      <fieldset class="stars" data-id="{{track.t._id}}">
+                      <fieldset class="stars">
                         <!-- <legend>Please rate:</legend> -->
                         <input type="radio" id="star5-{{$index}}" name="rating-{{$index}}" value="5" ng-model="track.r.properties.rating"/><label for="star5-{{$index}}"></label>
                         <input type="radio" id="star4-{{$index}}" name="rating-{{$index}}" value="4" ng-model="track.r.properties.rating"/><label for="star4-{{$index}}"></label>
@@ -119,9 +119,8 @@
                         <a ng-click="openPurchaseUrl(track)">
                           {{track.t.properties.purchase_url_domain}}
                         </a>
-                    <li class="downloaded" style="height:100%" ng-click="toggleDownload(this); $event.stopPropagation()">
+                    <li class="downloaded" style="height:100%" ng-click="$event.stopPropagation()">
                       <input type="checkbox" class="dwnld" ng-checked="track.r.properties.downloaded"></input>
-
                 </ol>
         </ul>
     </table>

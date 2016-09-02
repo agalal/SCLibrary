@@ -86,34 +86,6 @@ app.controller("LibraryCtlr", function($scope, $http){
       $scope.updateDisplay($scope.display.concat(tracks));
     }
 
-    $scope.incPlayCount = function(track){
-      var tid = track.t._id;
-      var body = { id: loggedinuser._id };
-      var url = 'http://localhost:3000/api/tracks/' + tid + '/playcount';
-      $http.post(url, body).then(function(response){
-        for (var i = 0; i < $scope.display.length; i++){
-          var track = $scope.display[i];
-          if (track.t._id == tid) track.r.properties.play_count++;
-        }
-      }, function(error){
-        console.log(error);
-      });
-    }
-
-    $scope.toggleDownload = function(element){
-      var tid = element.track.t._id;
-      var body = { id: loggedinuser._id };
-      var url = 'http://localhost:3000/api/tracks/' + tid + '/downloaded';
-      $http.post(url, body).then(function(response){
-        for (var i = 0; i < $scope.display.length; i++){
-          var track = $scope.display[i];
-          if (track.t._id == tid) track.r.properties.downloaded = !track.r.properties.downloaded;
-        }
-      }, function(error){
-        console.log(error);
-      });
-    }
-
     $scope.hasPurchaseUrl = function(track){
       return track.t.properties.purchase_url !== undefined;
     }
@@ -122,20 +94,6 @@ app.controller("LibraryCtlr", function($scope, $http){
       openPurchaseUrl(track);
     }
 });
-
-$(document).on('change', '.stars > input', function() {
-  const tid = $(this).parent().data('id');
-  const rating = $(this).val();
-  rateTrack(tid, rating);
-});
-
-function rateTrack(tid, rating){
-  var body = { id: loggedinuser._id, rating: rating };
-  var url = 'http://localhost:3000/api/tracks/' + tid + '/rate';
-  $.post(url, body, function( data ) {
-    // Do nothing
-  });
-}
 
 let term = "";
 $(document).on('submit', '#search-form', loadSearch);
@@ -271,15 +229,66 @@ function loadSCPlaylists(){
   });
 }
 
+function incPlayCount(track){
+  var tid = track.t._id;
+  var body = { id: loggedinuser._id };
+  var url = 'http://localhost:3000/api/tracks/' + tid + '/playcount';
+  $.post(url, body, function( data ) {
+    const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+    for (var i = 0; i < aScope.display.length; i++){
+      var track = aScope.display[i];
+      if (track.t._id == tid) {
+        track.r.properties.play_count++;
+        aScope.$apply();
+      }
+    }
+  });
+}
+
+$(document).on('change', '.stars > input', function() {
+  const tid = $(this).parent().parent().parent().parent().data('id');
+  const rating = $(this).val();
+  rateTrack(tid, rating);
+});
+
+function rateTrack(tid, rating){
+  var body = { id: loggedinuser._id, rating: rating };
+  var url = 'http://localhost:3000/api/tracks/' + tid + '/rate';
+  $.post(url, body, function( data ) {
+    // Do nothing
+  });
+}
+
 function openPurchaseUrl(track){
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
   var url = track.t.properties.purchase_url;
   if (url) {
     if (getOpt('autocheck')) {
-      aScope.toggleDownload({track});
+      const tid = track.t._id;
+      toggleDownload(tid);
     }
     window.open(url);
   }
+}
+
+$(document).on('change', '.downloaded > input', function() {
+  const tid = $(this).parent().parent().parent().data('id');
+  toggleDownload(tid);
+});
+
+function toggleDownload(tid){
+  var body = { id: loggedinuser._id };
+  var url = 'http://localhost:3000/api/tracks/' + tid + '/downloaded';
+  $.post(url, body, function( data ) {
+    const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
+    for (var i = 0; i < aScope.display.length; i++){
+      var track = aScope.display[i];
+      if (track.t._id == tid) {
+        track.r.properties.downloaded = !track.r.properties.downloaded;
+        aScope.$apply();
+      }
+    }
+  });
 }
 
 function searchTrackOn(track, url){
