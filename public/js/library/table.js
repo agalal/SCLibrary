@@ -56,18 +56,35 @@ $(document).on('click', '.col-header', function() {
   updateSort(sortBy);
 });
 
+// Variables used for sort functionality
+let sortType = 'r.properties.created_at';
+let sortReverse = true;
+
+$(document).arrive('.col-header', function() {
+  const selector = 'li[data-sort="' + sortType + '"] > .fa-caret-up';
+  $(selector).removeClass('hidden');
+});
+
 // Update sort variables
 function updateSort(sortBy){
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
 
+  $('.fa').addClass('hidden');
   resetPaging();
 
-  if (aScope.sortType == sortBy) {
-    aScope.sortReverse = !aScope.sortReverse;
+  if (sortType == sortBy) {
+    sortReverse = !sortReverse;
   } else {
-    aScope.sortReverse = false;
+    sortReverse = false
   }
-  aScope.sortType = sortBy;
+
+  if (sortReverse){
+    $('.col-header[data-sort="' + sortBy + '"] > .fa-caret-up').removeClass('hidden');
+  } else {
+    $('.col-header[data-sort="' + sortBy + '"] > .fa-caret-down').removeClass('hidden');
+  }
+
+  sortType = sortBy;
 
   getPage(function(tracks) {
     aScope.resetDisplay(tracks);

@@ -16,11 +16,6 @@ app.directive("library", [function (){
                 // Set context to default option (library)
                 scope.context = 'library';
 
-                // Variables used for sort and search functionality
-                scope.sortType = 'r.properties.created_at';
-                scope.sortReverse = true;
-                scope.searchTerm = '';
-
                 // Load song library, and channel/playlist names
                 loadLibrary();
                 loadChannels();

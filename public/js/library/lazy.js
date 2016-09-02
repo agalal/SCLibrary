@@ -62,9 +62,9 @@ function isElementInViewport (el) {
 function getPage(done) {
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
   var uid = loggedinuser._id;
-  let sort = aScope.sortType.substring(0,1) + aScope.sortType.substring(12)
+  let sort = sortType.substring(0,1) + sortType.substring(12)
   let reverse;
-  if (aScope.sortReverse) {
+  if (sortReverse) {
     reverse = "DESC";
   } else {
     reverse = "ASC";
