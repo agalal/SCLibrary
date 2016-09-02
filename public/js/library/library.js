@@ -292,20 +292,6 @@ function searchChannelOn(track, url){
   window.open(url + channel_name);
 }
 
-$(document).ready(function(){
-  $('#updatingMessage').hide();
-})
-
-function updateCollection(){
-  $('#updatingMessage').show();
-  var scuid = loggedinuser.properties.scuid
-  var url = "http://localhost:3000/api/users/" + scuid + "/collection/update";
-
-  $.post(url, function( data ) {
-    location.reload();
-  });
-}
-
 function parseForTags(track){
   var name = track.t.properties.name;
   var artist = track.c.properties.name;
