@@ -180,7 +180,7 @@ li.track-row:nth-of-type(2n+1), .sublist li:nth-of-type(2n+1) {
 
 li.track-row.curr-playing,
 li.track-row:hover {
-  background-color: #2980B9;
+  background-color: #00f7ff;
 }
 
 li.rating:hover .stars label{
