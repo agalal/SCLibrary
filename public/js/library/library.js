@@ -11,13 +11,8 @@ app.directive("library", [function (){
         scope: false,
         link: {
             pre: function(scope, element, attr) {
-
                 // Load song library, and channel/playlist names
                 loadLibrary();
-                loadChannels();
-                loadPlaylists();
-                loadSCPlaylists();
-
             },
             post: function(scope, element, attr) {
                 // Draggable handles for the columns

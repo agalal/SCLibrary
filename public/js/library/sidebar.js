@@ -2,23 +2,36 @@ let channels_visible = false;
 let scplaylists_visible = false;
 let playlists_visible = false;
 
-$(document).arrive("#channel-list", {"onceOnly": true}, function() {
+$(document).arrive(".side", {"onceOnly": true}, initializeSidebar);
+
+function initializeSidebar(){
+  // Load the channel, playlist, and soundcloud playlist lists
+  loadChannels();
+  loadPlaylists();
+  loadSCPlaylists();
+
+  // Attach the library, download, deleted, queue link handlers
+  $('#library-toggle').click(loadLibrary);
+  $('#download-toggle').click(loadDownloadList);
+  $('#deleted-toggle').click(loadDeleted);
+  $('#queue-link').click(displayQueue);
+
+  // Hide the channel, playlist, and scplaylist lists using jquery
   $('#channel-list').hide();
-  $('#channel-carat-up').hide();
-  $('#channel-toggle').click(toggleChannels);
-});
-
-$(document).arrive("#scplaylist-list", {"onceOnly": true}, function() {
   $('#scplaylist-list').hide();
-  $('#scplaylist-carat-up').hide();
-  $('#scplaylist-toggle').click(toggleSCPlaylists);
-});
-
-$(document).arrive('#playlist-list', {"onceOnly": true}, function() {
   $('#playlist-list').hide();
+
+  // Hide their up carat icons
+  $('#channel-carat-up').hide();
+  $('#scplaylist-carat-up').hide();
   $('#playlist-carat-up').hide();
+
+  // Attach the visibility toggle listeners
+  $('#channel-toggle').click(toggleChannels);
+  $('#scplaylist-toggle').click(toggleSCPlaylists);
   $('#playlist-toggle').click(togglePlaylists);
 
+  // Hide the add playlist form and attach the form/button listeners
   $('#add-playlist-form').hide();
   $('#add-playlist-input').hide();
   $('#add-playlist-btn').click(function(){
@@ -26,14 +39,12 @@ $(document).arrive('#playlist-list', {"onceOnly": true}, function() {
   });
   $('#add-playlist-form').submit(createPlaylist);
 
+  // Attach the delete playlist button handler
   attachDeletePlaylistHandler();
-});
+}
 
-$(document).arrive('#queue-link', function() {
-  $('#queue-link').click(displayQueue);
-});
-
-function attachDeletePlaylistHandler(){
+function attachDeletePlaylistHandler() {
+  // Attach the delete playlist button handler
   $('.delete-playlist').click(function(){
     const pid = $(this).data('id');
     deletePlaylist(pid);
@@ -80,12 +91,6 @@ function togglePlaylists(){
         $('#playlist-carat-down').show();
     }
 }
-
-$(document).arrive('#library-toggle', function() {
-  $('#library-toggle').click(loadLibrary);
-  $('#download-toggle').click(loadDownloadList);
-  $('#deleted-toggle').click(loadDeleted);
-});
 
 function buildChannelList(channels){
   var list = `<ul class="sublist">`;
@@ -135,8 +140,8 @@ function buildSCPlaylistList(playlists){
 
 // Format playlist name string
 function formatName(name){
-  if (name.length > 26) {
-    return (name.substring(0,26).trim() + "...");
+  if (name.length > 31) {
+    return (name.substring(0,31).trim() + "...");
   } else {
     return name;
   }
