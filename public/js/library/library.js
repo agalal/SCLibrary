@@ -289,7 +289,9 @@ function toggleDelete(tid){
 
 function searchTrackOn(track, url){
   let tags = parseForTags(track);
-  window.open(url + tags);
+  if (tags) {
+    window.open(url + tags);
+  }
 }
 
 function searchChannelOn(track, url){
@@ -298,8 +300,8 @@ function searchChannelOn(track, url){
 }
 
 function parseForTags(track){
-  var name = track.t.properties.name;
-  var artist = track.c.properties.name;
-  var search = name + " " + artist;
+  const name = track.t.properties.name;
+  const clean = name.replace(/[^0-9a-z]/gi, ' ').replace(/\s+/g,' ');;
+  const search = window.prompt("Search for...", clean);
   return search;
 }
