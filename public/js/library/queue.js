@@ -7,19 +7,19 @@ function fillAutoqueue(element) {
 
   autoqueue = [];
   var i = 0;
-  while (element.$$nextSibling && i < 20){
-    var t = element.$$nextSibling.track;
+  while (element.next() && i < 20){
+    var t = element.next().data('track');
     autoqueue.push(t);
-    element = element.$$nextSibling;
+    element = element.next();
     i++;
   }
 
   backqueue = [];
   var j = 0;
-  while (element2.$$prevSibling && j < 20){
-    var t = element2.$$prevSibling.track;
+  while (element2.prev() && j < 20){
+    var t = element2.prev().data('track');
     backqueue.push(t);
-    element2 = element2.$$prevSibling;
+    element2 = element2.prev();
     j++;
   }
 }

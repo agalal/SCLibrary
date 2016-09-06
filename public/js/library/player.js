@@ -1,4 +1,5 @@
 let duration;
+let currentlyPlaying;
 
 function playPause() {
   var showIcon = 250;
@@ -22,17 +23,24 @@ function playPause() {
 function nextSong() {
   if (queue.length > 0) {
     var track = queue.shift();
-  } else {
+  } else if (autoqueue[0]){
     var track = autoqueue.shift();
+  } else {
+    console.log("There are no more tracks in the autoqueue.");
+    break;
   }
-  backqueue.unshift(track);
+  backqueue.unshift(currentlyPlaying);
   loadSong(track);
 }
 
 function previousSong() {
-  var track = backqueue.shift();
-  queue.unshift(track);
-  loadSong(track);
+  if (backqueue[0]){
+    var track = backqueue.shift();
+    queue.unshift(currentlyPlaying);
+    loadSong(track);
+  } else {
+    console.log("There are no more tracks in the autoqueue.");
+  }
 }
 
 function randomSong() {
@@ -42,11 +50,11 @@ function randomSong() {
 }
 
 function fastForward(seconds) {
-  audioPlayer.currentTime = audioPlayer.currentTime + seconds;
+  audioPlayer.currentTime += seconds;
 }
 
 function rewind(seconds) {
-  audioPlayer.currentTime = audioPlayer.currentTime - seconds;
+  audioPlayer.currentTime -= seconds;
 }
 
 $('#artworkimg').click(playPause);
@@ -56,7 +64,6 @@ $('#back-div').click(function(e) {
   if (duration !== undefined){
     //how far you clicked into the div's width by percent. 1.0 is to cast to double
     let relativePercent = e.pageX / ($(window).width() * 1.0);
-    //console.log(relativePercent + '%');
     let seekPosition = Math.round(duration * relativePercent);
     bgScroll(true, seekPosition / 1000, duration / 1000);
     audioPlayer.currentTime = seekPosition / 1000.0;
@@ -65,7 +72,6 @@ $('#back-div').click(function(e) {
 });
 
 let audioPlayer = new Audio();
-//Just did this cause the other guy did it, seems like its kew
 audioPlayer.crossOrigin = "anonymous";
 audioPlayer.addEventListener("ended", autoplayNextSong);
 
@@ -82,6 +88,8 @@ function autoplayNextSong(){
 }
 
 function loadSong(track) {
+  currentlyPlaying = track;
+
   var trackid = track.t.properties.scid;
   var durationms = track.t.properties.duration;
   var artworkurl = track.t.properties.artwork_url;
