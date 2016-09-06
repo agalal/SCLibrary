@@ -179,15 +179,11 @@ li.track-row:nth-of-type(2n+1), .sublist li:nth-of-type(2n+1) {
 }
 
 li.track-row.cursor {
-  background-color: orange;
-}
-
-li.track-row:hover {
-  background-color: #00f7ff;
+  background-color: #00c7ff;
 }
 
 .list > li.track-row.curr-playing {
-  background-color: #00c7ff;
+  background-color: yellow;
 }
 
 li.rating:hover .stars label{

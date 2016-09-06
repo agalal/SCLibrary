@@ -80,16 +80,22 @@ document.body.onkeydown = document.body.onkeyup = function(e) {
 }
 
 $(document).on('click', '.track-row', function() {
-  const tid = $(this).data('id');
-  const url = $(this).data('url');
-  if (map[49]) {
-    openPurchaseUrl(tid, url);
+  const element = $(this);
+  const track = element.data('track');
+  if (element.hasClass('cursor')) {
+    trackClickListener(track, element);
+  } else {
+    $('.cursor').removeClass('cursor');
+    element.addClass('cursor');
   }
-})
+});
 
 function trackClickListener(track, element){
-  console.log(map[50]);
-  if (map[50]) {
+  const tid = element.data('id');
+  const p_url = element.data('url');
+  if (map[49]) {
+    openPurchaseUrl(tid, p_url);
+  } else if (map[50]) {
     // Search track on zippyshare
     const url = sites[0].url;
     searchTrackOn(track, url);

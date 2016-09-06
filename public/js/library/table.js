@@ -93,9 +93,7 @@ function updateSort(sortBy){
 
 function highlightRow(track){
   $('.curr-playing').removeClass('curr-playing');
-  $('.cursor').removeClass('cursor');
   $('*[data-id="' + track.t._id + '"]').addClass('curr-playing');
-  $('*[data-id="' + track.t._id + '"]').addClass('cursor');
 }
 
 function cursorUp(){

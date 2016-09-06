@@ -25,10 +25,6 @@ app.directive("library", [function (){
 // Library controller
 app.controller("LibraryCtlr", function($scope, $http){
 
-    $scope.playSong = function(track, element){
-        trackClickListener(track, element)
-    }
-
     // Convert time from ms to MM:SS
     $scope.convertTime = function(time){
       var min_sec = time / 1000 / 60;
@@ -284,7 +280,6 @@ function toggleDelete(tid){
 
 function searchTrackOn(track, url){
   var tags = parseForTags(track);
-  console.log(tags);
   if (tags) {
     window.open(url + tags);
   }
@@ -292,7 +287,10 @@ function searchTrackOn(track, url){
 
 function searchChannelOn(track, url){
   let channel_name = track.c.properties.name;
-  window.open(url + channel_name);
+  var tags = parseForTags(channel_name);
+  if (tags) {
+    window.open(url + tags);
+  }
 }
 
 function parseForTags(track){
@@ -311,6 +309,5 @@ function parseForTags(track){
                     .replace(/nest hq/gi,'')
                     .replace(/out now/gi,'')
                     .replace(/\s+/g,' ');
-  const search = window.prompt("Search for...", clean);
-  return search;
+  return window.prompt("Search for...", clean);
 }
