@@ -296,7 +296,20 @@ function searchChannelOn(track, url){
 
 function parseForTags(track){
   const name = track.t.properties.name;
-  const clean = name.replace(/[^0-9a-z]/gi, ' ').replace(/\s+/g,' ');;
+  const clean = name.replace(/[^0-9a-z]/gi, ' ')
+                    .replace(/free download/gi,'')
+                    .replace(/clip/gi,'')
+                    .replace(/premiere/gi,'')
+                    .replace(/preview/gi,'')
+                    .replace(/out free/gi,'')
+                    .replace(/exclusive/gi,'')
+                    .replace(/nest hq/gi,'')
+                    .replace(/original mix/gi,'')
+                    .replace(/release/gi,'')
+                    .replace(/coming soon/gi,'')
+                    .replace(/nest hq/gi,'')
+                    .replace(/out now/gi,'')
+                    .replace(/\s+/g,' ');
   const search = window.prompt("Search for...", clean);
   return search;
 }

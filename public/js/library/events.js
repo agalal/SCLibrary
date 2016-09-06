@@ -17,12 +17,17 @@ document.body.onkeydown = document.body.onkeyup = function(e) {
       inputFocus = false;
       $('#sidebar-toggle').click();
     }
-  } else {
-    // Otherwise, prevent the default functionality and execute the shortcut
-    if (map[27] && sidebarOpen) {
+  } else if (sidebarOpen) {
+    if (map[27]) {
       e.preventDefault();
       $('#sidebar-toggle').click();
     }
+  } else if (settingsOpen) {
+    if (map[27]) {
+      e.preventDefault();
+      $('#settings-toggle').click();
+    }
+  } else {
     if (map[32]) {
       e.preventDefault();
       playPause();
