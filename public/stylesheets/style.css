@@ -434,7 +434,7 @@ body #player {
     margin-top: 30px;
 }
 
-#player #top-wrapper a#toggle {
+#player #top-wrapper a#sidebar-toggle {
     height: 40px;
     width: 40px;
     background-image: url(../../images/sc_icons/menu.svg);
@@ -554,7 +554,7 @@ a#next-song {
     transform: rotate(180deg);
   }
 }
-a#toggle:hover,
+a#sidebar-toggle:hover,
 a#settings:hover,
 a#prev-song:hover,
 a#next-song:hover {

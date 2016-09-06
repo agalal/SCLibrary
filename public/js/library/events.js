@@ -1,17 +1,10 @@
 var map = [];
 
 let inputFocus = false;
-$(document).on('focus', '#search-bar', function() {
+$(document).on('focus', 'input', function() {
   inputFocus = true;
 });
-$(document).on('focusout', '#search-bar', function() {
-  inputFocus = false;
-});
-
-$(document).on('focus', '#add-playlist-input', function() {
-  inputFocus = true;
-});
-$(document).on('focusout', '#add-playlist-input', function() {
+$(document).on('focusout', 'input', function() {
   inputFocus = false;
 });
 
@@ -19,33 +12,51 @@ document.body.onkeydown = document.body.onkeyup = function(e) {
   e = e || event; // to deal with IE
   map[e.keyCode] = (e.type == 'keydown');
   if (inputFocus) {
-    // If search is in focus, don't do anything
-    return;
+    if (map[27]) {
+      e.preventDefault();
+      inputFocus = false;
+      $('#sidebar-toggle').click();
+    }
   } else {
     // Otherwise, prevent the default functionality and execute the shortcut
-    e.preventDefault();
+    if (map[27] && sidebarOpen) {
+      e.preventDefault();
+      $('#sidebar-toggle').click();
+    }
     if (map[32]) {
+      e.preventDefault();
       playPause();
     }
-    if (map[39] && map[16]) {
+    if (map[39] && map[16]) {       /* shift + right arrow */
+      e.preventDefault();
       fastForward(8);
     }
-    if (map[39] && !map[16]) {
+    if (map[39] && !map[16]) {      /* right arrow */
+      e.preventDefault();
       fastForward(.5);
     }
-    if (map[37] && map[16]) {
+    if (map[37] && map[16]) {       /* shift + left arrow */
+      e.preventDefault();
       rewind(8);
     }
-    if (map[37] && !map[16]) {
+    if (map[37] && !map[16]) {      /* left arrow */
+      e.preventDefault();
       rewind(.5);
     }
-    if (map[188]) {
+    if (map[77] || map[192]) {      /* M or `*/
+      e.preventDefault();
+      $('#sidebar-toggle').click();
+    }
+    if (map[188]) {                 /* , */
+      e.preventDefault();
       previousSong();
     }
-    if (map[190]) {
+    if (map[190]) {                 /* . */
+      e.preventDefault();
       nextSong();
     }
-    if (map[191]) {
+    if (map[191]) {                 /* / */
+      e.preventDefault();
       randomSong();
     }
   }

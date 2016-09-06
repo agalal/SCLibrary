@@ -2,6 +2,14 @@ let channels_visible = false;
 let scplaylists_visible = false;
 let playlists_visible = false;
 
+let sidebarOpen = false;
+$(document).on('click', '#sidebar-toggle', function() {
+  if (!sidebarOpen) {
+    $('#search-bar').focus();
+  }
+  sidebarOpen = !sidebarOpen;
+});
+
 $(document).arrive(".side", {"onceOnly": true}, initializeSidebar);
 
 function initializeSidebar(){
