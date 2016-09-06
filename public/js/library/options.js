@@ -1,3 +1,8 @@
+let settingsOpen = false;
+$(document).on('click', '#settings-toggle', function() {
+  settingsOpen = !settingsOpen;
+});
+
 var sites = [
   { url: 'http://www.zippysharermp3.com/search/?q=',
     name: 'ZippyShare'
@@ -38,8 +43,8 @@ function toggleLib() {
 }
 //
 // function toggleSet() {
-//   if (!toggledSet) $('#settings').addClass('toggled');
-//   else $('#settings').removeClass('toggled');
+//   if (!toggledSet) $('#settings-toggle').addClass('toggled');
+//   else $('#settings-toggle').removeClass('toggled');
 // }
 
 

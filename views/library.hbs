@@ -11,6 +11,8 @@
             </div>
             <div class="modal-body">
                 <form role="form">
+
+                    <a class="btn btn-default pull-right" href="/logout/">Logout</a>
                     <p>
                         <a href="javascript:toggleAuto();" id="autoplay-toggle" class="toggled"></a><a href="javascript:toggleAuto();"> Autoplay</a>
                     </p>
@@ -59,11 +61,11 @@
     <!-- Top wrapper area, contains toggle/setting buttons, genres -->
 
     <div id="top-wrapper">
-        <a class="pull-left" id="toggle" data-toggle="collapse" data-target="#left-side"></a>
+        <a class="pull-left" id="sidebar-toggle" data-toggle="collapse" data-target="#left-side"></a>
         <ol class="genre-wrapper">
             <li class="genre-btn"></li>
         </ol>
-        <a class="pull-right" id="settings" data-toggle="modal" href="#set-modal"></a>
+        <a class="pull-right" id="settings-toggle" data-toggle="modal" href="#set-modal"></a>
     </div>
 
     <!-- Main wrapper area, contains artwork, title, channel, and prev/next buttons -->

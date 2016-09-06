@@ -434,7 +434,7 @@ body #player {
     margin-top: 30px;
 }
 
-#player #top-wrapper a#toggle {
+#player #top-wrapper a#sidebar-toggle {
     height: 40px;
     width: 40px;
     background-image: url(../../images/sc_icons/menu.svg);
@@ -442,7 +442,7 @@ body #player {
     transition: opacity .5s ease;
 }
 
-#player #top-wrapper a#settings {
+#player #top-wrapper a#settings-toggle {
     height: 40px;
     width: 40px;
     background-image: url(../../images/sc_icons/gear.svg);
@@ -459,7 +459,7 @@ div#top-wrapper {
     z-index: 39;
 }
 
-a#settings {}
+a#settings-toggle {}
 
 ol.genre-wrapper {
     max-width: calc(100vw - 100px);
@@ -554,8 +554,8 @@ a#next-song {
     transform: rotate(180deg);
   }
 }
-a#toggle:hover,
-a#settings:hover,
+a#sidebar-toggle:hover,
+a#settings-toggle:hover,
 a#prev-song:hover,
 a#next-song:hover {
   opacity: 0.8 !important;
@@ -563,16 +563,16 @@ a#next-song:hover {
   transform-origin: center;
   transition: all .5s ease;
 }
-a#settings:hover,
+a#settings-toggle:hover,
 a#setting:active {
   animation: spin 1s ease both;
 }
-#settings.toggled + #settings-popup {
+#settings-toggle.toggled + #settings-toggle-popup {
   transform: scale(1.0,1.0);
   opacity: 1.0;
 }
 
-div#settings-popup {
+div#settings-toggle-popup {
   transform-origin: top;
   opacity: 0.0;
   transform: scale(1.0,0.0);
@@ -586,7 +586,7 @@ div#settings-popup {
   border-radius: 7px;
   border-top-right-radius: 0px;
 }
-#settings-popup #top-fake {
+#settings-toggle-popup #top-fake {
   background-image: url(../../images/bk-fake.svg);
   background-repeat: no-repeat;
   position: absolute;
@@ -596,13 +596,13 @@ div#settings-popup {
   background-position: right;
   margin-left: -10px;
 }
-#settings-popup ul {
+#settings-toggle-popup ul {
   list-style: none;
   padding: 0;
   display: inline-block;
   width: 100%;
 }
-#settings-popup ul > li {
+#settings-toggle-popup ul > li {
   display: inline-block;
   width: 100%;
   margin: 7px 0;
