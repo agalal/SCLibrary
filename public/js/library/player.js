@@ -21,19 +21,26 @@ function playPause() {
 }
 
 function nextSong() {
-  backqueue.unshift(currentlyPlaying);
   if (queue.length > 0) {
     var track = queue.shift();
-  } else {
+  } else if (autoqueue[0]){
     var track = autoqueue.shift();
+  } else {
+    console.log("There are no more tracks in the autoqueue.");
+    break;
   }
+  backqueue.unshift(currentlyPlaying);
   loadSong(track);
 }
 
 function previousSong() {
-  queue.unshift(currentlyPlaying);
-  var track = backqueue.shift();
-  loadSong(track);
+  if (backqueue[0]){
+    var track = backqueue.shift();
+    queue.unshift(currentlyPlaying);
+    loadSong(track);
+  } else {
+    console.log("There are no more tracks in the autoqueue.");
+  }
 }
 
 function randomSong() {
