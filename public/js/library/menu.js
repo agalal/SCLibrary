@@ -32,7 +32,7 @@ function updateMenu(){
           url: url,
           type: 'DELETE',
           success: function(){
-            loadPlaylist(pid);
+            loadContext('playlist');
           }
         });
       }
@@ -89,8 +89,8 @@ function updateMenu(){
       name: "Tracks by channel",
       callback: function(key, opt){
         var track = JSON.parse(opt.$trigger[0].dataset.track);
-        var cid = track.c._id;
-        loadChannel(cid);
+        curr_cid = track.c._id;
+        loadContext('channel');
       }
     }
 

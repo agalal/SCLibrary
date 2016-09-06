@@ -12,7 +12,7 @@ app.directive("library", [function (){
         link: {
             pre: function(scope, element, attr) {
                 // Load song library, and channel/playlist names
-                loadLibrary();
+                loadContext('library');
             },
             post: function(scope, element, attr) {
                 // Draggable handles for the columns
@@ -44,10 +44,6 @@ app.controller("LibraryCtlr", function($scope, $http){
       updateMenu();
     }
 
-    $scope.resetDisplay = function(tracks){
-      $scope.updateDisplay(tracks);
-    }
-
     $scope.addToDisplay = function(tracks){
       $scope.updateDisplay($scope.display.concat(tracks));
     }
@@ -64,31 +60,34 @@ app.controller("LibraryCtlr", function($scope, $http){
 });
 
 let term = "";
-$(document).on('submit', '#search-form', loadSearch);
+$(document).on('submit', '#search-form', function() {
+  loadContext('search');
+});
 
 function clearSearch() {
   term = "";
   $('#search-bar').val("");
 }
 
-function loadSearch() {
+function loadContext(context) {
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-  resetPaging();
-  term = $('#search-bar').val();
-  getPage(function(tracks) {
-    aScope.resetDisplay(tracks);
-  });
-}
 
-// Populate the list of songs
-function loadLibrary(){
-  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-  curr_context = 'library';
   resetPaging();
-  clearSearch();
-  getPage(function(tracks) {
-    aScope.resetDisplay(tracks);
-  });
+
+  if (context === 'search') {
+    term = $('#search-bar').val();
+  } else {
+    curr_context = context;
+    clearSearch();
+  }
+
+  if (context === 'queue') {
+    aScope.updateDisplay(queue);
+  } else {
+    getPage(function(tracks) {
+      aScope.updateDisplay(tracks);
+    });
+  }
 }
 
 // Populate the list of playlists
@@ -102,18 +101,6 @@ function loadChannels(){
 
 let curr_pid, curr_cid, curr_spid;
 
-
-function loadChannel(cid){
-  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-  curr_context = 'channel';
-  curr_cid = cid;
-  resetPaging();
-  clearSearch();
-  getPage(function(tracks) {
-    aScope.resetDisplay(tracks);
-  });
-}
-
 // Populate the list of playlists
 function loadPlaylists(){
   var uid = loggedinuser._id;
@@ -123,18 +110,6 @@ function loadPlaylists(){
     buildPlaylistList(data);
     buildAddToPlaylistMenu(data);
     updateMenu();
-  });
-}
-
-// Update the view with tracks from the selected playlist.
-function loadPlaylist(pid){
-  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-  curr_context = 'playlist';
-  curr_pid = pid;
-  resetPaging();
-  clearSearch();
-  getPage(function(tracks) {
-    aScope.resetDisplay(tracks);
   });
 }
 
@@ -162,24 +137,12 @@ function deletePlaylist(pid){
       type: 'DELETE',
       success: function(){
         if (curr_pid == pid){
-          loadLibrary();
+          loadContext('library');
         }
         loadPlaylists();
       }
     });
   }
-}
-
-// Update the view with tracks from the selected playlist.
-function loadSCPlaylist(spid){
-  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-  curr_context = 'scplaylist';
-  curr_spid = spid;
-  resetPaging();
-  clearSearch();
-  getPage(function(tracks) {
-    aScope.resetDisplay(tracks);
-  });
 }
 
 // Populate the list of playlists
@@ -188,26 +151,6 @@ function loadSCPlaylists(){
   var url = 'http://localhost:3000/api/users/' + uid + '/scplaylists/';
   $.get(url, function(data){
     buildSCPlaylistList(data);
-  });
-}
-
-function loadDeleted(){
-  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-  curr_context = 'deleted';
-  resetPaging();
-  clearSearch();
-  getPage(function(tracks) {
-    aScope.resetDisplay(tracks);
-  });
-}
-
-function loadDownloadList(){
-  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-  curr_context = 'download';
-  resetPaging();
-  clearSearch();
-  getPage(function(tracks) {
-    aScope.resetDisplay(tracks);
   });
 }
 

@@ -19,10 +19,10 @@ function initializeSidebar(){
   loadSCPlaylists();
 
   // Attach the library, download, deleted, queue link handlers
-  $('#library-toggle').click(loadLibrary);
-  $('#download-toggle').click(loadDownloadList);
-  $('#deleted-toggle').click(loadDeleted);
-  $('#queue-link').click(displayQueue);
+  $('#library-toggle').click(function() { loadContext('library'); });
+  $('#download-toggle').click(function() { loadContext('download'); });
+  $('#deleted-toggle').click(function() { loadContext('deleted'); });
+  $('#queue-link').click(function() { loadContext('queue'); });
 
   // Hide the channel, playlist, and scplaylist lists using jquery
   $('#channel-list').hide();
@@ -111,7 +111,8 @@ function buildChannelList(channels){
   list += "</ul>"
   document.getElementById('channel-list').innerHTML = list;
   $('.channel-name').click(function() {
-    loadChannel($(this).data('id'));
+    curr_cid = $(this).data('id');
+    loadContext('channel');
   });
 }
 
@@ -126,7 +127,8 @@ function buildPlaylistList(playlists){
   list += '</ul>'
   document.getElementById('playlist-list').innerHTML = list;
   $('.playlist-name').click(function() {
-    loadPlaylist($(this).data('id'));
+    curr_pid = $(this).data('id');
+    loadContext('playlist');
   });
   attachDeletePlaylistHandler();
 }
@@ -142,7 +144,8 @@ function buildSCPlaylistList(playlists){
   list += '</ul>';
   document.getElementById('scplaylist-list').innerHTML = list;
   $('.scplaylist-name').click(function() {
-    loadSCPlaylist($(this).data('id'));
+    curr_spid = $(this).data('id');
+    loadContext('scplaylist');
   });
 }
 

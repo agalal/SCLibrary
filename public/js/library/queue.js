@@ -24,12 +24,6 @@ function fillAutoqueue(element) {
   }
 }
 
-function displayQueue(){
-    const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-    curr_context = 'queue';
-    aScope.updateDisplay(queue);
-}
-
 function deleteFromQueue(tid){
   const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
   for (var i = 0; i < queue.length; i++){

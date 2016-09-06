@@ -87,7 +87,7 @@ function updateSort(sortBy){
   sortType = sortBy;
 
   getPage(function(tracks) {
-    aScope.resetDisplay(tracks);
+    aScope.updateDisplay(tracks);
   });
 }
 
