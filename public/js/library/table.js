@@ -91,10 +91,25 @@ function updateSort(sortBy){
   });
 }
 
-
 function highlightRow(track){
   $('.curr-playing').removeClass('curr-playing');
+  $('.cursor').removeClass('cursor');
   $('*[data-id="' + track.t._id + '"]').addClass('curr-playing');
+  $('*[data-id="' + track.t._id + '"]').addClass('cursor');
+}
+
+function cursorUp(){
+  var current = $('.cursor');
+  var next = current.prev();
+  current.removeClass('cursor');
+  next.addClass('cursor');
+}
+
+function cursorDown(){
+  var current = $('.cursor');
+  var next = current.next();
+  current.removeClass('cursor');
+  next.addClass('cursor');
 }
 
 // used to track resize direction

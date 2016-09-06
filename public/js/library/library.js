@@ -283,7 +283,8 @@ function toggleDelete(tid){
 }
 
 function searchTrackOn(track, url){
-  let tags = parseForTags(track);
+  var tags = parseForTags(track);
+  console.log(tags);
   if (tags) {
     window.open(url + tags);
   }
