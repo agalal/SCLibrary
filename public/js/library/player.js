@@ -1,4 +1,5 @@
 let duration;
+let currentlyPlaying;
 
 function playPause() {
   var showIcon = 250;
@@ -20,18 +21,18 @@ function playPause() {
 }
 
 function nextSong() {
+  backqueue.unshift(currentlyPlaying);
   if (queue.length > 0) {
     var track = queue.shift();
   } else {
     var track = autoqueue.shift();
   }
-  backqueue.unshift(track);
   loadSong(track);
 }
 
 function previousSong() {
+  queue.unshift(currentlyPlaying);
   var track = backqueue.shift();
-  queue.unshift(track);
   loadSong(track);
 }
 
@@ -82,6 +83,8 @@ function autoplayNextSong(){
 }
 
 function loadSong(track) {
+  currentlyPlaying = track;
+
   var trackid = track.t.properties.scid;
   var durationms = track.t.properties.duration;
   var artworkurl = track.t.properties.artwork_url;
