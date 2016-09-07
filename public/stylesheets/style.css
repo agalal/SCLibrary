@@ -182,10 +182,6 @@ li.track-row.cursor {
   background-color: #00c7ff;
 }
 
-.list > li.track-row.curr-playing {
-  background-color: yellow;
-}
-
 li.rating:hover .stars label{
   opacity: 1.0;
   transform: scale(1.0,1.0);
