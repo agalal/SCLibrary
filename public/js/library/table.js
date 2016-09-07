@@ -91,11 +91,6 @@ function updateSort(sortBy){
   });
 }
 
-function highlightRow(track){
-  $('.curr-playing').removeClass('curr-playing');
-  $('*[data-id="' + track.t._id + '"]').addClass('curr-playing');
-}
-
 function cursorUp(){
   var current = $('.cursor');
   var next = current.prev();

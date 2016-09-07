@@ -27,9 +27,10 @@ function nextSong() {
     var track = autoqueue.shift();
   } else {
     console.log("There are no more tracks in the autoqueue.");
-    break;
+    return;
   }
   backqueue.unshift(currentlyPlaying);
+  cursorDown();
   loadSong(track);
 }
 
@@ -37,6 +38,7 @@ function previousSong() {
   if (backqueue[0]){
     var track = backqueue.shift();
     queue.unshift(currentlyPlaying);
+    cursorUp();
     loadSong(track);
   } else {
     console.log("There are no more tracks in the autoqueue.");
@@ -46,6 +48,7 @@ function previousSong() {
 function randomSong() {
   const tracks = $('.track-row');
   const index = Math.floor((Math.random() * tracks.length) + 0);
+  $(tracks[index]).click();
   $(tracks[index]).click();
 }
 
@@ -96,7 +99,6 @@ function loadSong(track) {
   var waveformurl = track.t.properties.waveform_url;
 
   incPlayCount(track);
-  highlightRow(track);
 
   audioPlayer.src = 'http://api.soundcloud.com/tracks/' + trackid + '/stream' + '?client_id=a3629314a336fd5ed371ff0f3e46d4d0';
   //console.log(audioPlayer.src);

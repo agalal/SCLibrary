@@ -221,9 +221,17 @@ ul.list li > ol {
 }
 ul.header li > ol > li,
 ul.list li > ol > li {
-    width: 120px;
+    width: 90px;
     margin: 0;
 }
+
+ul.header li > ol > li.title,
+ul.list li > ol > li.title {
+    width: 400px;
+    margin: 0;
+}
+
+
 ul.list li > ol > li {
     border-right: 1px solid #e3e3e3;
     white-space: nowrap;
