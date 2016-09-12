@@ -223,9 +223,11 @@ function toggleDelete(tid){
 
 function searchTrackOn(track, url){
   var tags = parseForTags(track);
-  if (tags) {
-    window.open(url + tags);
-  }
+  alertify.prompt('Search for:', tags, function (resp) {
+    if (resp) {
+      window.open(url + resp);
+    }
+  });
 }
 
 function searchChannelOn(track, url){
@@ -252,5 +254,5 @@ function parseForTags(track){
                     .replace(/nest hq/gi,'')
                     .replace(/out now/gi,'')
                     .replace(/\s+/g,' ');
-  return window.prompt("Search for...", clean);
+  return clean;
 }
