@@ -71,7 +71,8 @@ function updateMenu(){
     }
   } else {
     items.delete_library = {
-      name: "Delete from library",
+      name: "<span class=text-danger>Delete from library</span>",
+      isHtmlName: true,
       callback: function(key, opt){
         var track = JSON.parse(opt.$trigger[0].dataset.track);
         const tid = track.t._id;

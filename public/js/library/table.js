@@ -1,55 +1,4 @@
-let columns = [
-  {
-    name: 'channel',
-    index: 0,
-    width: 120
-  },
-  {
-    name: 'title',
-    index: 1,
-    width: 120
-  },
-  {
-    name: 'date',
-    index: 2,
-    width: 120
-  },
-  {
-    name: 'genre',
-    index: 3,
-    width: 120
-  },
-  {
-    name: 'duration',
-    index: 4,
-    width: 120
-  },
-  {
-    name: 'linked',
-    index: 5,
-    width: 120
-  },
-  {
-    name: 'playcount',
-    index: 6,
-    width: 30
-  },
-  {
-    name: 'rating',
-    index: 7,
-    width: 90
-  },
-  {
-    name: 'domain',
-    index: 8,
-    width: 120
-  },
-  {
-    name: 'downloaded',
-    index: 9,
-    width: 30
-  }
-];
+/*jshint esversion: 6 */
 
 $(document).on('click', '.col-header', function() {
   const sortBy = $(this).data('sort');
@@ -75,7 +24,7 @@ function updateSort(sortBy){
   if (sortType == sortBy) {
     sortReverse = !sortReverse;
   } else {
-    sortReverse = false
+    sortReverse = false;
   }
 
   if (sortReverse){
@@ -105,80 +54,37 @@ function cursorDown(){
   next.addClass('cursor');
 }
 
-// used to track resize direction
-var left = false;
-
-function snapToPercents(parentEl) {
-    // resize col's below
-    $(eachC).each(function() {
-      if (j == colCt - 1) {
-        $(this).css('width', catchAll.toString() + "%");
-      } else {
-        $(this).css('width', perW.toString() + "%");
-      }
-    });
-    j++;
-}
-
 function attachColHandles() {
-  var cols = getOpt('columns');
+  // initialize our columns
+  columns.init();
   $('.col-sizeable').each(function() {
-    // multiple loops and class vs id
     $(this).children('li').each(function() {
-      // elements with class matching col header
-      // are resized in stop fn
-      var thisClass = "." + $(this).find('a').text().toLowerCase();
-      var handles = 'se';
+      // iterating through each header title li
+
+
 
       // make each col-header resizable
       $(this).resizable({
-        handles: handles,
+        handles: 'se',
         autoHide: true,
         minHeight: 30,
         maxHeight: 30,
-
         resize: function(event, ui) {
-          // hack to determine resize dir
-          var srcEl = event.originalEvent.originalEvent.path[0].className;
-          var dragD = srcEl.replace('ui-resizable-handle ui-resizable-', '');
-          var dragC = srcEl.replace('ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-', '');
+          var resClass = ui.element.find('a').attr('data-also-resize');
+          console.log('resizing ' + resClass + ' to ' + ui.size.width + ' px');
+          columns.set(resClass, ui.size.width);
+        },
+        stop: function () {
 
-          // toggle direction global
-          // as dragD/C value is somewhat unpredictable
-          if (dragD == 'sw' || dragC == 'sw') {
-            left = true;
-          } else if (dragD == 'se' || dragC == 'sw') {
-            left = false;
-          }
-
-          var headerW = $(this).parent().width();
-          var cumW;
-          var colCount;
-          // behaviour varies by drag side
-          if (!left) {
-          } else {
-            // left-side drag
-          }
         }
       });
 
+      // TODO move target of resize click functionality since below fn didn't work
       // stop resizing from causing sort
-      $('ui-resizable-handle').click(function (event) {
-        event.stopPropogation();
-      });
+      // $('ui-resizable-handle').click(function (event) {
+      //   event.stopPropogation();
+      // });
 
-      // bind a function to update lower widths
-      $(this).on('resizestop', function() {
-        left = false; // reset global hack for dir
-        //snapToPercents($(this).parent());
-        console.log($(this).find('a').attr('also-resize') + ' : ' + $(this).css('width'));
-        updateChildren($(this).find('a').attr('also-resize'), $(this).css('width'));
-      });
     });
   });
-}
-
-function updateChildren(childClass, w) {
-  // resize col's below by class
-  $('.' + childClass).css('width', w);
 }
