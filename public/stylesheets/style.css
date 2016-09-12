@@ -219,7 +219,7 @@ ul.list li > ol {
     display: inline-block;
     white-space: nowrap;
 }
-ul.header li > ol > li,
+/* ul.header li > ol > li,
 ul.list li > ol > li {
     width: 90px;
     margin: 0;
@@ -229,7 +229,7 @@ ul.header li > ol > li.title,
 ul.list li > ol > li.title {
     width: 400px;
     margin: 0;
-}
+} */
 
 
 ul.list li > ol > li {
