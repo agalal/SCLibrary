@@ -1,3 +1,4 @@
+// jshint esversion: 6
 let playlist_menu, rating_menu, search_track_menu, search_channel_menu;
 
 function updateMenu(){
@@ -18,7 +19,7 @@ function updateMenu(){
   items.add_playlist = {
     name: "Add to playlist...",
     items: playlist_menu
-  }
+  };
 
   // Include delete_playlist option when in a playlist context
   if (context == 'playlist'){
@@ -27,12 +28,14 @@ function updateMenu(){
       callback: function(key, opt){
         var pid = curr_pid;
         var tid = JSON.parse(opt.$trigger[0].dataset.track).t._id;
+        var tname = JSON.parse(opt.$trigger[0].dataset.track).t.properties.name;
         var url = 'http://localhost:3000/api/playlists/' + pid + '/remove/' + tid;
         $.ajax({
           url: url,
           type: 'DELETE',
           success: function(){
             loadContext('playlist');
+            alertify.quick('danger','Removed:', tname);
           }
         });
       }
@@ -46,7 +49,9 @@ function updateMenu(){
       callback: function(key, opt){
         var track = JSON.parse(opt.$trigger[0].dataset.track);
         const tid = track.t._id;
+        const tname = track.t.properties.name;
         deleteFromQueue(tid);
+        alertify.quick('danger', 'dequeued:', tname );
       }
     };
   }
@@ -56,8 +61,9 @@ function updateMenu(){
       callback: function(key, opt){
         var track = JSON.parse(opt.$trigger[0].dataset.track);
         queue.push(track);
+        alertify.quick('info','queued:', track.t.properties.name);
       }
-    }
+    };
   }
 
   if (context == 'deleted') {
@@ -66,9 +72,11 @@ function updateMenu(){
       callback: function(key, opt){
         var track = JSON.parse(opt.$trigger[0].dataset.track);
         const tid = track.t._id;
+        const tname = track.t.properties.name;
         toggleDelete(tid);
+        alertify.quick('info','undeleted:', tname);
       }
-    }
+    };
   } else {
     items.delete_library = {
       name: "<span class=text-danger>Delete from library</span>",
@@ -76,7 +84,9 @@ function updateMenu(){
       callback: function(key, opt){
         var track = JSON.parse(opt.$trigger[0].dataset.track);
         const tid = track.t._id;
+        const tname = track.t.properties.name;
         toggleDelete(tid);
+        alertify.quick('danger', 'deleted:', tname);
       }
     }
   }
@@ -164,9 +174,10 @@ function buildAddToPlaylistMenu(result){
         var url = 'http://localhost:3000/api/playlists/' + pid + '/add/' + tid;
         $.post(url, {}, function( data ) {
           console.log(data);
+          alertify.quick('success','added to playlist', '');
         });
       }
-    }
+    };
     playlist_menu['playlist' + i] = next;
   }
 }

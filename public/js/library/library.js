@@ -129,20 +129,27 @@ function createPlaylist(){
 }
 
 // Delete playlist with permission from the user.
-function deletePlaylist(pid){
-  if (confirm("Are you sure you want to delete?") == true){
-    var url = 'http://localhost:3000/api/playlists/' + pid;
-    $.ajax({
-      url: url,
-      type: 'DELETE',
-      success: function(){
-        if (curr_pid == pid){
-          loadContext('library');
+function deletePlaylist(pid, name){
+  alertify.alert("Are you sure you want to delete " + name + "?",
+    // success fn
+    function () {
+      var url = 'http://localhost:3000/api/playlists/' + pid;
+      $.ajax({
+        url: url,
+        type: 'DELETE',
+        success: function(){
+          if (curr_pid == pid){
+            loadContext('library');
+          }
+          loadPlaylists();
+          alertify.quick('danger', 'Deleted:', name);
         }
-        loadPlaylists();
-      }
+      });
+    },
+    // failure fn
+    function () {
+      alertify.quick('info', 'Delete Cancelled', '');
     });
-  }
 }
 
 // Populate the list of playlists

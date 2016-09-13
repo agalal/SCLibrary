@@ -55,7 +55,11 @@ function attachDeletePlaylistHandler() {
   // Attach the delete playlist button handler
   $('.delete-playlist').click(function(){
     const pid = $(this).data('id');
-    deletePlaylist(pid);
+    var name = $(this).contents().filter(function() {
+      return this.nodeType == 3;
+    }).text();
+
+    deletePlaylist(pid, name);
   });
 }
 

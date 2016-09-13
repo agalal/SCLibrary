@@ -888,3 +888,11 @@ li.rating {
 ul.sublist {
     padding: 0;
 }
+
+.bb-alert {
+    position: fixed;
+    bottom: 0;
+    right: 45px;
+    font-size: 1.2em;
+    z-index: 2000;
+}
