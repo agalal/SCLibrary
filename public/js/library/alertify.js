@@ -4,7 +4,6 @@ var alertify = (function(bootbox) {
         title: text,
         callback: function(result) {
           if (result === null) {
-            Example.show("Prompt dismissed");
           } else {
             callback(result);
           }
