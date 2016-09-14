@@ -6,32 +6,7 @@
 @import url(https://fonts.googleapis.com/css?family=Montserrat);
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css);
 
-/*Table js solution CSS*/
-
-/*@import url(http://www.ita.es/jquery/jquery.kiketable.colsizable.css);*/
-
-body {
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-    margin: 0;
-    background-color: #232323;
-}
-a.btn, button, input {
-  outline: none !important;
-}
-aside {
-    /*margin-left: -50px;
-    margin-right: -50px;*/
-    background-color: #232323;
-    padding: 12px 30px;
-    color: #e3e3e3;
-}
-
 /*End bootstrap delete*/
-
-/*Hide all scrollbars */
-*::-webkit-scrollbar {
-    width: 0 !important;
-}
 
 a.btn:hover,
 a.btn:focus {
@@ -51,39 +26,13 @@ a.btn {
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
 }
-.ui-shadow {
-    box-shadow: 2px 2px 3px rgba(23, 23, 23, 0.4);
-}
-h1.logo + small {
-    font-family: 'Source Code Pro', sans-serif;
-    color: #555;
-}
-h1.logo {
-    font-family: 'Source Code Pro', sans-serif;
-    font-size: 150%;
-    color: #232323;
-    margin-left: 15px;
-}
-.top-wrapper a.btn {
-    top: 14px;
-    right: 15px;
-}
-a {
-    color: #00B7FF;
-}
+
 a.btn.btn-search {
     width: 30px;
     height: 30px;
     margin-right: 7px;
 }
-.search-wrapper,
-.user-wrapper {
-    display: inline-block;
-    width: 100%;
-    height: auto;
-    TEXT-ALIGN: center;
-    padding: 6px;
-}
+
 input.search:focus {
     border: 1px solid #afafaf;
     box-shadow: 1px 2px 3px rgba(23, 23, 23, 0.4);
@@ -811,67 +760,9 @@ library#libraryCtlrDiv {
     margin: 7px;
 }
 
-li
-
 .stars {
     display: inline;
     max-height: 100%;
-}
-
-/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t
-   follow these rules. Every browser that supports :checked also supports :not(), so
-   it doesn’t make the test unnecessarily selective */
-.stars:not(:checked) > input {
-    position:absolute;
-    top:-9999px;
-    clip:rect(0,0,0,0);
-    display: none;
-}
-
-.stars:not(:checked) > label {
-    float:right;
-    width:1em;
-    padding: .2em .1em;
-    overflow:hidden;
-    white-space:nowrap;
-    cursor:pointer;
-    font-size: 100%;
-    line-height:1.2;
-    color:#ddd;
-}
-
-.stars:not(:checked) > label:before {
-    content: '★ ';
-}
-
-.stars > input:checked ~ label {
-    color: #888;
-}
-
-.stars:not(:checked) > label:hover,
-.stars:not(:checked) > label:hover ~ label {
-    color: #888;
-}
-
-.stars > input:checked + label:hover,
-.stars > input:checked + label:hover ~ label,
-.stars > input:checked ~ label:hover,
-.stars > input:checked ~ label:hover ~ label,
-.stars > label:hover ~ input:checked ~ label {
-    color: #888;
-}
-
-.stars > label:active {
-    position:relative;
-    text-shadow: 1px 2;
-}
-);
-}
-
-.stars > label:active {
-    position:relative;
-    top:2px;
-    left:2px;
 }
 
 
@@ -887,50 +778,4 @@ li.rating {
 
 ul.sublist {
     padding: 0;
-}
-
-.bb-alert {
-    position: fixed;
-    bottom: 0;
-    right: 45px;
-    font-size: 1.2em;
-    z-index: 2000;
-}
-
-/*custom checkbox*/
-.checkbox-custom {
-    opacity: 0;
-    position: absolute;
-}
-
-.checkbox-custom, .checkbox-custom-label{
-    display: inline-block;
-    vertical-align: middle;
-    margin: 5px;
-    cursor: pointer;
-}
-
-.checkbox-custom-label, .radio-custom-label {
-    position: relative;
-}
-
-.checkbox-custom + .checkbox-custom-label:before {
-    content: '';
-    background: #fff;
-    border: 2px solid #ddd;
-    display: inline-block;
-    vertical-align: middle;
-    width: 20px;
-    height: 20px;
-    padding: 2px;
-    margin-right: 10px;
-    text-align: center;
-    border-radius: 50%;
-}
-
-.checkbox-custom:checked + .checkbox-custom-label:before {
-    content: "\f00c";
-    font-family: 'FontAwesome';
-    background: rebeccapurple;
-    color: #fff;
 }
