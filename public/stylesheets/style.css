@@ -171,10 +171,10 @@ a.dark {
 
 /*alternating colors*/
 
-li.track-row:nth-of-type(2n), .sublist li:nth-of-type(2n) {
+.sublist li:nth-of-type(2n) {
     background-color: #F6F6F6;
 }
-li.track-row:nth-of-type(2n+1), .sublist li:nth-of-type(2n+1) {
+.sublist li:nth-of-type(2n+1) {
     background-color: #fff;
 }
 
@@ -895,4 +895,42 @@ ul.sublist {
     right: 45px;
     font-size: 1.2em;
     z-index: 2000;
+}
+
+/*custom checkbox*/
+.checkbox-custom {
+    opacity: 0;
+    position: absolute;
+}
+
+.checkbox-custom, .checkbox-custom-label{
+    display: inline-block;
+    vertical-align: middle;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.checkbox-custom-label, .radio-custom-label {
+    position: relative;
+}
+
+.checkbox-custom + .checkbox-custom-label:before {
+    content: '';
+    background: #fff;
+    border: 2px solid #ddd;
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    padding: 2px;
+    margin-right: 10px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.checkbox-custom:checked + .checkbox-custom-label:before {
+    content: "\f00c";
+    font-family: 'FontAwesome';
+    background: rebeccapurple;
+    color: #fff;
 }

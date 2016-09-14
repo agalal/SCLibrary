@@ -226,6 +226,7 @@ function toggleDelete(tid){
   $.post(url, body, function( data ) {
     $('.track-row[data-id="' + tid + '"]').hide();
   });
+  columns.restripe();
 }
 
 function searchTrackOn(track, url){

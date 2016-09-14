@@ -47,7 +47,6 @@ var alertify = (function(bootbox, $) {
 
     that.quick = function (type, title, text) {
       var formatted = '<strong>' + title + '</strong> ' + text;
-      console.log(type);
       sideAlert.show(type, formatted);
     };
 
