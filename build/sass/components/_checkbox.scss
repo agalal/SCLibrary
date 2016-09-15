@@ -15,10 +15,15 @@
     position: relative;
 }
 
+.downloaded:hover .checkbox-custom-label:before {
+    transform: scale(1.0,1.0);
+}
+
 .checkbox-custom + .checkbox-custom-label:before {
     content: '';
-    background: #fff;
-    border: 2px solid #ddd;
+    transform: scale(0,0);
+    background: $mid-light;
+    border: 0;
     display: inline-block;
     vertical-align: middle;
     width: 20px;

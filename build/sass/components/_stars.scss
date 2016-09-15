@@ -1,0 +1,68 @@
+// Center the rating cell
+li.rating {
+    text-align: center;
+}
+
+.stars {
+    display: inline;
+    max-height: 100%;
+}
+
+.stars:not(:checked) {
+  input {
+      position:absolute;
+      top:-9999px;
+      clip:rect(0,0,0,0);
+      display: none;
+  }
+  label {
+      float:right;
+      width:1em;
+      padding: .2em .1em;
+      overflow:hidden;
+      white-space:nowrap;
+      cursor:pointer;
+      font-size: 100%;
+      line-height:1.2;
+      color:$mid-light;
+  }
+  label:before {
+      content: '★ ';
+  }
+}
+
+
+.stars > input:checked ~ label,
+.stars:not(:checked) > label:hover,
+.stars:not(:checked) > label:hover ~ label,
+.stars > input:checked + label:hover,
+.stars > input:checked + label:hover ~ label,
+.stars > input:checked ~ label:hover,
+.stars > input:checked ~ label:hover ~ label,
+.stars > label:hover ~ input:checked ~ label {
+    color: $mid-dark;
+}
+
+.stars > label:active {
+    position:relative;
+    text-shadow: 1px 2px;
+    top:2px;
+    left:2px;
+}
+
+li.rating:hover .stars label{
+  opacity: 1.0;
+  transform: scale(1.0,1.0);
+}
+
+.stars > input:checked ~ label {
+  opacity: 1.0;
+  transform: scale(1.0,1.0);
+}
+
+.stars:not(:checked) > label {
+  opacity: 0.0;
+  transform: scale(0.0,0.0);
+  transform-origin: 50% 50%;
+  transition: all .25s ease;
+}

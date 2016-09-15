@@ -41,3 +41,6 @@ dump.rdb
 
 # sass compilation cache
 .sass-cache
+
+# ignore compiled frontend
+public

@@ -1,0 +1,19 @@
+a.btn
+a.btn {
+    transition: all .2s ease;
+    border-radius: 5px;
+    position: relative;
+    background-color: #555;
+    color: #fff;
+    box-sizing: border-box;
+    padding: 4px 6px;
+    text-decoration: none;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    
+    :hover,
+    :focus {
+        color: #fff;
+        box-shadow: 1px 2px 3px rgba(23, 23, 23, 0.4);
+    }
+}

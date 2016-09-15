@@ -1,3 +1,4 @@
+// jshint esversion: 6
 var map = [];
 
 let inputFocus = false;
@@ -42,7 +43,7 @@ document.body.onkeydown = document.body.onkeyup = function(e) {
     }
     if (map[37] && !map[16]) {      /* left arrow */
       e.preventDefault();
-      rewind(.5);
+      rewind(0.5);
     }
     if (map[38]) {                  /* up arrow */
       e.preventDefault();
@@ -54,7 +55,7 @@ document.body.onkeydown = document.body.onkeyup = function(e) {
     }
     if (map[39] && !map[16]) {      /* right arrow */
       e.preventDefault();
-      fastForward(.5);
+      fastForward(0.5);
     }
     if (map[40]) {                  /* down arrow */
       e.preventDefault();
@@ -77,7 +78,7 @@ document.body.onkeydown = document.body.onkeyup = function(e) {
       randomSong();
     }
   }
-}
+};
 
 $(document).on('click', '.track-row', function() {
   const element = $(this);

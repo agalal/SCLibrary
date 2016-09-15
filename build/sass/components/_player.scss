@@ -1,0 +1,170 @@
+a#sidebar-toggle:hover,
+a#settings-toggle:hover,
+a#prev-song:hover,
+a#next-song:hover {
+  opacity: 0.8 !important;
+  transform: scale(1.1,1.1);
+  transform-origin: center;
+  transition: all .5s ease;
+}
+
+a#prev-song {
+  left: 15px;
+  background-image: url(../../images/sc_icons/caret-left.svg);
+}
+a#next-song {
+  right: 15px;
+  background-image: url(../../images/sc_icons/caret-right.svg);
+}
+a#prev-song,
+a#next-song {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: 50% 50%;
+    position: absolute;
+    display: inline-block;
+    height: 30px;
+    width: 10px;
+    top: 50%;
+    margin-top: -15px;
+    z-index: 2;
+    opacity: 0.3;
+}
+
+// waveform container
+div.charts {
+    position:  absolute;
+    bottom: -5px;
+    width:  100%;
+    opacity: 0.83;
+}
+
+span.track-title,
+span.track-channel {
+    background-color: rgba(255,255,255,0.4);
+    width: calc(95% - 100px);
+    height: 40px;
+    z-index: 2;
+    position: absolute;
+    font-family: Montserrat, 'Montserrat', 'Oxygen', sans-serif;
+    font-weight: 600;
+    padding: 10px 15px;
+    color: #222;
+    display: inline-block;
+}
+
+div#art-bk {
+  height: 300px;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* background-position: 50% 100%; */
+  position: fixed;
+  top: 0;
+  z-index: 0;
+  -webkit-filter: blur(9px);
+}
+
+#artworkimg {
+    background-position: 50% 50%;
+    background-size: cover;
+    display: inline-block;
+    height: 100px;
+    width: 100px;
+    position: relative;
+    z-index: 2;
+    box-shadow: -3px 3px 12px rgba(23,23,23,0.8);
+}
+
+#artworkimg #pauseplay {
+    opacity: 0.0;
+    transition: all .2s ease;
+}
+#artworkimg:hover #pauseplay {
+    opacity: 0.6;
+}
+#artworkimg:active #pauseplay {
+    opacity: 1.0;
+    filter: drop-shadow(10px, 12px, 6px, black);
+}
+#pauseplay {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+}
+/*Implement background animation*/
+div#art-bk:not(.moving) {
+    background-position-y: 0%;
+    transition: background-position .5s ease;
+}
+
+div#art-bk.moving {
+    background-position-y: 100% !important;
+}
+#waveformimg {
+    position: relative;
+    width: 100%;
+}
+#player.playing + div#library {
+    transition: all .2s ease;
+}
+#player:not(.playing) .player-main-wrapper {
+  opacity: 0.0;
+}
+#player.playing .player-main-wrapper {
+  opacity: 1.0;
+  transiton: opacity 1.5s ease;
+}
+#player {
+    position: relative;
+    top: 0;
+    height: 300px;
+    background-color: #232323;
+    width: 100%;
+}
+#player #playpausewrapper {
+    display: none;
+}
+
+// wrappers
+
+div#top-wrapper {
+    height: 60px;
+    width: 100%;
+    display: inline-block;
+    position: relative;
+    padding: 10px;
+    z-index: 39;
+
+    a#settings-toggle {
+      height: 40px;
+      width: 40px;
+      background-image: url(../../images/sc_icons/gear.svg);
+      opacity: 0.3;
+      transition: opacity .5s cubic-bezier(0.69, 0.12, 0.58, 1);
+    }
+    a#sidebar-toggle {
+        height: 40px;
+        width: 40px;
+        background-image: url(../../images/sc_icons/menu.svg);
+        opacity: 0.3;
+        transition: opacity .5s ease;
+    }
+}
+
+.player-main-wrapper {
+    width: 100vw;
+    display: inline-block;
+    height: 100px;
+    margin-top: 30px;
+
+    span.track-channel {
+        transform: translate(25px, 30px);
+    }
+    span.track-title {
+        transform: translate(10px);
+    }
+}
