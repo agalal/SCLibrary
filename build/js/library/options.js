@@ -1,3 +1,4 @@
+// jshint esversion: 6
 let settingsOpen = false;
 $(document).on('click', '#settings-toggle', function() {
   settingsOpen = !settingsOpen;
@@ -68,11 +69,11 @@ function toggleAutocheck() {
 
 $(document).ready(function(){
   $('#updatingMessage').hide();
-})
+});
 
 function updateCollection(){
   $('#updatingMessage').show();
-  var scuid = loggedinuser.properties.scuid
+  var scuid = loggedinuser.properties.scuid;
   var url = "http://localhost:3000/api/users/" + scuid + "/collection/update";
 
   $.post(url, function( data ) {

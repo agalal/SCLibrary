@@ -6,22 +6,22 @@
 }
 
 
-.modal-content {
+.modal-content.play-modal,
+.modal-content.pause-modal {
     background-color: transparent;
     height: 33vw;
     width: 100%;
     background-repeat: no-repeat;
     background-size: contain;
-    opacity: 0.8;
+    // opacity: 1.0;
     display: inline-block;
     background-position: 50% 50%;
     border: none;
     box-shadow: none !important;
-    
-    .play-modal {
-        background-image: url(/images/sc_icons/play.svg);
-    }
-    .pause-modal {
-        background-image: url(/images/sc_icons/pause.svg);
-    }
+}
+.play-modal {
+    background-image: url(/images/sc_icons/play.svg);
+}
+.pause-modal {
+    background-image: url(/images/sc_icons/pause.svg);
 }

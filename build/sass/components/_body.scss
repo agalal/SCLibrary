@@ -32,30 +32,22 @@ a {
   height: 100vh;
 }
 
-body .left-side-wrapper,
-body .library-wrapper,
-body #player {
-  transition: all 1s cubic-bezier(0.39, 0.58, 0.57, 1);
-}
-
 input[type=text] {
     margin: 7px auto;
 }
 
 .alternate-colors {
-  li:-nth-of-type(2n) {
+  & > li:nth-of-type(2n) {
     background-color: $white;
   }
-  li:-nth-of-type(2n+1) {
-    background-color: $mid-light;
+  & > li:nth-of-type(2n+1) {
+    background-color: $faint-white;
   }
-}
-
-*:hover > a.dark,
-*:hover > a.dark {
-    color: $highlight;
 }
 
 a.dark {
     color: $text-dark;
+    *:hover > & {
+      color: $highlight;
+    }
 }

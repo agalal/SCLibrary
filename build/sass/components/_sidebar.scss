@@ -25,21 +25,19 @@ div#left-side.collapse.in {
   }
 }
 
-.left-side-wrapper.collapse {
-  .in {
-      max-height: calc(100vh - 90px);
-      height: auto;
-  }
-  :not(.in) {
-      max-height: 0;
-      display: block !important;
-      padding: 0;
-      border: 0;
-  }
-  .collapsing * {
-    animation: fadeIn .5s ease;
-    animation-fill-mode: both;
-  }
+.left-side-wrapper.collapse.in {
+    max-height: calc(100vh - 90px);
+    height: auto;
+}
+.left-side-wrapper.collapse:not(.in) {
+    max-height: 0;
+    display: block !important;
+    padding: 0;
+    border: 0;
+}
+.left-side-wrapper.collapse.collapsing * {
+  animation: fadeIn .5s ease;
+  animation-fill-mode: both;
 }
 
 // list and positioning

@@ -1,3 +1,4 @@
+// jshint esversion: 6
 // Constants used for tuning the waveform
 let options = {
   refresh_rate: 24,
@@ -5,7 +6,7 @@ let options = {
   bar_width: 75,
   bar_height: 0.5,
   bar_y_offset: 1.5,
-  height: .3
+  height: 0.3
 };
 
 let refresh = false;
@@ -15,14 +16,14 @@ let sub, lows, mids1, mids2, highs1, highs2, highs3;
 // Track the window and waveform width
 let window_width, waveform_width;
 function setWidth() {
-  window_width = $(window).width()
+  window_width = $(window).width();
   waveform_width = window_width * (100 - (2 * options.wf_offset)) / 100;
 }
 $(document).ready(setWidth);
 window.addEventListener("resize", setWidth);
 
 // Setup the audio frequency analyzer
-let audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+let audioCtx = new (window.AudioContext)();
 let audioSrc = audioCtx.createMediaElementSource(audioPlayer);
 let analyser = audioCtx.createAnalyser();
 let fd = new Uint8Array(256);
@@ -63,10 +64,10 @@ function waveform() {
   highs1 = d3.mean(fd.slice(201, 246)) * options.height;
   highs2 = d3.mean(fd.slice(165, 190)) * options.height;
   highs3 = d3.mean(fd.slice(135, 155)) * options.height;
-  mids1 = d3.mean(fd.slice(99, 102)) * options.height * .95;
-  mids2 = d3.mean(fd.slice(60, 63)) * options.height * .9;
-  lows = d3.mean(fd.slice(34, 37)) * options.height * .8;
-  kick = d3.mean(fd.slice(7, 9)) * options.height * .7;
+  mids1 = d3.mean(fd.slice(99, 102)) * options.height * 0.95;
+  mids2 = d3.mean(fd.slice(60, 63)) * options.height * 0.9;
+  lows = d3.mean(fd.slice(34, 37)) * options.height * 0.8;
+  kick = d3.mean(fd.slice(7, 9)) * options.height * 0.7;
 
   let bar_distance = 11;
   let num_bars = Math.floor(waveform_width / bar_distance);
@@ -83,7 +84,7 @@ function waveform() {
   }
 
   var max = d3.max(data);
-  var w = (7 - 12 / waveform_width)
+  var w = (7 - 12 / waveform_width);
   var h = max * 2 || 0;
 
   var x = d3.scale.linear()
@@ -122,7 +123,7 @@ function waveform() {
       if (i % 10 === 7) height *= composite(2, 0, 0, 1, 2, 8, 2); //15
       if (i % 10 === 8) height *= composite(0, 0, 1, 5, 7, 2, 0); //15
       if (i % 10 === 9) height *= composite(0, 2, 5, 6, 2, 0, 0); //15
-      return h - Math.pow(Math.max(height, .01), 1.5);
+      return h - Math.pow(Math.max(height, 0.01), 1.5);
     })
     .attr("width", function(d) {
       var width = Math.max((w * max / 900 - 0.25), 0.1);
@@ -140,6 +141,6 @@ function waveform() {
       if (i % 10 === 7) height *= composite(2, 0, 0, 1, 2, 8, 2); //15
       if (i % 10 === 8) height *= composite(0, 0, 1, 5, 7, 2, 0); //15
       if (i % 10 === 9) height *= composite(0, 2, 5, 6, 2, 0, 0); //15
-      return Math.pow(Math.max(height, .01), 1.5) + options.bar_y_offset;
+      return Math.pow(Math.max(height, 0.01), 1.5) + options.bar_y_offset;
     });
 }

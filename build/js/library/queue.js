@@ -1,14 +1,16 @@
+// jshint esversion: 6
 var autoqueue = [];
 var queue = [];
 var backqueue = [];
 
 function fillAutoqueue(element) {
   var element2 = element;
+  var t;
 
   autoqueue = [];
   var i = 0;
   while (element.next() && i < 20){
-    var t = element.next().data('track');
+    t = element.next().data('track');
     autoqueue.push(t);
     element = element.next();
     i++;
@@ -17,7 +19,7 @@ function fillAutoqueue(element) {
   backqueue = [];
   var j = 0;
   while (element2.prev() && j < 20){
-    var t = element2.prev().data('track');
+    t = element2.prev().data('track');
     backqueue.push(t);
     element2 = element2.prev();
     j++;

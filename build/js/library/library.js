@@ -1,3 +1,4 @@
+// jshint esversion: 6
 // Set context to default option (library)
 let curr_context = 'library';
 
@@ -31,32 +32,32 @@ app.controller("LibraryCtlr", function($scope, $http){
       var minutes = Math.floor(min_sec);
       var seconds = ("00" + Math.floor((min_sec % 1) * 60)).slice(-2);
       return minutes + ":" + seconds;
-    }
+    };
 
     // Format date string
     $scope.formatDate = function(date){
       return date.substring(0, 10);
-    }
+    };
 
     $scope.updateDisplay = function(tracks){
       $scope.display = tracks;
       $scope.$apply();
       updateMenu();
-    }
+    };
 
     $scope.addToDisplay = function(tracks){
       $scope.updateDisplay($scope.display.concat(tracks));
-    }
+    };
 
     $scope.hasPurchaseUrl = function(track){
       return track.t.properties.purchase_url !== undefined;
-    }
+    };
 
     $scope.openPurchaseUrl = function(track){
       const tid = track.t._id;
       const url = track.t.properties.purchase_url;
       openPurchaseUrl(tid, url);
-    }
+    };
 });
 
 let term = "";
@@ -120,7 +121,7 @@ function createPlaylist(){
   var data = {
     name: name,
     uid: loggedinuser._id
-  }
+  };
   $.post(url, data, function( data ) {
     loadPlaylists();
     $('#add-playlist-input').hide();

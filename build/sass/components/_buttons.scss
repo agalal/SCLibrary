@@ -10,10 +10,10 @@ a.btn {
     text-decoration: none;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
-    
-    :hover,
-    :focus {
-        color: #fff;
-        box-shadow: 1px 2px 3px rgba(23, 23, 23, 0.4);
-    }
+}
+
+a.btn:hover,
+a.btn:focus {
+    color: #fff;
+    box-shadow: $shadow;
 }

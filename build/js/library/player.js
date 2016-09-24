@@ -1,3 +1,4 @@
+// jshint esversion: 6
 let duration;
 let currentlyPlaying;
 
@@ -21,10 +22,12 @@ function playPause() {
 }
 
 function nextSong() {
+  var track;
+
   if (queue.length > 0) {
-    var track = queue.shift();
+    track = queue.shift();
   } else if (autoqueue[0]){
-    var track = autoqueue.shift();
+     track = autoqueue.shift();
   } else {
     console.log("There are no more tracks in the autoqueue.");
     return;

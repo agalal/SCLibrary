@@ -13,9 +13,12 @@ var gulpLoadPlugins = require('gulp-load-plugins');
 var p = gulpLoadPlugins({
   rename: {
     "gulp-babel": "babel",
+    "gulp-jsbeautifier": "prettify",
     "gulp-concat": "concat",
     "gulp-htmlmin": "htmlmin",
+    "gulp-iconfont": "iconfont",
     "gulp-imagemin": "imagemin",
+    "gulp-livereload": "livereload",
     "gulp-rename": "rename",
     "gulp-sass": "sass",
     "gulp-sourcemaps": "sourcemap",
@@ -77,14 +80,34 @@ function getFolders(dir) {
     });
 }
 
-gulp.task('build', ['sass', 'js', 'imgs', 'html']);
+gulp.task('build', ['sass', 'js', 'imgs', 'html', 'css'], function (cb) {
+  pump(
+    [
+      p.livereload()
+    ],
+    cb);
+});
 
 gulp.task('watch', function () {
+  p.livereload.listen();
+  // watch everything
   gulp.watch('build/**/*', ['build']);
 });
 
+gulp.task('prettify-js', function (cb) {
+  pump([
+    gulp.src('build/js/**/*.js'),
+    p.prettify.reporter(),
+    p.jshint(),
+    p.jshint.reporter('default'),       // log syntax errors/warnings
+    gulp.dest('build/js/')
+  ], cb);
 
-gulp.task('js', function (cb) {
+
+});
+
+
+gulp.task('js', ['prettify-js'], function (cb) {
     var folders = getFolders(scriptsPath);
 
     var tasks = folders.map(function(folder, cb) {
@@ -95,8 +118,6 @@ gulp.task('js', function (cb) {
         gulp.src(glob),
         p.sourcemap.init(),
 
-        // p.jshint(),
-        // p.jshint.reporter('default'),       // log syntax errors/warnings
 
         p.babel({                           // babel for min & compatibility
            //presets: ['latest']
@@ -109,7 +130,7 @@ gulp.task('js', function (cb) {
           path.extname = '.min.js';
         }),
 
-        p.sourcemap.write('.'),
+        p.sourcemap.write({sourceRoot: '/build/js'}),
         gulp.dest(scriptsBuildPath)             // build it out in public
        ],
        cb);
@@ -122,6 +143,7 @@ gulp.task('sass', function (cb) {
     // match full sass files, not partials
     gulp.src('build/sass/*.scss'),
 
+    p.prettify(),
     p.sourcemap.init(),                 // start mapping
     p.sass(),                           // compile sass
     p.autoprefixer(autoprefixerOptions),// autoprefix for browsers
@@ -131,7 +153,7 @@ gulp.task('sass', function (cb) {
     }),
 
     p.concat('sclibrary.min.css'),      // make it one file
-    p.sourcemap.write('.'),             // write sourcemaps
+    p.sourcemap.write({sourceRoot: '/build/sass'}),             // write sourcemaps
     // livereload(),                    // refresh browser
     gulp.dest('public/stylesheets/')    // write
   ], cb);
@@ -142,13 +164,14 @@ gulp.task('css', function (cb) {
     // match full sass files, not partials
     gulp.src('build/css/*.css'),
 
+    p.prettify(),
     p.sourcemap.init(),                 // start mapping
     p.autoprefixer(autoprefixerOptions),// autoprefix for browsers
     p.uglifycss({
       "maxLineLen": 80,
       "uglyComments": true
     }),
-    p.sourcemap.write('.'),             // write sourcemaps
+    p.sourcemap.write({sourceRoot: '/build/css'}),             // write sourcemaps
     // livereload(),                    // refresh browser
     gulp.dest('public/stylesheets/')    // write
   ], cb);
@@ -162,12 +185,14 @@ gulp.task('imgs', function (cb) {
   ], cb);
 });
 
+
 gulp.task('html', function (cb) {
   pump([
     gulp.src('build/views/*.html'),
+    p.prettify(),
     p.sourcemap.init(),
     p.htmlmin({collapseWhitespace: true}),
-    p.sourcemap.write('.'),
+    p.sourcemap.write({sourceRoot: '/build/views'}),
     gulp.dest('public/views/')
   ],
   cb);

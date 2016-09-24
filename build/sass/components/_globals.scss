@@ -4,7 +4,8 @@ $text-dark: #333;
 $mid-dark: #888;
 $mid-light: #ddd;
 $header-light: #e3ecee;
-$white: '#fff';
+$faint-white: #f9f9f9;
+$white: #fff;
 $highlight: #00B7FF;
 
 // fonts
@@ -13,3 +14,7 @@ $iconfont: 'fontawesome';
 
 // sizes
 $row-height: 25px;
+
+// other
+$shadow: 1px 2px 3px rgba(23, 23, 23, 0.4);
+$border-radius: 2px;
