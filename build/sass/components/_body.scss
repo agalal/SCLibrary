@@ -1,0 +1,53 @@
+// Body and other overarching styles
+
+body {
+    margin: 0;
+    background-color: $dark;
+    overflow: hidden;
+    display: inline-block;
+    height: 101vh;
+    width: 100vw;
+}
+
+* {
+  outline: none !important;
+  font-family: 'Oxygen', sans-serif;
+  font-weight: 300;
+}
+
+/*Hide all scrollbars */
+*::-webkit-scrollbar {
+    width: 0 !important;
+}
+
+a {
+    color: $highlight;
+}
+
+// vertical center rows
+.row.full-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+input[type=text] {
+    margin: 7px auto;
+}
+
+.alternate-colors {
+  & > li:nth-of-type(2n) {
+    background-color: $white;
+  }
+  & > li:nth-of-type(2n+1) {
+    background-color: $faint-white;
+  }
+}
+
+a.dark {
+    color: $text-dark;
+    *:hover > & {
+      color: $highlight;
+    }
+}

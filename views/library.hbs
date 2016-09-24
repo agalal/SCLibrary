@@ -1,3 +1,7 @@
+<!-- Quick Alert -->
+<div class="bb-alert alert alert-info" style="display: none;">
+    <span>&nbsp;</span>
+</div>
 <!-- Modal Dialogues -->
 <!-- Modal -->
 <div class="modal fade" id="set-modal" role="dialog">
@@ -62,9 +66,6 @@
 
     <div id="top-wrapper">
         <a class="pull-left" id="sidebar-toggle" data-toggle="collapse" data-target="#left-side"></a>
-        <ol class="genre-wrapper">
-            <li class="genre-btn"></li>
-        </ol>
         <a class="pull-right" id="settings-toggle" data-toggle="modal" href="#set-modal"></a>
     </div>
 
@@ -98,6 +99,7 @@
     var loggedinuser = JSON.parse('{{{json user}}}');
 </script>
 
+<!-- // jquery and ui components -->
 <script type='text/javascript' src="/bower_components/jquery/dist/jquery.min.js"></script>
 <script type='text/javascript' src="/bower_components/jquery-ui/ui/core.js"></script>
 <script type='text/javascript' src="/bower_components/jquery-ui/ui/widget.js"></script>
@@ -106,31 +108,22 @@
 <script type='text/javascript' src="/bower_components/jquery-ui/ui/resizable.js"></script>
 <script type='text/javascript' src="/bower_components/angular/angular.min.js"></script>
 
+<!-- // d3 -->
 <script type='text/javascript' src="/bower_components/d3/d3.js"></script>
-<script type='text/javascript' src="http://d3js.org/d3.v3.min.js"></script>
 
+<!-- context menu and required position stuff -->
 <script type='text/javascript' src="/bower_components/jQuery-contextMenu/dist/jquery.ui.position.js"></script>
 <script type='text/javascript' src="/bower_components/jQuery-contextMenu/dist/jquery.contextMenu.js"></script>
 
-<script type='text/javascript' src="/bower_components/arrive/src/arrive.js"></script>
-
-<script type='text/javascript' src="/js/player/api.js"></script>
-<script type='text/javascript' src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
-<script type='text/javascript' src="/js/library/options.js"></script>
-<script type='text/javascript' src="/js/library/events.js"></script>
-<script type='text/javascript' src="/js/library/lazy.js"></script>
-<script type='text/javascript' src="/js/library/library.js"></script>
-<script type='text/javascript' src="/js/library/sidebar.js"></script>
-<script type='text/javascript' src="/js/library/table.js"></script>
-<script type='text/javascript' src="/js/library/menu.js"></script>
-<script type='text/javascript' src="/js/library/palette.js"></script>
-<script type='text/javascript' src="/js/library/player.js"></script>
-<script type='text/javascript' src="/js/library/queue.js"></script>
-<script type='text/javascript' src="/js/library/waveform.js"></script>
-<script type='text/javascript' src="/js/library/sheet.js"></script>
-<script type='text/javascript' src="/js/library/columns.js"></script>
-
-
-
+<!-- Bootstrap js -->
 <script type='text/javascript' src="/bower_components/bootstrap/js/modal.js"></script>
 <script type='text/javascript' src="/bower_components/bootstrap/js/collapse.js"></script>
+<script type='text/javascript' src="/bower_components/bootbox.js/bootbox.js"></script>
+
+<!-- arrive js -->
+<script type='text/javascript' src="/bower_components/arrive/src/arrive.js"></script>
+
+
+<script type='text/javascript' src="/js/player.min.js"></script>
+<script type='text/javascript' src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
+<script type='text/javascript' src="/js/library.min.js"></script>

@@ -1,0 +1,51 @@
+// big toggle
+
+a#settings-toggle:hover,
+a#setting:active {
+  animation: spin 1s ease both;
+}
+
+// toggle junk within pane
+// TODO simplify this shiiiit
+
+a#autocheck-toggle + a,
+a#autoplay-toggle + a,
+a#shuffle-toggle + a {
+  color: $text-dark !important;
+  text-decoration: none !important;
+}
+
+a#autocheck-toggle.toggled + a,
+a#autoplay-toggle.toggled + a,
+a#shuffle-toggle.toggled + a {
+  color: $highlight !important;
+}
+
+a#autocheck-toggle,
+a#autoplay-toggle,
+a#shuffle-toggle {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  background-size: contain;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  margin: 0 7px;
+}
+
+a#autoplay-toggle {
+  background-image: url(../../images/sc_icons/autoplay.svg);
+
+  .toggled {
+    background-image: url(../../images/sc_icons/autoplay-highlight.svg);
+  }
+}
+
+a#shuffle-toggle {
+  background-image: url(../../images/sc_icons/shuffle.svg);
+
+  .toggled {
+    background-image: url(../../images/sc_icons/shuffle-highlight.svg);
+  }
+}

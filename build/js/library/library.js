@@ -1,3 +1,4 @@
+// jshint esversion: 6
 // Set context to default option (library)
 let curr_context = 'library';
 
@@ -31,32 +32,32 @@ app.controller("LibraryCtlr", function($scope, $http){
       var minutes = Math.floor(min_sec);
       var seconds = ("00" + Math.floor((min_sec % 1) * 60)).slice(-2);
       return minutes + ":" + seconds;
-    }
+    };
 
     // Format date string
     $scope.formatDate = function(date){
       return date.substring(0, 10);
-    }
+    };
 
     $scope.updateDisplay = function(tracks){
       $scope.display = tracks;
       $scope.$apply();
       updateMenu();
-    }
+    };
 
     $scope.addToDisplay = function(tracks){
       $scope.updateDisplay($scope.display.concat(tracks));
-    }
+    };
 
     $scope.hasPurchaseUrl = function(track){
       return track.t.properties.purchase_url !== undefined;
-    }
+    };
 
     $scope.openPurchaseUrl = function(track){
       const tid = track.t._id;
       const url = track.t.properties.purchase_url;
       openPurchaseUrl(tid, url);
-    }
+    };
 });
 
 let term = "";
@@ -120,7 +121,7 @@ function createPlaylist(){
   var data = {
     name: name,
     uid: loggedinuser._id
-  }
+  };
   $.post(url, data, function( data ) {
     loadPlaylists();
     $('#add-playlist-input').hide();
@@ -129,20 +130,27 @@ function createPlaylist(){
 }
 
 // Delete playlist with permission from the user.
-function deletePlaylist(pid){
-  if (confirm("Are you sure you want to delete?") == true){
-    var url = 'http://localhost:3000/api/playlists/' + pid;
-    $.ajax({
-      url: url,
-      type: 'DELETE',
-      success: function(){
-        if (curr_pid == pid){
-          loadContext('library');
+function deletePlaylist(pid, name){
+  alertify.alert("Are you sure you want to delete " + name + "?",
+    // success fn
+    function () {
+      var url = 'http://localhost:3000/api/playlists/' + pid;
+      $.ajax({
+        url: url,
+        type: 'DELETE',
+        success: function(){
+          if (curr_pid == pid){
+            loadContext('library');
+          }
+          loadPlaylists();
+          alertify.quick('danger', 'Deleted:', name);
         }
-        loadPlaylists();
-      }
+      });
+    },
+    // failure fn
+    function () {
+      alertify.quick('info', 'Delete Cancelled', '');
     });
-  }
 }
 
 // Populate the list of playlists
@@ -219,13 +227,16 @@ function toggleDelete(tid){
   $.post(url, body, function( data ) {
     $('.track-row[data-id="' + tid + '"]').hide();
   });
+  columns.restripe();
 }
 
 function searchTrackOn(track, url){
   var tags = parseForTags(track);
-  if (tags) {
-    window.open(url + tags);
-  }
+  alertify.prompt('Search for:', tags, function (resp) {
+    if (resp) {
+      window.open(url + resp);
+    }
+  });
 }
 
 function searchChannelOn(track, url){
@@ -254,5 +265,5 @@ function parseForTags(track){
                     .replace(/out now/gi,'')
                     .replace(/track of the day/gi,'')
                     .replace(/\s+/g,' ');
-  return window.prompt("Search for...", clean);
+  return clean;
 }

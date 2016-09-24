@@ -1,4 +1,4 @@
-
+// jshint esversion: 6
 var color_palette = {};
 var palette_refresh = false;
 //Calls backend to extract the color palette from the artwork URL for this track, returns JSON
@@ -25,18 +25,18 @@ function loadArtworkPalette(track_id){
 
 function updateColorPalette(){
   //TODO: someone make this actually do cool things, this is just a test example, some1 replace this
-  if(color_palette != null){
+  if(color_palette !== null){
     //Some colors aren't guaranteed to exist, not sure why need to look more into this TODO
-    if(color_palette.LightMuted != null){
+    if(color_palette.LightMuted !== null){
       var lightMuted = color_palette.LightMuted;
       $('.track-title').css('color', lightMuted);
       $('.track-channel').css('color', lightMuted);
     }
-    if(color_palette.Vibrant != null){
+    if(color_palette.Vibrant !== null){
       var vibrant = color_palette.Vibrant;
       $('.track-title').css('background-color', vibrant);
     }
-    if(color_palette.DarkVibrant != null){
+    if(color_palette.DarkVibrant !== null){
       var darkVibrant = color_palette.DarkVibrant;
       $('.track-channel').css('background-color', darkVibrant);
     }
