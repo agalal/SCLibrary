@@ -182,7 +182,7 @@ function buildAddToPlaylistMenu(result) {
         var playlist = result[i];
         var next = {
             name: playlist.p.properties.name,
-            callback: addToPlaylist(key, opt)
+            callback: addToPlaylist
         };
         playlist_menu['playlist' + i] = next;
     }
