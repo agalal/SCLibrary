@@ -1,3 +1,4 @@
+// jshint esversion: 6
 let duration;
 let currentlyPlaying;
 
@@ -21,10 +22,12 @@ function playPause() {
 }
 
 function nextSong() {
+  var track;
+
   if (queue.length > 0) {
-    var track = queue.shift();
+    track = queue.shift();
   } else if (autoqueue[0]){
-    var track = autoqueue.shift();
+     track = autoqueue.shift();
   } else {
     console.log("There are no more tracks in the autoqueue.");
     return;
@@ -136,34 +139,32 @@ function bgScroll(play, pos, dur) {
     computedStyle = window.getComputedStyle(element),
     backgroundPer = computedStyle.getPropertyValue('background-position-y');
 
-  // bkDiv.removeClass('moving'); // stop the moving
-  element.classList.remove("moving");
-  //console.log(dur + ' ' + pos + ' ' + play + ' ' + perShift + '+');
+    element.classList.remove("moving");
 
-  // set new position as percentage
-  if (dur) {
-    bkDiv.css('background-position-y', perShift + '%');
-    lastShift = shiftOff;
-  } else {
-    bkDiv.css('background-position-y', backgroundPer + '%');
-  }
 
-  if (play) {
-    // set/reset transition to time remaining
-    bkDiv.css('transition', 'none');
     if (dur) {
-      window.setTimeout(function() {
-        element.classList.add("moving");
-        bkDiv.css('transition', 'background-position ' +
-          shiftOff + 's linear');
-      }, 40);
+      bkDiv.css('background-position-y', perShift + '%');
+      lastShift = shiftOff;
     } else {
-      element.classList.add("moving");
-      bkDiv.css('transition', 'background-position ' +
-        lastShift + 's linear');
+      bkDiv.css('background-position-y', backgroundPer + '%');
     }
 
-  } else {
-    bkDiv.css('background-position-y', backgroundPer);
-  }
+    if (play) {
+      // set/reset transition to time remaining
+      bkDiv.css('transition', 'none');
+      if (dur) {
+        window.setTimeout(function() {
+          element.classList.add("moving");
+          bkDiv.css('transition', 'background-position ' +
+            shiftOff + 's linear');
+        }, 40);
+      } else {
+        element.classList.add("moving");
+        bkDiv.css('transition', 'background-position ' +
+          lastShift + 's linear');
+      }
+
+    } else {
+      bkDiv.css('background-position-y', backgroundPer);
+    }
 }

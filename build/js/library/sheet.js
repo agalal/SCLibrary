@@ -48,9 +48,11 @@ var sheet = (function() {
     console.log('changing rules: ' + rules);
     rules.forEach(function (item, index) {
       var ruleSplit = item.split(':');
-      // rule name, remove spaces
-      var ruleName = ruleSplit[0].split(' ').join();
-      var ruleText = ruleSplit[1];
+      // rule name, remove spaces, assuming no : inside rule
+			var ruleText = ruleSplit[(ruleSplit.length - 1)];
+      var ruleName = ruleSplit.splice(0, ruleSplit.length-1).join();
+			console.log('name: ' + ruleName);
+			console.log('text: ' + ruleText);
       // change the rule in the stylesheet
       toChange.style[ruleName] = ruleText;
     });

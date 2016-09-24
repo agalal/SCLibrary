@@ -1,3 +1,4 @@
+// jshint esversion: 6
 // define constants for paging
 let limit = 100;
 let offset;
@@ -61,7 +62,7 @@ function isElementInViewport (el) {
 // retreive a page of tracks from the database
 function getPage(done) {
   var uid = loggedinuser._id;
-  let sort = sortType.substring(0,1) + sortType.substring(12)
+  let sort = sortType.substring(0,1) + sortType.substring(12);
   let reverse;
   if (sortReverse) {
     reverse = "DESC";
@@ -74,7 +75,7 @@ function getPage(done) {
   if (context == 'channel') url += `&cid=${curr_cid}`;
   else if (context == 'playlist') url += `&pid=${curr_pid}`;
   else if (context == 'scplaylist') url += `&spid=${curr_spid}`;
-  if (term != "") url += `&q=${term}`;
+  if (term !== "") url += `&q=${term}`;
 
   $.get(url, function(data) {
     done(data);

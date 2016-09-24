@@ -100,7 +100,7 @@
 
 <div class="library-wrapper">
     <table cellpadding="0" cellspacing="0" id="lib-view" style="clear:both;">
-        <ul class="list">
+        <ul class="list alternate-colors">
             <li class="track-row" ng-repeat="track in display" data-url="{{track.t.properties.purchase_url}}" data-track="{{track}}" data-id="{{track.t._id}}" data-purchase="{{hasPurchaseUrl(track)}}">
                 <!--td >x</td-->
                 <ol>
@@ -125,7 +125,8 @@
                           {{track.t.properties.purchase_url_domain}}
                         </a>
                     <li class="downloaded" style="height:100%" ng-click="$event.stopPropagation()">
-                      <input type="checkbox" class="dwnld" ng-checked="track.r.properties.downloaded"></input>
+                      <input name="check-{{$index}}" id="check-{{$index}}" type="checkbox" class="dwnld checkbox-custom" ng-checked="track.r.properties.downloaded"></input>
+                      <label for="check-{{$index}}" class="checkbox-custom-label">&nbsp;</label>
                 </ol>
         </ul>
     </table>

@@ -1,3 +1,4 @@
+// jshint esversion: 6
 let channels_visible = false;
 let scplaylists_visible = false;
 let playlists_visible = false;
@@ -55,7 +56,11 @@ function attachDeletePlaylistHandler() {
   // Attach the delete playlist button handler
   $('.delete-playlist').click(function(){
     const pid = $(this).data('id');
-    deletePlaylist(pid);
+    var name = $(this).contents().filter(function() {
+      return this.nodeType == 3;
+    }).text();
+
+    deletePlaylist(pid, name);
   });
 }
 
@@ -108,7 +113,7 @@ function buildChannelList(channels){
     const name = properties.name;
     list += `<li class='channel-name' data-id='${cid}'>${name}</li>`;
   }
-  list += "</ul>"
+  list += "</ul>";
   document.getElementById('channel-list').innerHTML = list;
   $('.channel-name').click(function() {
     curr_cid = $(this).data('id');
@@ -124,7 +129,7 @@ function buildPlaylistList(playlists){
     const name = formatName(properties.name);
     list += `<li class='playlist-name' id='playlist${i}' data-id='${pid}'>${name}<span class='delete-playlist' data-id='${pid}'>X</span><br></li>`;
   }
-  list += '</ul>'
+  list += '</ul>';
   document.getElementById('playlist-list').innerHTML = list;
   $('.playlist-name').click(function() {
     curr_pid = $(this).data('id');

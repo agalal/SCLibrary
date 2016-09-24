@@ -1,3 +1,4 @@
+// jshint esversion: 6
 module.exports = function(db) {
 
   var module = {};
@@ -25,7 +26,7 @@ module.exports = function(db) {
     if (context == `channel`) query += `AND id(c) = ${cid} `;
     else if (context == `playlist`) query += `AND id(p) = ${pid} `;
     else if (context == `scplaylist`) query += `AND id(s) = ${spid} `;
-    if (search != undefined) {
+    if (search !== undefined) {
       let term = `(?i).*${search}.*`;
       query += `AND (c.name =~ '${term}' `;
       query += `OR t.name =~ '${term}' `;

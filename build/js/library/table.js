@@ -70,12 +70,11 @@ function attachColHandles() {
         minHeight: 30,
         maxHeight: 30,
         resize: function(event, ui) {
-          var resClass = ui.element.find('a').attr('data-also-resize');
-          console.log('resizing ' + resClass + ' to ' + ui.size.width + ' px');
-          columns.set(resClass, ui.size.width);
-        },
-        stop: function () {
 
+        },
+        stop: function (event, ui) {
+          var resClass = ui.element.find('a').attr('data-also-resize');
+          columns.set(resClass, ui.size.width);
         }
       });
 

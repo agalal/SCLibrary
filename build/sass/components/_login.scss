@@ -1,0 +1,50 @@
+// style for login page
+
+.login-panel .banner {
+    background-color: firebrick;
+    color: #fff !important;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 5px;
+}
+
+video#bgvid {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -100;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  -ms-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  background: url(/slide1_still.jpg) no-repeat;
+  background-size: cover;
+  -webkit-filter: blur(16px);
+}
+
+
+.login-panel {
+    border-radius: 0 !important;
+}
+
+div#behind-vid {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    background-color: #000;
+    z-index: -101;
+};
+
+#request panel,
+#login-panel {
+  opacity: 1.0;
+  transition: opacity 1s ease .2s;
+}
+
+#request panel.loaded,
+#login-panel.loaded {
+  opacity: 1.0;
+}

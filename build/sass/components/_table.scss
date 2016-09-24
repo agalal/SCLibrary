@@ -1,0 +1,102 @@
+ul.list > li > ol {
+    height: $row-height;
+}
+
+ol.col-sizeable {
+    background-color: $header-light;
+    white-space: nowrap;
+}
+
+
+// cursor highlight
+li.track-row.cursor {
+  background-color: $highlight;
+}
+
+// set horizontal scrolling container
+
+div#library {
+    display: inline-block;
+    width: 100vw;
+    overflow-x: hidden;
+    height: calc( 100vh - 300px);
+    overflow-y: hidden;
+    z-index: 2;
+}
+
+library#libraryCtlrDiv {
+    position: relative;
+    display: block;
+    overflow-y: hidden;
+    overflow-x: visible;
+}
+
+.library-wrapper {
+    width: auto;
+    clear: none;
+    overflow-y: scroll;
+    font-size: 0;
+    height: calc(100vh - 330px);
+    float: left;
+    clear: both;
+    white-space: nowrap;
+    overflow-x: hidden;
+}
+
+ul.list li > ol > li {
+    border-right: 1px solid #e3e3e3;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: .1em .2em;
+    height: 100%;
+}
+
+ul.header ol > li {
+    border: 1px solid #e3e3e3;
+    border-bottom: #afafaf 1px solid;
+    color: #333;
+    padding: 4px 3px;
+    background-color: #e3ecee;
+}
+
+ul.list > li,
+ul.header > li {
+    width: auto;
+    height: 25px;
+    float: left;
+    clear: left;
+}
+
+ul > li,
+ul > li > ol > li {
+    display: inline-block;
+}
+
+ul.list,
+ul.header,
+ul.header,
+li > ol,
+ul.list li > ol {
+    list-style: none;
+    width: auto;
+    padding: 0;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+ul.header > li {left: 0 !important;height: 30px !important;}
+ul.header {
+    /* Fix header row */
+    position: relative;
+    margin-bottom: 0;
+    font-size: 14px;
+    float: left;
+    top: 0;
+}
+
+ul.list {
+    overflow: visible;
+    height: auto;
+    font-size: 14px;
+    margin: 0;
+}
