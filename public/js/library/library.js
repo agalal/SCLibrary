@@ -247,10 +247,12 @@ function parseForTags(track){
                     .replace(/exclusive/gi,'')
                     .replace(/nest hq/gi,'')
                     .replace(/original mix/gi,'')
+                    .replace(/unreleased/gi,'')
                     .replace(/release/gi,'')
                     .replace(/coming soon/gi,'')
                     .replace(/nest hq/gi,'')
                     .replace(/out now/gi,'')
+                    .replace(/track of the day/gi,'')
                     .replace(/\s+/g,' ');
   return window.prompt("Search for...", clean);
 }

@@ -33,15 +33,36 @@ router.get('/:id/palette', function(req, res, next) {
 		if (error){
 			res.json(error);
 		} else {
-	      Vibrant.from(track[0].n.properties.artwork_url).getPalette (function(err, palette){
-	        if (err){
-	          return res.json(err);
-	        }
-	        return res.json(palette);
-	      });
+			const image = track[0].n.properties.artwork_url;
+      Vibrant.from(image).getPalette(function(err, palette){
+        if (err){
+          res.json(err);
+        } else {
+					palette.DarkMuted = rgbToHex(palette.DarkMuted.rgb);
+					palette.Muted = rgbToHex(palette.Muted.rgb);
+					palette.DarkVibrant = rgbToHex(palette.DarkVibrant.rgb);
+					palette.LightMuted = rgbToHex(palette.LightMuted.rgb);
+					palette.LightVibrant = rgbToHex(palette.LightVibrant.rgb);
+					palette.Vibrant = rgbToHex(palette.Vibrant.rgb);
+					console.log(palette);
+					res.json(palette);
+				}
+      });
 		}
 	});
 });
+
+function rgbToHex(rgb) {
+	return '#' + (toHex(rgb[0])+toHex(rgb[1])+toHex(rgb[2]));
+};
+
+function toHex(n) {
+ n = parseInt(n,10);
+ if (isNaN(n)) return "00";
+ n = Math.max(0,Math.min(n,255));
+ return "0123456789ABCDEF".charAt((n-n%16)/16)
+      + "0123456789ABCDEF".charAt(n%16);
+}
 
 router.post('/:id/rate', function(req, res, next) {
   db.rateTrack(req.params.id, req.body.id, req.body.rating, function(track, error){

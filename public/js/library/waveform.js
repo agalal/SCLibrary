@@ -99,9 +99,8 @@ function waveform() {
     .attr("class", "chart")
     .attr("width", "" + percent_offset + "%")
     .attr("style", "padding-left:" + (100 - percent_offset) + "%;")
-    .attr("viewBox", "0 0 " + Math.max(w * data.length, 0) + " " + Math.max(h, 0))
-    .attr("fill", "white");
-  //TODO: Make a color analyzer for album artwork so that we can use a pallette to color things in the player, like fill.
+    .attr("viewBox", "0 0 " + Math.max(w * data.length, 0) + " " + Math.max(h, 0));
+  //TODO: Make a color analyzer for album artwork so that we can use a pallette to color things in the player, like fill
 
   chart.selectAll("rect")
     .data(data)
@@ -125,8 +124,7 @@ function waveform() {
       return h - Math.pow(Math.max(height, .01), 1.5);
     })
     .attr("width", function(d) {
-      var width = Math.max((w * max / 900 - 0.25), 0.1);
-      return width;
+      return '1px';
     })
     .attr("height", function(d, i) {
       var height = y(d * options.bar_height) / h;
@@ -141,5 +139,16 @@ function waveform() {
       if (i % 10 === 8) height *= composite(0, 0, 1, 5, 7, 2, 0); //15
       if (i % 10 === 9) height *= composite(0, 2, 5, 6, 2, 0, 0); //15
       return Math.pow(Math.max(height, .01), 1.5) + options.bar_y_offset;
+    })
+    .attr("fill", function(d, i) {
+      const percent = (i + 1) / num_bars;
+      const elapsed = 1000 * audioPlayer.currentTime / duration;
+      //TODO: Use clipped paths
+      // http://www.d3noob.org/2015/07/clipped-paths-in-d3js-aka-clippath.html
+      if (elapsed < percent) {
+        return 'black';
+      } else {
+        return color_palette.LightVibrant || 'white';
+      }
     });
 }

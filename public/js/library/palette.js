@@ -13,6 +13,7 @@ function loadArtworkPalette(track_id){
     //async: false,
     success: function(data){
       color_palette = data;
+      console.log(color_palette);
       palette_refresh = true;
     },
     fail: function(){
@@ -28,19 +29,16 @@ function updateColorPalette(){
     //Some colors aren't guaranteed to exist, not sure why need to look more into this TODO
     if(color_palette.LightMuted != null){
       var lightMuted = color_palette.LightMuted;
-      var lightMutedRgbString = 'rgb('+lightMuted.rgb[0]+','+lightMuted.rgb[1]+','+lightMuted.rgb[2]+')';
-      $('.track-title').css('color', lightMutedRgbString);
-      $('.track-channel').css('color', lightMutedRgbString);
+      $('.track-title').css('color', lightMuted);
+      $('.track-channel').css('color', lightMuted);
     }
     if(color_palette.Vibrant != null){
       var vibrant = color_palette.Vibrant;
-      var vibrantRgbString = 'rgba('+vibrant.rgb[0]+','+vibrant.rgb[1]+','+vibrant.rgb[2]+','+.4+')';
-      $('.track-title').css('background-color', vibrantRgbString);
+      $('.track-title').css('background-color', vibrant);
     }
     if(color_palette.DarkVibrant != null){
       var darkVibrant = color_palette.DarkVibrant;
-      var darkVibrantRgbString = 'rgba('+darkVibrant.rgb[0]+','+darkVibrant.rgb[1]+','+darkVibrant.rgb[2]+','+.4+')';
-      $('.track-channel').css('background-color', darkVibrantRgbString);
+      $('.track-channel').css('background-color', darkVibrant);
     }
   }
 }
