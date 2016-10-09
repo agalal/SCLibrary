@@ -1,0 +1,16 @@
+.tab-content {
+    padding: 30px;
+}
+
+.nav-tabs > li.active > a {
+    border-radius: 2px;
+    border: 1px solid $faint-white;
+    margin-right: 0;
+    border-bottom-color: transparent;
+}
+
+.nav-tabs > li > a {
+    background-color: $header-light;
+    color: $dark;
+    -webkit-font-smoothing: antialiased;
+}
