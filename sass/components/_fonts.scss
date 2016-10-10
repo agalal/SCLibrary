@@ -1,0 +1,158 @@
+@font-face {
+	font-family: "sc_icons";
+	src: url('../fonts/sc_icons.eot');
+	src: url('../fonts/sc_icons.eot?#iefix') format('eot'),
+		url('../fonts/sc_icons.woff2') format('woff2'),
+		url('../fonts/sc_icons.woff') format('woff'),
+		url('../fonts/sc_icons.ttf') format('truetype'),
+		url('../fonts/sc_icons.svg#sc_icons') format('svg');
+}
+
+@mixin icon-styles {
+	font-family: "sc_icons";
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	// speak: none; // only necessary if not using the private unicode range (firstGlyph option)
+	text-decoration: none;
+	text-transform: none;
+}
+
+%icon {
+	@include icon-styles;
+}
+
+@function icon-char($filename) {
+	$char: "";
+
+	@if $filename == uEA02-autoplay {
+		$char: "\E001";
+	}
+	@if $filename == uEA03-caret-down {
+		$char: "\E002";
+	}
+	@if $filename == uEA04-caret-left {
+		$char: "\E003";
+	}
+	@if $filename == uEA05-caret-right {
+		$char: "\E004";
+	}
+	@if $filename == uEA06-caret-up {
+		$char: "\E005";
+	}
+	@if $filename == uEA07-download-1 {
+		$char: "\E006";
+	}
+	@if $filename == uEA08-download {
+		$char: "\E007";
+	}
+	@if $filename == uEA09-gear {
+		$char: "\E008";
+	}
+	@if $filename == uEA0A-menu {
+		$char: "\E009";
+	}
+	@if $filename == uEA0B-music-1 {
+		$char: "\E00A";
+	}
+	@if $filename == uEA0C-music {
+		$char: "\E00B";
+	}
+	@if $filename == uEA0D-pause {
+		$char: "\E00C";
+	}
+	@if $filename == uEA0E-people-1 {
+		$char: "\E00D";
+	}
+	@if $filename == uEA0F-people {
+		$char: "\E00E";
+	}
+	@if $filename == uEA10-play {
+		$char: "\E00F";
+	}
+	@if $filename == uEA12-replay {
+		$char: "\E010";
+	}
+	@if $filename == uEA13-search {
+		$char: "\E011";
+	}
+	@if $filename == uEA15-shuffle {
+		$char: "\E012";
+	}
+	@if $filename == uEA16-signs {
+		$char: "\E013";
+	}
+
+	@return $char;
+}
+
+@mixin icon($filename, $insert: before, $extend: true) {
+	&:#{$insert} {
+		@if $extend {
+			@extend %icon;
+		} @else {
+			@include icon-styles;
+		}
+		content: icon-char($filename);
+	}
+}
+
+.icon-uEA02-autoplay {
+	@include icon(uEA02-autoplay);
+}
+.icon-uEA03-caret-down {
+	@include icon(uEA03-caret-down);
+}
+.icon-uEA04-caret-left {
+	@include icon(uEA04-caret-left);
+}
+.icon-uEA05-caret-right {
+	@include icon(uEA05-caret-right);
+}
+.icon-uEA06-caret-up {
+	@include icon(uEA06-caret-up);
+}
+.icon-uEA07-download-1 {
+	@include icon(uEA07-download-1);
+}
+.icon-uEA08-download {
+	@include icon(uEA08-download);
+}
+.icon-uEA09-gear {
+	@include icon(uEA09-gear);
+}
+.icon-uEA0A-menu {
+	@include icon(uEA0A-menu);
+}
+.icon-uEA0B-music-1 {
+	@include icon(uEA0B-music-1);
+}
+.icon-uEA0C-music {
+	@include icon(uEA0C-music);
+}
+.icon-uEA0D-pause {
+	@include icon(uEA0D-pause);
+}
+.icon-uEA0E-people-1 {
+	@include icon(uEA0E-people-1);
+}
+.icon-uEA0F-people {
+	@include icon(uEA0F-people);
+}
+.icon-uEA10-play {
+	@include icon(uEA10-play);
+}
+.icon-uEA12-replay {
+	@include icon(uEA12-replay);
+}
+.icon-uEA13-search {
+	@include icon(uEA13-search);
+}
+.icon-uEA15-shuffle {
+	@include icon(uEA15-shuffle);
+}
+.icon-uEA16-signs {
+	@include icon(uEA16-signs);
+}

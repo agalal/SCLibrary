@@ -33,6 +33,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-htmlmin": "^2.0.0",
     "gulp-iconfont": "^8.0.1",
+    "gulp-iconfont-css": "^2.1.0",
     "gulp-imagemin": "^3.0.3",
     "gulp-jsbeautifier": "^2.0.3",
     "gulp-jshint": "^2.0.1",
@@ -47,6 +48,7 @@
     "jshint": "^2.9.3",
     "merge-stream": "^1.0.0",
     "pump": "^1.0.1",
+    "svg-scaler": "^0.1.5",
     "uglify-js-harmony": "^2.6.2"
   }
 }
