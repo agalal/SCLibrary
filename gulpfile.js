@@ -17,6 +17,7 @@ var p = gulpLoadPlugins({
     "gulp-concat": "concat",
     "gulp-htmlmin": "htmlmin",
     "gulp-iconfont": "iconfont",
+    "gulp-iconfont-css": "iconfontCss",
     "gulp-imagemin": "imagemin",
     "gulp-livereload": "livereload",
     "gulp-rename": "rename",
@@ -138,7 +139,31 @@ gulp.task('js', ['prettify-js'], function (cb) {
 
 });
 
-gulp.task('sass', function (cb) {
+gulp.task('icon', function(){
+  var iconFontName = 'sc_icons';
+  var runTimestamp = Math.round(Date.now()/1000);
+
+  return gulp.src(['build/images/sc_icons/*.svg'])
+    .pipe(p.iconfontCss({
+      fontName: iconFontName,
+      path: 'scss',
+      targetPath: '../../build/sass/components/_icons.scss',
+      fontPath: '../fonts/'
+    }))
+    .pipe(p.iconfont({
+      fontName: iconFontName,
+      prependUnicode: true,
+      formats: ['ttf', 'eot', 'woff', 'woff2'],
+      timestamp: runTimestamp
+    }))
+    .on('glyphs', function(glyphs, options) {
+      // CSS templating, e.g.
+      console.log(glyphs, options);
+    })
+    .pipe(gulp.dest('public/fonts/'));
+});
+
+gulp.task('sass', ['icon'], function (cb) {
   pump([
     // match full sass files, not partials
     gulp.src('build/sass/*.scss'),

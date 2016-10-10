@@ -2,11 +2,14 @@
 
 body {
     margin: 0;
-    background-color: $dark;
     overflow: hidden;
     display: inline-block;
     height: 101vh;
     width: 100vw;
+
+    #player, #library {
+      transition: all 1s ease-out;
+    }
 }
 
 * {

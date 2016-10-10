@@ -30,7 +30,7 @@
                         <a onclick="updateCollection();" class="btn">Update Library</a>
                     </p>
                     <p class="text-center" id="updatingMessage">
-                      Collection updating...
+                        Collection updating...
                     </p>
                 </form>
             </div>
@@ -61,7 +61,7 @@
 </div>
 <!-- End Modals -->
 
-<div id="player" position="relative">
+<div id="player" style="filter: blur(10px);">
     <!-- Top wrapper area, contains toggle/setting buttons, genres -->
 
     <div id="top-wrapper">
@@ -100,31 +100,166 @@
     var loggedinuser = JSON.parse('{{{json user}}}');
 </script>
 
-<!-- // jquery and ui components -->
-<script type='text/javascript' src="/bower_components/jquery/dist/jquery.min.js"></script>
-<script type='text/javascript' src="/bower_components/jquery-ui/ui/core.js"></script>
-<script type='text/javascript' src="/bower_components/jquery-ui/ui/widget.js"></script>
-<script type='text/javascript' src="/bower_components/jquery-ui/ui/mouse.js"></script>
-<script type='text/javascript' src="/bower_components/jquery-ui/ui/resizable.js"></script>
-<script type='text/javascript' src="/bower_components/jquery-ui/ui/resizable.js"></script>
-<script type='text/javascript' src="/bower_components/angular/angular.min.js"></script>
-
-<!-- // d3 -->
-<script type='text/javascript' src="/bower_components/d3/d3.js"></script>
-
-<!-- context menu and required position stuff -->
-<script type='text/javascript' src="/bower_components/jQuery-contextMenu/dist/jquery.ui.position.js"></script>
-<script type='text/javascript' src="/bower_components/jQuery-contextMenu/dist/jquery.contextMenu.js"></script>
-
-<!-- Bootstrap js -->
-<script type='text/javascript' src="/bower_components/bootstrap/js/modal.js"></script>
-<script type='text/javascript' src="/bower_components/bootstrap/js/collapse.js"></script>
-<script type='text/javascript' src="/bower_components/bootbox.js/bootbox.js"></script>
-
-<!-- arrive js -->
-<script type='text/javascript' src="/bower_components/arrive/src/arrive.js"></script>
+<!-- <script src="/bower_components/jquery-ui/ui/widget.js"></script>
+<script src="/bower_components/jquery-ui/ui/widgets/mouse.js"></script>
+<script src="/bower_components/jquery-ui/ui/widgets/resizable.js"></script> -->
 
 
-<script type='text/javascript' src="/js/player.min.js"></script>
-<script type='text/javascript' src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
-<script type='text/javascript' src="/js/library.min.js"></script>
+<!-- include basket loader -->
+<!-- <script src="/bower_components/rsvp.js/rsvp.js"></script> -->
+<script src="/bower_components/basket-css-example/lib/create-stylesheet.unwrapped-0.2.1.js"></script>
+<script src="/bower_components/basket.js/dist/basket.full.min.js"></script>
+
+<!-- add localStorage caching with baskets.js  -->
+<script type="text/javascript">
+
+    // TODO remove this
+    basket.clear();
+
+    // CSS Requires
+
+    var maincss = {
+        url:"/stylesheets/sclibrary.min.css",
+        execute: false
+      },
+
+      bs = {
+        url:"/bower_components/bootstrap/dist/css/bootstrap.min.css",
+        execute: false
+      },
+
+      jq_ui = {
+        url:"/bower_components/jquery-ui/themes/smoothness/jquery-ui.css",
+        execute: false
+      },
+
+      cm = {
+        url: "/stylesheets/jquery.contextMenu.css",
+        execute: false
+      };
+
+    // JS Requires
+
+    var jquery = {
+            // jquery
+            url: '/bower_components/jquery/dist/jquery.min.js'
+        },
+
+        angular = {
+            url: '/bower_components/angular/angular.min.js',
+            key: 'angular'
+        },
+
+        d3 = {
+            url: '/bower_components/d3/d3.min.js'
+        },
+
+        contextMenu = {
+            url: '/bower_components/jQuery-contextMenu/dist/jquery.contextMenu.min.js'
+        },
+
+        bootbox = {
+            url: '/bower_components/bootbox.js/bootbox.js'
+        },
+
+        arrive = {
+            url: '/bower_components/arrive/minified/arrive.min.js'
+        },
+
+        library = {
+            url: '/js/library.min.js'
+        };
+
+    var requireCSS =  function(responses) {
+        var css = responses[0].data;
+        _stylesheet.appendStyleSheet(css, function(err, style) {
+            if (err) {
+                console.error(err);
+            } else {
+            }
+        });
+    }
+
+    // start basket localStorage require chain
+    // bootstrap css
+    basket.require(bs).then(requireCSS)
+
+    //
+    .then(function () {
+      basket.require(jq_ui).then(requireCSS);
+    })
+
+    .then(function () {
+      basket.require(maincss).then(requireCSS);
+    })
+
+    .then(function () {
+      basket.require(cm).then(requireCSS);
+    })
+
+    // jquery, arrive.js
+    .then(function () {
+      basket.require(jquery, arrive);
+    })
+
+    // jquery ui
+    .then(function() {
+        basket.require({
+            url: '/bower_components/jquery-ui/jquery-ui.min.js'
+        });
+    }, function(err) {
+        console.log(err);
+    })
+
+    // bootstrap stuff
+    .then(function() {
+            basket.require({
+                url: '/bower_components/bootstrap/js/modal.js'
+            }, {
+                url: '/bower_components/bootstrap/js/collapse.js'
+            });
+        },
+        function(err) {
+          console.log(err);
+        }
+    )
+
+    // most other plugins
+    // TODO reduce this list
+    .then(function() {
+        basket.require(
+            bootbox,
+            // sc_sdk,
+            // position type for context menu
+            {
+                url: '/bower_components/jQuery-contextMenu/dist/jquery.ui.position.min.js'
+            },
+            contextMenu,
+            d3
+        );
+    }, function(err) {
+        console.log(err);
+    })
+
+    // TODO remove this block after angular
+    // angular
+    .then(function() {
+        basket.require(angular)
+        .then(function() {
+            // get angular going
+            var app = angular.module("Library", []);
+
+            basket.require(library)
+            .then(function() {
+                angular.bootstrap(document, ['Library']);
+                // everything's loaded
+                $('library').arrive(".track-row", function() {
+                    $('#player,#library').css('filter', 'blur(0px)');
+                    $('.l-wrapper').hide();
+                });
+            });
+        });
+    }, function(err) {
+        console.log(err);
+    });
+</script>
