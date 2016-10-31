@@ -31,7 +31,7 @@ document.body.onkeydown = document.body.onkeyup = function(e) {
   } else {
     if (map[13]) {                  /* enter key */
       e.preventDefault();
-      $('.cursor').click();
+      $('.cursor li.channel').click();
     }
     if (map[32]) {                  /* space bar */
       e.preventDefault();
@@ -80,54 +80,55 @@ document.body.onkeydown = document.body.onkeyup = function(e) {
   }
 };
 
-$(document).on('click', '.track-row', function() {
-  const element = $(this);
-  const track = element.data('track');
+$(document).on('click', '.track-row li.clickable', function() {
+  const element = $(this).parent().parent();
   if (element.hasClass('cursor')) {
-    trackClickListener(track, element);
+    trackClickListener(element);
   } else {
     $('.cursor').removeClass('cursor');
     element.addClass('cursor');
   }
 });
 
-function trackClickListener(track, element){
+function trackClickListener(element){
   const tid = element.data('id');
   const p_url = element.data('url');
+  const tname = element.data('track');
+  const cname = element.data('channel');
   if (map[49]) {
     openPurchaseUrl(tid, p_url);
   } else if (map[50]) {
     // Search track on zippyshare
     const url = sites[0].url;
-    searchTrackOn(track, url);
+    searchTrackOn(tname, url);
     map[50] = false;
   } else if (map[51]) {
     // Search channel on zippyshare
     const url = sites[0].url;
-    searchChannelOn(track, url);
+    searchChannelOn(cname, url);
     map[51] = false;
   } else if (map[52]) {
     // Search track on thepiratebay
     const url = sites[1].url;
-    searchTrackOn(track, url);
+    searchTrackOn(tname, url);
     map[52] = false;
   } else if (map[53]) {
     // Search channel on thepiratebay
     const url = sites[1].url;
-    searchChannelOn(track, url);
+    searchChannelOn(cname, url);
     map[53] = false;
   } else if (map[54]) {
     // Search track on beatport
     const url = sites[2].url;
-    searchTrackOn(track, url);
+    searchTrackOn(tname, url);
     map[54] = false;
   } else if (map[55]) {
     // Search channel on beatport
     const url = sites[2].url;
-    searchChannelOn(track, url);
+    searchChannelOn(cname, url);
     map[55] = false;
   } else {
     fillAutoqueue(element);
-    loadSong(track);
+    loadSong(tid);
   }
 }

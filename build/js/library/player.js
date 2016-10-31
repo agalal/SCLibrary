@@ -22,27 +22,27 @@ function playPause() {
 }
 
 function nextSong() {
-  var track;
+  var tid;
 
   if (queue.length > 0) {
-    track = queue.shift();
+    tid = queue.shift();
   } else if (autoqueue[0]){
-     track = autoqueue.shift();
+     tid = autoqueue.shift();
   } else {
     console.log("There are no more tracks in the autoqueue.");
     return;
   }
   backqueue.unshift(currentlyPlaying);
   cursorDown();
-  loadSong(track);
+  loadSong(tid);
 }
 
 function previousSong() {
   if (backqueue[0]){
-    var track = backqueue.shift();
+    var tid = backqueue.shift();
     queue.unshift(currentlyPlaying);
     cursorUp();
-    loadSong(track);
+    loadSong(tid);
   } else {
     console.log("There are no more tracks in the autoqueue.");
   }
@@ -93,31 +93,27 @@ function autoplayNextSong(){
   }
 }
 
-function loadSong(track) {
-  currentlyPlaying = track;
+function loadSong(tid) {
+  let track = findTrack(tid);
 
-  var trackid = track.t.properties.scid;
-  var durationms = track.t.properties.duration;
-  var artworkurl = track.t.properties.artwork_url;
-  var waveformurl = track.t.properties.waveform_url;
+  currentlyPlaying = tid;
+  incPlayCount(tid);
+  loadWaveform(tid);
+  loadArtworkPalette(tid);
 
-  incPlayCount(track);
-
-  audioPlayer.src = 'http://api.soundcloud.com/tracks/' + trackid + '/stream' + '?client_id=a3629314a336fd5ed371ff0f3e46d4d0';
+  audioPlayer.src = 'http://api.soundcloud.com/tracks/' + track.t.properties.scid + '/stream' + '?client_id=a3629314a336fd5ed371ff0f3e46d4d0';
   //console.log(audioPlayer.src);
   audioPlayer.load();
   audioPlayer.play();
-  loadWaveform(track.t._id);
-  var colors = loadArtworkPalette(track.t._id);
 
   $(".track-title").text(track.t.properties.name);
   $(".track-channel").text(track.c.properties.name);
 
-  duration = durationms;
+  duration = track.t.properties.duration;
 
   //Load artwork image to DOM
-  $('#artworkimg').css('background-image', "url(" + artworkurl + ")");
-  $('#art-bk').css('background-image', "url(" + artworkurl + ")");
+  $('#artworkimg').css('background-image', "url(" + track.t.properties.artwork_url + ")");
+  $('#art-bk').css('background-image', "url(" + track.t.properties.artwork_url + ")");
 
   //expand the player
   $('#player').addClass('playing');

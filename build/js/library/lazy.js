@@ -41,8 +41,7 @@ $(document).arrive(".list", function() {
       // retrieve the next page from the database
       getPage(function(tracks) {
         // add the new page of tracks to the display
-        const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-        aScope.addToDisplay(tracks);
+        addToDisplay(tracks);
         // increment the page number
         page++;
       });

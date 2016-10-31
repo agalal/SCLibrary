@@ -45,7 +45,6 @@ setInterval(function() {
   if (refresh) waveform();
   if (palette_refresh) {
     palette_refresh = false;
-    updateColorPalette();
   }
 }, options.refresh_rate);
 

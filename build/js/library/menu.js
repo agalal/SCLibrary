@@ -2,7 +2,6 @@
 let playlist_menu, rating_menu, search_track_menu, search_channel_menu;
 
 function updateMenu() {
-    const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
     const context = curr_context;
 
     // Destroy the current context menus
@@ -27,8 +26,8 @@ function updateMenu() {
             name: "Delete from playlist",
             callback: function(key, opt) {
                 var pid = curr_pid;
-                var tid = JSON.parse(opt.$trigger[0].dataset.track).t._id;
-                var tname = JSON.parse(opt.$trigger[0].dataset.track).t.properties.name;
+                var tid = opt.$trigger[0].dataset.id;
+                var tname = opt.$trigger[0].dataset.track;
                 var url = 'http://localhost:3000/api/playlists/' + pid + '/remove/' + tid;
                 $.ajax({
                     url: url,
@@ -47,9 +46,8 @@ function updateMenu() {
         items.delete_queue = {
             name: "Delete from queue",
             callback: function(key, opt) {
-                var track = JSON.parse(opt.$trigger[0].dataset.track);
-                const tid = track.t._id;
-                const tname = track.t.properties.name;
+                const tid = opt.$trigger[0].dataset.id;
+                const tname = opt.$trigger[0].dataset.track;
                 deleteFromQueue(tid);
                 alertify.quick('danger', 'dequeued:', tname);
             }
@@ -58,9 +56,10 @@ function updateMenu() {
         items.add_queue = {
             name: "Add to queue",
             callback: function(key, opt) {
-                var track = JSON.parse(opt.$trigger[0].dataset.track);
-                queue.push(track);
-                alertify.quick('info', 'queued:', track.t.properties.name);
+                const tid = opt.$trigger[0].dataset.id;
+                const tname = opt.$trigger[0].dataset.track;
+                queue.push(tid);
+                alertify.quick('info', 'queued:', tname);
             }
         };
     }
@@ -69,9 +68,8 @@ function updateMenu() {
         items.readd_library = {
             name: "Re-add to library",
             callback: function(key, opt) {
-                var track = JSON.parse(opt.$trigger[0].dataset.track);
-                const tid = track.t._id;
-                const tname = track.t.properties.name;
+                const tid = opt.$trigger[0].dataset.id;
+                const tname = opt.$trigger[0].dataset.track;
                 toggleDelete(tid);
                 alertify.quick('info', 'undeleted:', tname);
             }
@@ -81,9 +79,8 @@ function updateMenu() {
             name: "<span class=text-danger>Delete from library</span>",
             isHtmlName: true,
             callback: function(key, opt) {
-                var track = JSON.parse(opt.$trigger[0].dataset.track);
-                const tid = track.t._id;
-                const tname = track.t.properties.name;
+                const tid = opt.$trigger[0].dataset.id;
+                const tname = opt.$trigger[0].dataset.track;
                 toggleDelete(tid);
                 alertify.quick('danger', 'deleted:', tname);
             }
@@ -98,8 +95,7 @@ function updateMenu() {
         items.tracks_by_channel = {
             name: "Tracks by channel",
             callback: function(key, opt) {
-                var track = JSON.parse(opt.$trigger[0].dataset.track);
-                curr_cid = track.c._id;
+                curr_cid = opt.$trigger[0].dataset.cid;
                 loadContext('channel');
             }
         };
@@ -123,8 +119,7 @@ function updateMenu() {
     items.soundcloud_page = {
         name: "Soundcloud page",
         callback: function(key, opt) {
-            var track = JSON.parse(opt.$trigger[0].dataset.track);
-            var url = track.t.properties.url;
+            var url = opt.$trigger[0].dataset.url;
             window.open(url);
         }
     };
@@ -154,9 +149,8 @@ function updateMenu() {
     settings.items.purchase_link = {
         name: "Download page",
         callback: function(key, opt) {
-            var track = JSON.parse(opt.$trigger[0].dataset.track);
-            const tid = track.t._id;
-            const url = track.t.properties.purchase_url;
+            const tid = opt.$trigger[0].dataset.id;
+            const url = opt.$trigger[0].dataset.url;
             openPurchaseUrl(tid, url);
         }
     };
@@ -168,7 +162,7 @@ function updateMenu() {
 
 function addToPlaylist(key, opt) {
     var pid = $('#' + key).data("id");
-    var tid = JSON.parse(opt.$trigger[0].dataset.track).t._id;
+    var tid = opt.$trigger[0].dataset.id;
     var url = 'http://localhost:3000/api/playlists/' + pid + '/add/' + tid;
     $.post(url, {}, function(data) {
         console.log(data);
@@ -191,8 +185,8 @@ function buildAddToPlaylistMenu(result) {
 
 function searchOn(key, opt) {
     var url = sites.find(x => x.name === key).url;
-    var track = JSON.parse(opt.$trigger[0].dataset.track);
-    searchTrackOn(track, url);
+    var tname = opt.$trigger[0].dataset.track;
+    searchTrackOn(tname, url);
 }
 
 function buildSearchOnMenu() {
@@ -209,8 +203,8 @@ function buildSearchOnMenu() {
 
 function searchChannel(key, opt) {
     var url = sites.find(x => x.name === key).url;
-    var track = JSON.parse(opt.$trigger[0].dataset.track);
-    searchChannelOn(track, url);
+    var cname = opt.$trigger[0].dataset.channel;
+    searchChannelOn(cname, url);
 }
 
 function buildSearchChannelOnMenu() {
