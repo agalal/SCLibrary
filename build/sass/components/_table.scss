@@ -61,7 +61,14 @@ ul.header ol > li {
     overflow: hidden;
     resize: horizontal;
     height: $header-height;
+
+    &:active {
+      // hack to fix resize smaller
+      // than declared width
+      width: 1px;
+    }
 }
+
 
 ul.list > li,
 ul.header > li {
