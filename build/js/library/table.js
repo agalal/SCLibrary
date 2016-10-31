@@ -34,7 +34,7 @@ function updateSort(sortBy){
   sortType = sortBy;
 
   getPage(function(tracks) {
-    updateDisplay(tracks);
+    resetDisplay(tracks);
   });
 }
 

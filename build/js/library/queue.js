@@ -29,7 +29,7 @@ function fillAutoqueue(element) {
 function deleteFromQueue(tid){
   for (var i = 0; i < queue.length; i++){
     if (tid == queue[i].t._id){
-      updateDisplay(queue.splice(i, 1));
+      resetDisplay(queue.splice(i, 1));
       break;
     }
   }

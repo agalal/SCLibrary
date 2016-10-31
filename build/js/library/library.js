@@ -72,7 +72,7 @@ function buildTrackRows(tracks) {
 
 var loadedTracks = [];
 
-function updateDisplay(tracks){
+function resetDisplay(tracks){
   loadedTracks = tracks;
   document.getElementById('track-rows').innerHTML = buildTrackRows(tracks);
   updateMenu();
@@ -134,10 +134,10 @@ function loadContext(context) {
   }
 
   if (context === 'queue') {
-    updateDisplay(queue);
+    resetDisplay(queue);
   } else {
     getPage(function(tracks) {
-      updateDisplay(tracks);
+      resetDisplay(tracks);
     });
   }
 }
