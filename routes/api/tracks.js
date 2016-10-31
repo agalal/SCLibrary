@@ -79,7 +79,7 @@ router.post('/:id/playcount', function(req, res, next) {
     if (error){
 			res.json(error);
 		} else {
-		  res.json({"success":"playcount incremented"});
+		  res.json(track);
 		}
   });
 });
@@ -89,7 +89,7 @@ router.post('/:id/downloaded', function(req, res, next) {
     if (error){
 			res.json(error);
 		} else {
-		  res.json({"success":"download status toggled"});
+		  res.json(track);
 		}
   });
 });

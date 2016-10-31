@@ -1,64 +1,117 @@
-// jshint esversion: 6
-// Set context to default option (library)
-let curr_context = 'library';
-
 var app = angular.module("Library", []);
 
 // Library directive - html Element
 app.directive("library", [function (){
-    return {
-        restrict: 'E',
-        templateUrl: 'http://localhost:3000/views/library.html',
-        scope: false,
-        link: {
-            pre: function(scope, element, attr) {
-                // Load song library, and channel/playlist names
-                loadContext('library');
-            },
-            post: function(scope, element, attr) {
-                // Draggable handles for the columns
-                scope.colSizeable = attachColHandles();
-            }
-        }
-    };
+  return {
+    templateUrl: 'http://localhost:3000/views/library.html',
+  };
 }]);
 
-// Library controller
-app.controller("LibraryCtlr", function($scope, $http){
+// jshint esversion: 6
+// Set context to default option (library)
+let curr_context = 'library';
 
-    // Convert time from ms to MM:SS
-    $scope.convertTime = function(time){
-      var min_sec = time / 1000 / 60;
-      var minutes = Math.floor(min_sec);
-      var seconds = ("00" + Math.floor((min_sec % 1) * 60)).slice(-2);
-      return minutes + ":" + seconds;
-    };
-
-    // Format date string
-    $scope.formatDate = function(date){
-      return date.substring(0, 10);
-    };
-
-    $scope.updateDisplay = function(tracks){
-      $scope.display = tracks;
-      $scope.$apply();
-      updateMenu();
-    };
-
-    $scope.addToDisplay = function(tracks){
-      $scope.updateDisplay($scope.display.concat(tracks));
-    };
-
-    $scope.hasPurchaseUrl = function(track){
-      return track.t.properties.purchase_url !== undefined;
-    };
-
-    $scope.openPurchaseUrl = function(track){
-      const tid = track.t._id;
-      const url = track.t.properties.purchase_url;
-      openPurchaseUrl(tid, url);
-    };
+$(document).arrive("#track-rows", function() {
+  loadContext('library');
+  attachColHandles();
 });
+
+function buildTrackRows(tracks) {
+  let page = '';
+  tracks.forEach(function(track, i) {
+    let index = loadedTracks.length + i - limit;
+    let row = "<li class='track-row' data-url";
+    if (track.t.properties.purchase_url) {
+      row += "='" + track.t.properties.purchase_url + "'";
+    }
+    row += " data-id='" + track.t._id + "'";
+    row += " data-channel='" + track.c.properties.name + "'";
+    row += " data-cid='" + track.c._id + "'";
+    row += " data-track='" + track.t.properties.name + "'";
+    row += " data-purchase='" + (track.t.properties.purchase_url !== undefined) + "'>";
+    row += "<ol>";
+    row += "<li class='channel clickable'>" + track.c.properties.name + "</li>";
+    row += "<li class='title clickable'>" + track.t.properties.name + "</li>";
+    row += "<li class='date clickable'>" + track.t.properties.created_at.substring(0, 10) + "</li>";
+    row += "<li class='genre clickable'>" + track.t.properties.genre + "</li>";
+    row += "<li class='duration clickable'>" + formatTime(track.t.properties.duration) + "</li>";
+    row += "<li class='liked clickable'>" + track.r.properties.created_at.substring(0, 10) + "</li>";
+    row += "<li class='playcount clickable' id='playcount-" + index + "'>" + track.r.properties.play_count + "</li>";
+    row += "<li class='rating'>" + track.r.properties.rating + "</li>";
+    // TODO fix rating
+    /*
+    <li class="rating" ng-click="$event.stopPropagation()"><fieldset class="stars">
+    <!-- <legend>Please rate:</legend> --> <input type="radio" id="star5-0" name="rating-0"
+    value="5" ng-model="track.r.properties.rating" class="ng-pristine ng-untouched ng-valid
+    ng-not-empty"><label for="star5-0"></label><input type="radio" id="star4-0" name="rating-0"
+    value="4" ng-model="track.r.properties.rating" class="ng-pristine ng-untouched ng-valid
+    ng-not-empty"><label for="star4-0"></label><input type="radio" id="star3-0" name="rating-0"
+    value="3" ng-model="track.r.properties.rating" class="ng-untouched ng-valid ng-not-empty
+    ng-dirty ng-valid-parse"><label for="star3-0"></label><input type="radio" id="star2-0"
+    name="rating-0" value="2" ng-model="track.r.properties.rating" class="ng-pristine
+    ng-untouched ng-valid ng-not-empty"><label for="star2-0"></label><input type="radio"
+    id="star1-0" name="rating-0" value="1" ng-model="track.r.properties.rating" class="ng-pristine
+    ng-untouched ng-valid ng-not-empty"><label for="star1-0"></label></fieldset></li>
+    */
+    row += "<li class='domain'>";
+    if (track.t.properties.purchase_url) {
+      row += "<a onclick='openPurchaseUrl(" + track.t._id + ", \"" + track.t.properties.purchase_url + "\")'>" + track.t.properties.purchase_url_domain + "</a>";
+    }
+    row += "</li>";
+    row += "<li class='downloaded'>";
+    row += "<input name='check-" + index + "' id='check-" + index + "' type='checkbox' class='dwnld checkbox-custom'";
+    if (track.r.properties.downloaded) {
+      row += " checked";
+    }
+    row += "><label for='check-" + index + "' class='checkbox-custom-label'></label></li>";
+    row += "</ol>";
+    page += row;
+  });
+  return page;
+}
+
+var loadedTracks = [];
+
+function resetDisplay(tracks){
+  loadedTracks = tracks;
+  document.getElementById('track-rows').innerHTML = buildTrackRows(tracks);
+  updateMenu();
+}
+
+function addToDisplay(tracks) {
+  loadedTracks = loadedTracks.concat(tracks);
+  document.getElementById('track-rows').innerHTML += buildTrackRows(tracks);
+  updateMenu();
+}
+
+function findTrack(tid) {
+  let found = null;
+  loadedTracks.some(function(track) {
+    if (track.t._id === tid) {
+      found = track;
+      return true;
+    }
+  });
+  return found;
+}
+
+function findTrackIndex(tid) {
+  let index = null;
+  loadedTracks.some(function(track, i) {
+    if (track.t._id === tid) {
+      index = i;
+      return true;
+    }
+  });
+  return index;
+}
+
+function formatTime(time){
+  var min_sec = time / 1000 / 60;
+  var minutes = Math.floor(min_sec);
+  var seconds = ("00" + Math.floor((min_sec % 1) * 60)).slice(-2);
+  return minutes + ":" + seconds;
+}
 
 let term = "";
 $(document).on('submit', '#search-form', function() {
@@ -71,8 +124,6 @@ function clearSearch() {
 }
 
 function loadContext(context) {
-  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-
   resetPaging();
 
   if (context === 'search') {
@@ -83,10 +134,10 @@ function loadContext(context) {
   }
 
   if (context === 'queue') {
-    aScope.updateDisplay(queue);
+    resetDisplay(queue);
   } else {
     getPage(function(tracks) {
-      aScope.updateDisplay(tracks);
+      resetDisplay(tracks);
     });
   }
 }
@@ -162,19 +213,13 @@ function loadSCPlaylists(){
   });
 }
 
-function incPlayCount(track){
-  var tid = track.t._id;
+function incPlayCount(tid){
   var body = { id: loggedinuser._id };
   var url = 'http://localhost:3000/api/tracks/' + tid + '/playcount';
-  $.post(url, body, function( data ) {
-    const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-    for (var i = 0; i < aScope.display.length; i++){
-      var track = aScope.display[i];
-      if (track.t._id == tid) {
-        track.r.properties.play_count++;
-        aScope.$apply();
-      }
-    }
+  $.post(url, body, function( track ) {
+    const count = track.r.properties.play_count;
+    const index = findTrackIndex(tid);
+    $('#playcount-' + index).text(count);
   });
 }
 
@@ -209,15 +254,10 @@ $(document).on('change', '.downloaded > input', function() {
 function toggleDownload(tid){
   var body = { id: loggedinuser._id };
   var url = 'http://localhost:3000/api/tracks/' + tid + '/downloaded';
-  $.post(url, body, function( data ) {
-    const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-    for (var i = 0; i < aScope.display.length; i++){
-      var track = aScope.display[i];
-      if (track.t._id == tid) {
-        track.r.properties.downloaded = !track.r.properties.downloaded;
-        aScope.$apply();
-      }
-    }
+  $.post(url, body, function( track ) {
+    const downloaded = track.r.properties.downloaded;
+    const index = findTrackIndex(tid);
+    $('#check-' + index).prop('checked', downloaded);
   });
 }
 
@@ -227,11 +267,10 @@ function toggleDelete(tid){
   $.post(url, body, function( data ) {
     $('.track-row[data-id="' + tid + '"]').hide();
   });
-  columns.restripe();
 }
 
-function searchTrackOn(track, url){
-  var tags = parseForTags(track);
+function searchTrackOn(name, url){
+  var tags = parseForTags(name);
   alertify.prompt('Search for:', tags, function (resp) {
     if (resp) {
       window.open(url + resp);
@@ -239,17 +278,15 @@ function searchTrackOn(track, url){
   });
 }
 
-function searchChannelOn(track, url){
-  let channel_name = track.c.properties.name;
-  var tags = parseForTags(channel_name);
+function searchChannelOn(name, url){
+  var tags = parseForTags(name);
   if (tags) {
     window.open(url + tags);
   }
 }
 
-function parseForTags(track){
-  const name = track.t.properties.name;
-  const clean = name.replace(/[^0-9a-z]/gi, ' ')
+function parseForTags(raw){
+  const clean = raw.replace(/[^0-9a-z]/gi, ' ')
                     .replace(/free download/gi,'')
                     .replace(/clip/gi,'')
                     .replace(/premiere/gi,'')

@@ -16,8 +16,6 @@ $(document).arrive('.col-header', function() {
 
 // Update sort variables
 function updateSort(sortBy){
-  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
-
   $('.fa').addClass('hidden');
   resetPaging();
 
@@ -36,7 +34,7 @@ function updateSort(sortBy){
   sortType = sortBy;
 
   getPage(function(tracks) {
-    aScope.updateDisplay(tracks);
+    resetDisplay(tracks);
   });
 }
 
@@ -60,9 +58,7 @@ function attachColHandles() {
   $('.col-sizeable').each(function() {
     $(this).children('li').each(function() {
       // iterating through each header title li
-
-
-
+      
       // make each col-header resizable
       $(this).resizable({
         handles: 'se',

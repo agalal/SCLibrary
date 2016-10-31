@@ -10,7 +10,7 @@ function fillAutoqueue(element) {
   autoqueue = [];
   var i = 0;
   while (element.next() && i < 20){
-    t = element.next().data('track');
+    t = element.next().data('id');
     autoqueue.push(t);
     element = element.next();
     i++;
@@ -19,7 +19,7 @@ function fillAutoqueue(element) {
   backqueue = [];
   var j = 0;
   while (element2.prev() && j < 20){
-    t = element2.prev().data('track');
+    t = element2.prev().data('id');
     backqueue.push(t);
     element2 = element2.prev();
     j++;
@@ -27,10 +27,9 @@ function fillAutoqueue(element) {
 }
 
 function deleteFromQueue(tid){
-  const aScope = angular.element(document.getElementById('libraryCtlrDiv')).scope();
   for (var i = 0; i < queue.length; i++){
     if (tid == queue[i].t._id){
-      aScope.updateDisplay(queue.splice(i, 1));
+      resetDisplay(queue.splice(i, 1));
       break;
     }
   }

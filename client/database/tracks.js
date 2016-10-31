@@ -94,7 +94,7 @@ module.exports = function(db) {
       if (error) {
         done(null, error);
       } else {
-        done(results);
+        done(results[0]);
       }
     });
   }
@@ -110,7 +110,7 @@ module.exports = function(db) {
       if (error) {
         done(null, error);
       } else {
-        done(results);
+        done(results[0]);
       }
     });
   }

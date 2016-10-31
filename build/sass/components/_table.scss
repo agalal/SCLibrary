@@ -14,8 +14,7 @@ li.track-row.cursor {
 }
 
 // set horizontal scrolling container
-
-div#library {
+#library {
     display: inline-block;
     width: 100vw;
     overflow-x: hidden;
@@ -24,7 +23,7 @@ div#library {
     z-index: 2;
 }
 
-library#libraryCtlrDiv {
+#libraryCtlrDiv {
     position: relative;
     display: block;
     overflow-y: hidden;
