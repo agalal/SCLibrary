@@ -1,11 +1,10 @@
-
 var app = angular.module("Library", []);
 
 // Library directive - html Element
 app.directive("library", [function (){
-    return {
-        templateUrl: 'http://localhost:3000/views/library.html',
-    };
+  return {
+    templateUrl: 'http://localhost:3000/views/library.html',
+  };
 }]);
 
 // jshint esversion: 6
