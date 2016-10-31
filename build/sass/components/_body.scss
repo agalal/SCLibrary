@@ -16,6 +16,7 @@ body {
   outline: none !important;
   font-family: 'Oxygen', sans-serif;
   font-weight: 300;
+  box-sizing: border-box;
 }
 
 /*Hide all scrollbars */
@@ -27,12 +28,39 @@ a {
     color: $highlight;
 }
 
+// float classes for right and left pulls
+
+.pull-right {
+  float: right;
+}
+
+.pull-left {
+  float: left;
+}
+
+// text centering class
+
+.text-center {
+  text-align: center;
+}
+
+
 // vertical center rows
 .row.full-center {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+// support collapse without BS
+
+.collapse:not(.in) {
+  display: none;
+}
+
+.collapse.in {
+  display: block;
 }
 
 input[type=text] {

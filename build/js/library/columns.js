@@ -87,8 +87,6 @@ var columns = (function(){
       // Sorry! No Web Storage support..
       colArr = def;
     }
-    // sheet.addRule('li.track-row:nth-of-type(2n+1)','background-color:#FFFFF;', 0);
-    // sheet.addRule('li.track-row:nth-of-type(2n)','background-color:#F6F6F6;', 0);
   };
 
   var setCol = function (name, width) {
@@ -99,13 +97,7 @@ var columns = (function(){
     // update local storage
     localStorage.setItem(name, JSON.stringify(thisCol));
     sheet.changeRule('.'+name, 'width: ' + width + 'px');
-    console.log(sheet);
   };
-
-  // var restripe = function () {
-  //   console.log('stripe hack');
-  //   $('ul.list').hide().show(0);
-  // };
 
   return {
     init: init,
@@ -118,7 +110,6 @@ var columns = (function(){
         return colArr;
       }
     },
-    set: setCol,
-    // restripe: restripe
+    set: setCol
   };
 })();

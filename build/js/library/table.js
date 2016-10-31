@@ -60,18 +60,11 @@ function attachColHandles() {
       // iterating through each header title li
       
       // make each col-header resizable
-      $(this).resizable({
-        handles: 'se',
-        autoHide: true,
-        minHeight: 30,
-        maxHeight: 30,
-        resize: function(event, ui) {
-
-        },
-        stop: function (event, ui) {
-          var resClass = ui.element.find('a').attr('data-also-resize');
-          columns.set(resClass, ui.size.width);
-        }
+      $(this).mouseup(function () {
+        console.log('Dragged');
+        var resClass = $(this).find('a').attr('data-also-resize');
+        var newSize = $(this).css('width').split('px').join('');
+        columns.set(resClass, newSize);
       });
 
       // TODO move target of resize click functionality since below fn didn't work

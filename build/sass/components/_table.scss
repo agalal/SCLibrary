@@ -5,6 +5,7 @@ ul.list > li > ol {
 ol.col-sizeable {
     background-color: $header-light;
     white-space: nowrap;
+    height: $header-height;
 }
 
 
@@ -56,6 +57,9 @@ ul.header ol > li {
     color: #333;
     padding: 4px 3px;
     background-color: #e3ecee;
+    overflow: hidden;
+    resize: horizontal;
+    height: $header-height;
 }
 
 ul.list > li,
@@ -73,7 +77,6 @@ ul > li > ol > li {
 
 ul.list,
 ul.header,
-ul.header,
 li > ol,
 ul.list li > ol {
     list-style: none;
@@ -83,11 +86,15 @@ ul.list li > ol {
     white-space: nowrap;
 }
 
-ul.header > li {left: 0 !important;height: 30px !important;}
+ul.header > li {
+  left: 0 !important;
+  height: 30px !important;
+}
+
 ul.header {
     /* Fix header row */
     position: relative;
-    margin-bottom: 0;
+    margin: 0;
     font-size: 14px;
     float: left;
     top: 0;

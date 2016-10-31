@@ -45,8 +45,8 @@
     <div class="modal-dialog">
 
         <!-- Modal content-->
-        <div class="modal-content play-modal">
-
+        <div class="modal-content play-modal text-center">
+            <i class="icon-uEA10-play"></i>
         </div>
     </div>
 </div>
@@ -54,8 +54,8 @@
     <div class="modal-dialog">
 
         <!-- Modal content-->
-        <div class="modal-content pause-modal">
-
+        <div class="modal-content pause-modal text-center">
+            <i class="icon-uEA0D-pause"></i>
         </div>
     </div>
 </div>
@@ -65,21 +65,59 @@
     <!-- Top wrapper area, contains toggle/setting buttons, genres -->
 
     <div id="top-wrapper">
-        <a class="pull-left" id="sidebar-toggle" data-toggle="collapse" data-target="#left-side"></a>
-        <a class="pull-right" id="settings-toggle" data-toggle="modal" href="#set-modal"></a>
+        <a class="pull-left" id="sidebar-toggle" data-toggle="collapse" data-target="#left-side"><i class="icon-uEA0A-menu"></i></a>
+        <a class="pull-right" id="settings-toggle" data-toggle="modal" href="#set-modal"><i class="icon-uEA09-gear"></i></a>
+        <div class="text-center collapse" id="littleloader">
+            <svg width="120" height="20" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#fff">
+              <circle cx="15" cy="15" r="15" id='ll1'>
+                  <!-- <animate attributeName="r" from="15" to="15"
+                           begin="0s" dur="0.8s"
+                           values="15;9;15" calcMode="linear"
+                           repeatCount="indefinite" />
+                  <animate attributeName="fill-opacity" from="1" to="1"
+                           begin="0s" dur="0.8s"
+                           values="1;.5;1" calcMode="linear"
+                           repeatCount="indefinite" /> -->
+              </circle>
+              <circle cx="60" cy="15" r="15" fill-opacity="0.3" id='ll2'>
+                  <!-- <animate attributeName="r" from="9" to="9"
+                           begin="0s" dur="0.8s"
+                           values="9;15;9" calcMode="linear"
+                           repeatCount="indefinite" />
+                  <animate attributeName="fill-opacity" from="0.5" to="0.5"
+                           begin="0s" dur="0.8s"
+                           values=".5;1;.5" calcMode="linear"
+                           repeatCount="indefinite" /> -->
+              </circle>
+              <circle cx="105" cy="15" r="15" id='ll3'>
+                  <!-- <animate attributeName="r" from="15" to="15"
+                           begin="0s" dur="0.8s"
+                           values="15;9;15" calcMode="linear"
+                           repeatCount="indefinite" />
+                  <animate attributeName="fill-opacity" from="1" to="1"
+                           begin="0s" dur="0.8s"
+                           values="1;.5;1" calcMode="linear"
+                           repeatCount="indefinite" /> -->
+              </circle>
+          </svg>
+        </div>
     </div>
 
     <!-- Main wrapper area, contains artwork, title, channel, and prev/next buttons -->
     <div class="player-main-wrapper">
         <div class="container">
-            <a class="pull-left" id="prev-song" href="javascript:previousSong();"></a>
+            <a class="pull-left" id="prev-song" href="javascript:previousSong();">
+                <i class="icon-uEA04-caret-left"></i>
+            </a>
             <div class="col-sm-12">
                 <!-- Artwork gets loaded in as a background image here -->
                 <div id="artworkimg"></div>
                 <span class="track-title">&nbsp;</span>
                 <span class="track-channel">&nbsp;</span>
             </div>
-            <a class="pull-right" id="next-song" href="javascript:nextSong();"></a>
+            <a class="pull-right" id="next-song" href="javascript:nextSong();">
+                <i class="icon-uEA05-caret-right"></i>
+            </a>
         </div>
     </div>
     <!-- used to darken background art -->
@@ -112,31 +150,36 @@
 
 <!-- add localStorage caching with baskets.js  -->
 <script type="text/javascript">
+    // logic to later be used to track front-end user errors
+    window.onerror = function(errorMessage, errorUrl, errorLine) {
+
+    }
 
     // TODO remove this
+
     basket.clear();
 
     // CSS Requires
 
     var maincss = {
-        url:"/stylesheets/sclibrary.min.css",
-        execute: false
-      },
+            url: "/stylesheets/sclibrary.min.css",
+            execute: false
+        },
 
-      bs = {
-        url:"/bower_components/bootstrap/dist/css/bootstrap.min.css",
-        execute: false
-      },
+        bs = {
+            url: "/bower_components/bootstrap/dist/css/bootstrap.min.css",
+            execute: false
+        },
 
-      jq_ui = {
-        url:"/bower_components/jquery-ui/themes/smoothness/jquery-ui.css",
-        execute: false
-      },
+        jq_ui = {
+            url: "/bower_components/jquery-ui/themes/smoothness/jquery-ui.css",
+            execute: false
+        },
 
-      cm = {
-        url: "/stylesheets/jquery.contextMenu.css",
-        execute: false
-      };
+        cm = {
+            url: "/stylesheets/jquery.contextMenu.css",
+            execute: false
+        };
 
     // JS Requires
 
@@ -170,95 +213,79 @@
             url: '/js/library.min.js'
         };
 
-    var requireCSS =  function(responses) {
+    var requireCSS = function(responses) {
         var css = responses[0].data;
         _stylesheet.appendStyleSheet(css, function(err, style) {
             if (err) {
                 console.error(err);
-            } else {
-            }
+            } else {}
         });
     }
 
     // start basket localStorage require chain
-    // bootstrap css
-    basket.require(bs).then(requireCSS)
+    // our main css file
+    basket.require(maincss).then(requireCSS)
 
-    //
-    .then(function () {
-      basket.require(jq_ui).then(requireCSS);
-    })
+    // .then(function() {
+    //     basket.require(bs).then(requireCSS);
+    // })
 
-    .then(function () {
-      basket.require(maincss).then(requireCSS);
-    })
-
-    .then(function () {
-      basket.require(cm).then(requireCSS);
+    .then(function() {
+        basket.require(cm).then(requireCSS);
     })
 
     // jquery, arrive.js
-    .then(function () {
-      basket.require(jquery, arrive);
-    })
-
-    // jquery ui
     .then(function() {
-        basket.require({
-            url: '/bower_components/jquery-ui/jquery-ui.min.js'
-        });
-    }, function(err) {
-        console.log(err);
-    })
+        basket.require(jquery, arrive).then(function () {
 
-    // bootstrap stuff
-    .then(function() {
-            basket.require({
-                url: '/bower_components/bootstrap/js/modal.js'
-            }, {
-                url: '/bower_components/bootstrap/js/collapse.js'
-            });
+          basket.require(
+
+              // Bootstrap js
+              {
+                  url: '/bower_components/bootstrap/js/modal.js'
+              }, {
+                  url: '/bower_components/bootstrap/js/collapse.js'
+              },
+
+              bootbox,
+
+              // position type for context menu
+              {
+                  url: '/bower_components/jQuery-contextMenu/dist/jquery.ui.position.min.js'
+              },
+
+              contextMenu,
+              d3
+          );
         },
-        function(err) {
-          console.log(err);
-        }
-    )
-
-    // most other plugins
-    // TODO reduce this list
-    .then(function() {
-        basket.require(
-            bootbox,
-            // sc_sdk,
-            // position type for context menu
-            {
-                url: '/bower_components/jQuery-contextMenu/dist/jquery.ui.position.min.js'
-            },
-            contextMenu,
-            d3
-        );
-    }, function(err) {
-        console.log(err);
+        function (err) {
+          console.error(err);
+        });
     })
 
-    // TODO remove this block after angular
+    // TODO remove most of this block after angular is gone
     // angular
     .then(function() {
         basket.require(angular)
-        .then(function() {
-            // get angular going
-            var app = angular.module("Library", []);
-
-            basket.require(library)
             .then(function() {
-                angular.bootstrap(document, ['Library']);
-                // everything's loaded
-                $('library').arrive(".track-row", function() {
-                    $('#player,#library').css('filter', 'blur(0px)');
-                    $('.l-wrapper').hide();
-                });
+                // get angular going
+                var app = angular.module("Library", []);
+
+                basket.require(library)
+                    .then(function() {
+                        angular.bootstrap(document, ['Library']);
+                        // everything's loaded
+
+
+                        // when we get the first 100 tracks, remove the loader
+                        $('library').arrive(".track-row", function() {
+                            $('#player,#library').css('filter', 'blur(0px)');
+                            $('.l-wrapper').hide();
+
+
+                        });
+                    });
             });
-        });
     }, function(err) {
         console.log(err);
     });

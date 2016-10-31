@@ -32,5 +32,70 @@
 	</div>
 </div>
 
-<script src="/bower_components/jquery/dist/jquery.min.js"></script>
-<script src="/js/splash/login-request.js"></script>
+<script src="/bower_components/basket-css-example/lib/create-stylesheet.unwrapped-0.2.1.js"></script>
+<script src="/bower_components/basket.js/dist/basket.full.min.js"></script>
+
+<script type="text/javascript">
+// req css function
+var requireCSS =  function(responses) {
+		var css = responses[0].data;
+		_stylesheet.appendStyleSheet(css, function(err, style) {
+				if (err) {
+						console.error(err);
+				} else {
+				}
+		});
+}
+
+
+// CSS includes
+	var maincss = {
+			url:"/stylesheets/sclibrary.min.css",
+			execute: false
+		},
+
+		bs = {
+			url:"/bower_components/bootstrap/dist/css/bootstrap.min.css",
+			execute: false
+		},
+
+		jq_ui = {
+			url:"/bower_components/jquery-ui/themes/smoothness/jquery-ui.css",
+			execute: false
+		},
+
+		cm = {
+			url: "/stylesheets/jquery.contextMenu.css",
+			execute: false
+		};
+
+	var jquery = {
+			url: '/bower_components/jquery/dist/jquery.min.js'
+		},
+
+		splash = {
+			url: '/js/splash.min.js'
+		};
+
+	// start basket localStorage require chain
+	// bootstrap css
+	basket.require(bs).then(requireCSS)
+
+	// main css
+	.then(function () {
+		basket.require(maincss).then(requireCSS);
+	})
+
+	// jquery, arrive.js
+	.then(function () {
+		basket.require(jquery, splash)
+
+		.then(function () {
+			console.log('done');
+			// remove loading effects
+			$('#player,#library').css('filter', 'blur(0px)');
+			$('.l-wrapper').hide();
+		});
+	});
+
+</script>

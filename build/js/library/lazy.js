@@ -15,6 +15,8 @@ let flag = true;
 // stores the lazyLoadTarget jquery element
 let lazyLoadTarget;
 
+let lill = $('#littleloader');
+
 // whenever new track rows appear on the screen, reassign the lazyLoadTarget class
 $(document).arrive(".track-row", {"onceOnly": false}, function() {
   // update the page offset before reassigning the target class
@@ -34,6 +36,8 @@ $(document).arrive(".list", function() {
   $('.library-wrapper').on('scroll', function() {
     // check that the element is in the viewport and also that we are ready to look for the target
     if (flag && isElementInViewport(lazyLoadTarget)){
+      // show small loading icon
+      lill.collapse('show');
       // set the flag to false to signify that we do not want to look for the target again until it has been reassigned
       flag = false;
       // remove the lazyLoadTarget class from it's current track row
@@ -44,6 +48,9 @@ $(document).arrive(".list", function() {
         addToDisplay(tracks);
         // increment the page number
         page++;
+
+        // hide small loading icon
+        lill.collapse('hide');
       });
     }
   });
