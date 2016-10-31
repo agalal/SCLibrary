@@ -64,14 +64,98 @@
 	<!-- ./ wrapper -->
 
 
-<script src="/bower_components/angular/angular.min.js"></script>
-<script src="/bower_components/jquery/dist/jquery.min.js"></script>
-<script src="/bower_components/metisMenu/dist/metisMenu.min.js"></script>
-
-<script src="/js/admin/admin.js"></script>
-<script src="/js/admin/sb-admin-2.js"></script>
+<script src="/bower_components/basket-css-example/lib/create-stylesheet.unwrapped-0.2.1.js"></script>
+<script src="/bower_components/basket.js/dist/basket.full.min.js"></script>
 
 <script type="text/javascript">
-	$('head').append('<link rel="stylesheet" href="/stylesheets/admin.css" type="text/css" />' + '\n\n' +
-				'<link rel="stylesheet" href="/bower_components/metisMenu/dist/metisMenu.min.css" type="text/css" />' );
+// req css function
+var requireCSS =  function(responses) {
+		var css = responses[0].data;
+		_stylesheet.appendStyleSheet(css, function(err, style) {
+				if (err) {
+						console.error(err);
+				} else {
+				}
+		});
+}
+
+
+// CSS includes
+	var maincss = {
+			url:"/stylesheets/sclibrary.min.css",
+			execute: false
+		},
+
+		bs = {
+			url:"/bower_components/bootstrap/dist/css/bootstrap.min.css",
+			execute: false
+		},
+
+		jq_ui = {
+			url:"/bower_components/jquery-ui/themes/smoothness/jquery-ui.css",
+			execute: false
+		},
+
+		cm = {
+			url: "/stylesheets/jquery.contextMenu.css",
+			execute: false
+		},
+		metiscss = {
+			url:'/bower_components/metisMenu/dist/metisMenu.min.css'
+		},
+		admincss = {
+			url:'/stylesheets/admin.css'
+		};
+
+	var jquery = {
+			url: '/bower_components/jquery/dist/jquery.min.js'
+		},
+
+		splash = {
+			url: '/js/splash.min.js'
+		},
+
+		angular = {
+			url:'/bower_components/angular/angular.min.js'
+		},
+		metis = {
+			url:'/bower_components/metisMenu/dist/metisMenu.min.js'
+		},
+		adminjs = {
+			url:'/js/admin.min.js'
+		};
+
+	// start basket localStorage require chain
+	// bootstrap css
+	basket.require(bs).then(requireCSS)
+
+	// require admin css
+	.then(function () {
+		basket.require(admincss).then(requireCSS);
+	})
+
+	// require metis menu css
+	.then(function () {
+		basket.require(metiscss).then(requireCSS);
+	})
+
+	.then(function () {
+		basket.require();
+	})
+
+	// jquery, arrive.js
+	.then(function () {
+		basket.require(jquery, angular)
+
+		.then(function () {
+			basket.require(splash, metis, adminjs)
+			.then(function () {
+				console.log('done');
+				// remove loading effects
+				$('#player,#library').css('filter', 'blur(0px)');
+				$('.l-wrapper').hide();
+			});
+		});
+	});
+
 </script>

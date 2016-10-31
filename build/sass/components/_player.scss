@@ -1,34 +1,39 @@
-a#sidebar-toggle:hover,
-a#settings-toggle:hover,
-a#prev-song:hover,
-a#next-song:hover {
-  opacity: 0.8 !important;
-  transform: scale(1.1,1.1);
-  transform-origin: center;
-  transition: all .5s ease;
+a#settings-toggle,
+a#sidebar-toggle,
+a#prev-song,
+a#next-song {
+  text-decoration: none;
+
+  i[class*=icon-]:before {
+    font-size: $big-icon;
+    opacity: 0.3;
+    color: $white;
+    text-decoration: none;
+  }
+  &:hover > i[class*=icon-]:before {
+    opacity: 0.8 !important;
+    transform: scale(1.1,1.1);
+    transform-origin: center;
+    transition: all .5s ease;
+  }
+}
+
+.container {
+  padding: 0 5%;
 }
 
 a#prev-song {
-  left: 15px;
-  background-image: url(../../images/sc_icons/caret-left.svg);
+  left: $anchor-offset;
 }
 a#next-song {
-  right: 15px;
-  background-image: url(../../images/sc_icons/caret-right.svg);
+  right: $anchor-offset;
 }
 a#prev-song,
 a#next-song {
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: 50% 50%;
     position: absolute;
     display: inline-block;
-    height: 30px;
-    width: 10px;
-    top: 50%;
-    margin-top: -15px;
+    top: #{ ($player-height / 2) - ($anchor-height / 2)};
     z-index: 2;
-    opacity: 0.3;
 }
 
 // waveform container
@@ -42,7 +47,8 @@ div.charts {
 span.track-title,
 span.track-channel {
     background-color: rgba(255,255,255,0.4);
-    width: calc(95% - 100px);
+    max-width: 80%;
+    min-width: 20%;
     height: 40px;
     z-index: 2;
     position: absolute;
@@ -116,7 +122,7 @@ div#art-bk.moving {
 }
 #player.playing .player-main-wrapper {
   opacity: 1.0;
-  transiton: opacity 1.5s ease;
+  transition: opacity 1.5s ease;
 }
 #player {
     position: relative;
@@ -132,27 +138,11 @@ div#art-bk.moving {
 // wrappers
 
 div#top-wrapper {
-    height: 60px;
+    height: 50px;
     width: 100%;
     display: inline-block;
     position: relative;
-    padding: 10px;
     z-index: 39;
-
-    a#settings-toggle {
-      height: 40px;
-      width: 40px;
-      background-image: url(../../images/sc_icons/gear.svg);
-      opacity: 0.3;
-      transition: opacity .5s cubic-bezier(0.69, 0.12, 0.58, 1);
-    }
-    a#sidebar-toggle {
-        height: 40px;
-        width: 40px;
-        background-image: url(../../images/sc_icons/menu.svg);
-        opacity: 0.3;
-        transition: opacity .5s ease;
-    }
 }
 
 .player-main-wrapper {

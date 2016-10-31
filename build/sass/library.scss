@@ -1,6 +1,10 @@
 // Global variable import
 @import "components/globals";
 
+// utilities
+
+@import "components/utilities";
+
 // Import components
 
 @import "components/alertify";
@@ -8,6 +12,7 @@
 @import "components/buttons";
 @import "components/checkbox";
 @import "components/icons";
+@import "components/loader";
 @import "components/login";
 @import "components/modals";
 @import "components/player";

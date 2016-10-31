@@ -1,7 +1,7 @@
 // big toggle
 
-a#settings-toggle:hover,
-a#setting:active {
+a#settings-toggle:hover > i,
+a#setting:active > i {
   animation: spin 1s ease both;
 }
 

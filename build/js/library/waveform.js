@@ -1,7 +1,7 @@
 // jshint esversion: 6
 // Constants used for tuning the waveform
 let options = {
-  refresh_rate: 24,
+  refresh_rate: 100,
   wf_offset: 3.5,
   bar_width: 75,
   bar_height: 0.5,
@@ -13,6 +13,10 @@ let refresh = false;
 let wform_data = [];
 let sub, lows, mids1, mids2, highs1, highs2, highs3;
 
+let observedFR = 0;
+
+
+// TODO Fuck with this to fix the 0 0 Naan Naan problem
 // Track the window and waveform width
 let window_width, waveform_width;
 function setWidth() {
@@ -36,18 +40,17 @@ function loadWaveform(track_id) {
   d3.json("/api/tracks/" + track_id + "/waveform", function(error, data) {
     if (error) throw error;
     wform_data = data;
-    refresh = true;
+    waveform();
   });
 }
 
-// Repeatedly update the waveform in the player.
-setInterval(function() {
-  if (refresh) waveform();
-  if (palette_refresh) {
-    palette_refresh = false;
-    updateColorPalette();
-  }
-}, options.refresh_rate);
+// Repeatedly update the waveform in the player
+// by calling the animation function
+
+// if (palette_refresh) {
+//   palette_refresh = false;
+//   updateColorPalette();
+// }
 
 // Helper function used to take weighted average of the seven frequency ranges
 function composite(a, b, c, d, e, f, g) {
@@ -58,6 +61,7 @@ function composite(a, b, c, d, e, f, g) {
 
 // Draws the waveform
 function waveform() {
+  requestAnimationFrame(waveform);
   analyser.getByteFrequencyData(fd);
   document.getElementById('wf_box').innerHTML = "";
 
@@ -100,6 +104,7 @@ function waveform() {
     .attr("class", "chart")
     .attr("width", "" + percent_offset + "%")
     .attr("style", "padding-left:" + (100 - percent_offset) + "%;")
+    // TODO fix js error originating here before resize
     .attr("viewBox", "0 0 " + Math.max(w * data.length, 0) + " " + Math.max(h, 0));
   //TODO: Make a color analyzer for album artwork so that we can use a pallette to color things in the player, like fill
 
