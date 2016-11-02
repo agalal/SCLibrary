@@ -125,6 +125,18 @@
     <div id="art-bk"></div>
     <div id="total-bar"></div>
     <div class="charts" id="wf_box"></div>
+
+    <!-- // draggable bar for resizing -->
+    <div class="drag-bar text-center down" style="
+        width: 100vw;
+        position: absolute;
+        top: calc(100% - 40px);
+        z-index: 1000;
+        opacity: 0.8;
+        color: #fff;
+        font-size: 40px;
+    "><i class="icon-uEA03-caret-down" div="">
+    </i></div>
 </div>
 
 <div id="library" ng-app="Library">
@@ -240,6 +252,11 @@
 
           basket.require(
 
+              // standalone resizable
+              {
+                url: '/bower_components/jquery-resizable/dist/jquery-resizable.js'
+              },
+
               // Bootstrap js
               {
                   url: '/bower_components/bootstrap/js/modal.js'
@@ -260,33 +277,36 @@
         },
         function (err) {
           console.error(err);
-        });
-    })
+        })
+        // TODO remove most of this block after angular is gone
+        // angular
+        .then(function() {
+            basket.require(angular)
+                .then(function() {
+                    // get angular going
+                    var app = angular.module("Library", []);
 
-    // TODO remove most of this block after angular is gone
-    // angular
-    .then(function() {
-        basket.require(angular)
-            .then(function() {
-                // get angular going
-                var app = angular.module("Library", []);
+                    basket.require(library)
+                        .then(function() {
+                            angular.bootstrap(document, ['Library']);
 
-                basket.require(library)
-                    .then(function() {
-                        angular.bootstrap(document, ['Library']);
-                        // everything's loaded
+                            setWidth();
 
-
-                        // when we get the first 100 tracks, remove the loader
-                        $('library').arrive(".track-row", function() {
-                            $('#player,#library').css('filter', 'blur(0px)');
-                            $('.l-wrapper').hide();
+                            // everything's loaded
 
 
+                            // when we get the first 100 tracks, remove the loader
+                            $('library').arrive(".track-row", function() {
+                                $('#player,#library').css('filter', 'blur(0px)');
+                                $('.l-wrapper').hide();
+
+                            });
                         });
-                    });
-            });
-    }, function(err) {
-        console.log(err);
+                });
+        }, function(err) {
+            console.log(err);
+        });
     });
+
+
 </script>

@@ -77,6 +77,11 @@ document.body.onkeydown = document.body.onkeyup = function(e) {
       e.preventDefault();
       randomSong();
     }
+    if (map[187]) {                 /* + */
+      e.preventDefault();
+      document.documentElement.webkitRequestFullscreen();
+      map[187] = false;
+    }
   }
 };
 

@@ -14,6 +14,7 @@ var p = gulpLoadPlugins({
   rename: {
     "gulp-babel": "babel",
     "gulp-jsbeautifier": "prettify",
+    "gulp-cached": "cache",
     "gulp-concat": "concat",
     "gulp-htmlmin": "htmlmin",
     "gulp-iconfont": "iconfont",
@@ -98,6 +99,9 @@ gulp.task('watch', function () {
 gulp.task('prettify-js', function (cb) {
   pump([
     gulp.src('build/js/**/*.js'),
+    p.cache('prettify', {
+      optimizeMemory: true
+    }),
     p.prettify.reporter(),
     p.jshint(),
     p.jshint.reporter('default'),       // log syntax errors/warnings
@@ -117,6 +121,9 @@ gulp.task('js', ['prettify-js'], function (cb) {
       pump([
         // match all js files in child dirs to merge
         gulp.src(glob),
+        p.cache('js', {
+          optimizeMemory: true
+        }),
         p.sourcemap.init(),
 
 
@@ -144,6 +151,9 @@ gulp.task('icon', function(){
   var runTimestamp = Math.round(Date.now()/1000);
 
   return gulp.src(['build/images/sc_icons/*.svg'])
+    .pipe(p.cache('icons'), {
+      optimizeMemory: true
+    })
     .pipe(p.iconfontCss({
       fontName: iconFontName,
       path: 'scss',
@@ -168,6 +178,9 @@ gulp.task('sass', ['icon'], function (cb) {
     // match full sass files, not partials
     gulp.src('build/sass/*.scss'),
 
+    p.cache('sass', {
+      optimizeMemory: true
+    }),
     p.prettify(),
     p.sourcemap.init(),                 // start mapping
     p.sass(),                           // compile sass
@@ -189,6 +202,7 @@ gulp.task('css', function (cb) {
     // match full sass files, not partials
     gulp.src('build/css/*.css'),
 
+    // no need to cache, sass is cached, thus won't be sent downstream
     p.prettify(),
     p.sourcemap.init(),                 // start mapping
     p.autoprefixer(autoprefixerOptions),// autoprefix for browsers
@@ -204,6 +218,9 @@ gulp.task('css', function (cb) {
 
 gulp.task('imgs', function (cb) {
   pump([
+    // p.cache('img', {
+    //   optimizeMemory: true
+    // }),
     gulp.src(imgGlob),
     p.imagemin(),
     gulp.dest('public/images')
@@ -214,6 +231,9 @@ gulp.task('imgs', function (cb) {
 gulp.task('html', function (cb) {
   pump([
     gulp.src('build/views/*.html'),
+    p.cache('html', {
+      optimizeMemory: true
+    }),
     p.prettify(),
     p.sourcemap.init(),
     p.htmlmin({collapseWhitespace: true}),

@@ -18,6 +18,7 @@ function playPause() {
     }, showIcon);
     bgScroll(true);
     audioPlayer.play();
+    waveform();
   }
 }
 
@@ -63,19 +64,83 @@ function rewind(seconds) {
   audioPlayer.currentTime -= seconds;
 }
 
-$('#artworkimg').click(playPause);
-
-//TODO: Seeking should be based on the width of the waveform, not the window's width.
-$('#back-div').click(function(e) {
-  if (duration !== undefined){
-    //how far you clicked into the div's width by percent. 1.0 is to cast to double
-    let relativePercent = e.pageX / ($(window).width() * 1.0);
-    let seekPosition = Math.round(duration * relativePercent);
-    bgScroll(true, seekPosition / 1000, duration / 1000);
-    audioPlayer.currentTime = seekPosition / 1000.0;
-    audioPlayer.play();
-  }
+$('#artworkimg').click(function(e) {
+  e.stopPropagation();
+  playPause();
 });
+
+var opt = {
+  // optional selector for handle that starts dragging
+  handleSelector: '.drag-bar',
+  // resize the width
+  resizeWidth: false,
+  // resize the height
+  resizeHeight: true,
+  // the side that the height resizing is relative to
+  resizeHeightFrom: 'bottom',
+  // hook into start drag operation (event,$el,opt passed - return false to abort drag)
+  onDragStart: function (e, el) {
+    // estrict minimum and maximum size of #player
+    let playerheight = $(el).height();
+    if(playerheight <= 299) return false;
+    if(playerheight >= ($(window).height() * 0.9)) return false;
+  },
+  // hook into stop drag operation (event,$el,opt passed)
+  onDragEnd: function (e, el) {
+    let playerheight = $(el).height();
+    let winheight = $(window).height();
+
+    if (playerheight <= 299) {
+      $('#player').css('transition','height 1s ease');
+      $('#player').css('height', '300px');
+    }
+
+    if (playerheight >= ($(window).height() * 0.9)) {
+      $('#player').css('transition','height 1s ease');
+      $('#player').css('height', $(window).height() * 0.9 + 'px');
+    }
+
+  },
+  // hook into each drag operation (event,$el,opt passed)
+  onDrag: function (e, el) {
+    let playerheight = $(el).height();
+    let winheight = $(window).height();
+    $('.library-wrapper').css('height', winheight - playerheight + 'px');
+  },
+  // disable touch-action on the $handle
+  // prevents browser level actions like forward back gestures
+  touchActionNone: true
+};
+
+$("#player").resizable(opt);
+
+// TODO Figure out how to trigger this click when playing
+$('body').on("click", "#player", function(e) {
+  console.log(e);
+  //how far you clicked into the div's width by percent
+  let w = $(window).width() * 1.0;
+  // bit of voodoo to sync click with svg fill
+  let relativePercent = ((e.pageX - (w * 0.025)) / (w * 0.95)) * 1.05;
+  let seekPosition = Math.round(duration * relativePercent);
+  bgScroll(true, seekPosition / 1000, duration / 1000);
+  audioPlayer.currentTime = seekPosition / 1000.0;
+  audioPlayer.play();
+  waveform();
+});
+
+// $('#player').resizable({
+//   handles: 's',
+//   autoHide: true,
+//   minHeight: 200,
+//   maxHeight: ($(window).height() * 0.8),
+//   // resize: function(event, ui) {
+//   //
+//   // },
+//   stop: function (event, ui) {
+//     var resClass = ui.element.find('a').attr('data-also-resize');
+//     columns.set(resClass, ui.size.width);
+//   }
+// });
 
 let audioPlayer = new Audio();
 audioPlayer.crossOrigin = "anonymous";

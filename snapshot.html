@@ -1,0 +1,88 @@
+<div id="player" style="filter: blur(0px);" class="playing">
+    <!-- Top wrapper area, contains toggle/setting buttons, genres -->
+
+    <div id="top-wrapper">
+        <a class="pull-left" id="sidebar-toggle" data-toggle="collapse" data-target="#left-side"><i class="icon-uEA0A-menu"></i></a>
+        <a class="pull-right" id="settings-toggle" data-toggle="modal" href="#set-modal"><i class="icon-uEA09-gear"></i></a>
+        <div class="text-center collapse" id="littleloader">
+            <svg width="120" height="20" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#fff">
+              <circle cx="15" cy="15" r="15" id="ll1">
+                  <!-- <animate attributeName="r" from="15" to="15"
+                           begin="0s" dur="0.8s"
+                           values="15;9;15" calcMode="linear"
+                           repeatCount="indefinite" />
+                  <animate attributeName="fill-opacity" from="1" to="1"
+                           begin="0s" dur="0.8s"
+                           values="1;.5;1" calcMode="linear"
+                           repeatCount="indefinite" /> -->
+              </circle>
+              <circle cx="60" cy="15" r="15" fill-opacity="0.3" id="ll2">
+                  <!-- <animate attributeName="r" from="9" to="9"
+                           begin="0s" dur="0.8s"
+                           values="9;15;9" calcMode="linear"
+                           repeatCount="indefinite" />
+                  <animate attributeName="fill-opacity" from="0.5" to="0.5"
+                           begin="0s" dur="0.8s"
+                           values=".5;1;.5" calcMode="linear"
+                           repeatCount="indefinite" /> -->
+              </circle>
+              <circle cx="105" cy="15" r="15" id="ll3">
+                  <!-- <animate attributeName="r" from="15" to="15"
+                           begin="0s" dur="0.8s"
+                           values="15;9;15" calcMode="linear"
+                           repeatCount="indefinite" />
+                  <animate attributeName="fill-opacity" from="1" to="1"
+                           begin="0s" dur="0.8s"
+                           values="1;.5;1" calcMode="linear"
+                           repeatCount="indefinite" /> -->
+              </circle>
+          </svg>
+        </div>
+    </div>
+
+    <!-- Main wrapper area, contains artwork, title, channel, and prev/next buttons -->
+    <div class="player-main-wrapper">
+        <div class="container">
+            <a class="pull-left" id="prev-song" href="javascript:previousSong();">
+                <i class="icon-uEA04-caret-left"></i>
+            </a>
+            <div class="col-sm-12">
+                <!-- Artwork gets loaded in as a background image here -->
+                <div id="artworkimg" style="background-image: url(&quot;https://i1.sndcdn.com/artworks-000190743765-qizscx-large.jpg&quot;);"></div>
+                <span class="track-title">oh</span>
+                <span class="track-channel">simon eng</span>
+            </div>
+            <a class="pull-right" id="next-song" href="javascript:nextSong();">
+                <i class="icon-uEA05-caret-right"></i>
+            </a>
+        </div>
+    </div>
+    <!-- used to darken background art -->
+    <div id="back-div"></div>
+    <div id="art-bk" style="background-image: url(&quot;https://i1.sndcdn.com/artworks-000190743765-qizscx-large.jpg&quot;); background-position-y: 0%; transition: background-position 116s linear;" class="moving"></div>
+    <div id="total-bar"></div>
+    <div class="charts" id="wf_box">
+      <svg class="chart" width="100%" style="padding-left:0%;" viewBox="0 0 726.9147826086956 266">
+        <defs>
+          <g>
+            <clipPath id="wave">
+              <g>
+                <rect x="-0.3914512077294686" y="255.6816154465101" width="1px" height="11.818384553489887"></rect>
+                <rect x="6.5981140096618365" y="254.96908299632406" width="1px" height="12.530917003675931"></rect>
+                <rect x="13.58767922705314" y="254.37067065900763" width="1px" height="13.129329340992367"></rect>
+                <rect x="20.577244444444446" y="252.88195612238988" width="1px" height="14.618043877610132"></rect>
+                <rect x="27.56680966183575" y="250.06682910638864" width="1px" height="17.43317089361136"></rect>
+                <rect x="34.55637487922706" y="252.88050025246213" width="1px" height="14.619499747537866"></rect>
+                <rect x="41.54594009661836" y="253.8738916970352" width="1px" height="13.626108302964813"></rect>
+                <rect x="48.53550531400967" y="253.71188855450902" width="1px" height="13.788111445490992"></rect>
+                <rect x="55.52507053140097" y="252.4119635742489" width="1px" height="15.088036425751104"></rect>
+                <rect x="62.51463574879227" y="251.018007125629" width="1px" height="16.48199287437101"></rect><rect x="69.50420096618357" y="240.70307837525192" width="1px" height="26.796921624748084"></rect><rect x="76.49376618357488" y="239.9925911713957" width="1px" height="27.507408828604305"></rect><rect x="83.48333140096618" y="238.58172439581548" width="1px" height="28.918275604184515"></rect><rect x="90.47289661835748" y="235.07180699094314" width="1px" height="32.42819300905686"></rect><rect x="97.4624618357488" y="230.35514484316369" width="1px" height="37.14485515683632"></rect><rect x="104.4520270531401" y="231.32081081595288" width="1px" height="36.17918918404713"></rect><rect x="111.4415922705314" y="236.13994512895462" width="1px" height="31.360054871045367"></rect><rect x="118.4311574879227" y="235.61543410619277" width="1px" height="31.884565893807235"></rect><rect x="125.420722705314" y="239.04072659662003" width="1px" height="28.459273403379967"></rect><rect x="132.41028792270532" y="241.30586725556049" width="1px" height="26.19413274443952"></rect><rect x="139.39985314009664" y="252.7432303454803" width="1px" height="14.756769654519713"></rect><rect x="146.38941835748793" y="244.86023329525972" width="1px" height="22.639766704740282"></rect><rect x="153.37898357487924" y="244.3296259483256" width="1px" height="23.170374051674386"></rect><rect x="160.36854879227056" y="242.24407047942714" width="1px" height="25.25592952057287"></rect><rect x="167.35811400966185" y="241.22680144623592" width="1px" height="26.27319855376406"></rect><rect x="174.34767922705316" y="241.18559218556646" width="1px" height="26.31440781443355"></rect><rect x="181.33724444444445" y="236.85944494633884" width="1px" height="30.640555053661153"></rect><rect x="188.32680966183577" y="236.32478329221206" width="1px" height="31.17521670778794"></rect><rect x="195.31637487922708" y="236.3003542991237" width="1px" height="31.199645700876278"></rect><rect x="202.30594009661837" y="240.06092785585878" width="1px" height="27.439072144141218"></rect><rect x="209.2955053140097" y="240.70307837525192" width="1px" height="26.796921624748084"></rect><rect x="216.28507053140098" y="240.61925867028776" width="1px" height="26.880741329712247"></rect><rect x="223.2746357487923" y="239.2423877594763" width="1px" height="28.25761224052371"></rect><rect x="230.2642009661836" y="248.75588349893695" width="1px" height="18.744116501063058"></rect><rect x="237.2537661835749" y="232.79416897467112" width="1px" height="34.705831025328884"></rect><rect x="244.2433314009662" y="232.90901276100928" width="1px" height="34.590987238990714"></rect><rect x="251.2328966183575" y="233.94667388261652" width="1px" height="33.553326117383484"></rect><rect x="258.2224618357488" y="236.32478329221206" width="1px" height="31.17521670778794"></rect><rect x="265.2120270531401" y="237.68159153427388" width="1px" height="29.818408465726115"></rect><rect x="272.2015922705314" y="239.43084594376404" width="1px" height="28.069154056235963"></rect><rect x="279.19115748792274" y="238.7822874059911" width="1px" height="28.71771259400889"></rect><rect x="286.18072270531405" y="243.07434070379844" width="1px" height="24.425659296201562"></rect><rect x="293.1702879227053" y="236.56780594300167" width="1px" height="30.932194056998338"></rect><rect x="300.15985314009663" y="233.5632768822782" width="1px" height="33.936723117721804"></rect><rect x="307.14941835748795" y="231.1745465198358" width="1px" height="36.32545348016421"></rect><rect x="314.13898357487926" y="229.70798313709247" width="1px" height="37.79201686290753"></rect><rect x="321.1285487922706" y="233.94667388261652" width="1px" height="33.553326117383484"></rect><rect x="328.11811400966184" y="234.9005212550932" width="1px" height="32.59947874490681"></rect><rect x="335.10767922705315" y="235.60155680901417" width="1px" height="31.898443190985834"></rect><rect x="342.09724444444447" y="240.06092785585878" width="1px" height="27.439072144141218"></rect><rect x="349.0868096618358" y="246.75597970928504" width="1px" height="20.74402029071495"></rect><rect x="356.0763748792271" y="243.07434070379844" width="1px" height="24.425659296201562"></rect><rect x="363.06594009661836" y="241.83065467485014" width="1px" height="25.669345325149873"></rect><rect x="370.0555053140097" y="238.01605084645823" width="1px" height="29.483949153541783"></rect><rect x="377.045070531401" y="239.75535976792975" width="1px" height="27.74464023207025"></rect><rect x="384.0346357487923" y="236.7691872905669" width="1px" height="30.730812709433096"></rect><rect x="391.0242009661836" y="238.982506382167" width="1px" height="28.51749361783301"></rect><rect x="398.0137661835749" y="239.1056475237363" width="1px" height="28.394352476263688"></rect><rect x="405.0033314009662" y="244.24864467673282" width="1px" height="23.251355323267184"></rect><rect x="411.9928966183575" y="244.91577983495714" width="1px" height="22.584220165042858"></rect><rect x="418.98246183574884" y="243.19012842238794" width="1px" height="24.309871577612068"></rect><rect x="425.97202705314015" y="244.86023329525972" width="1px" height="22.639766704740282"></rect><rect x="432.9615922705314" y="243.09150083712072" width="1px" height="24.40849916287929"></rect><rect x="439.9511574879227" y="232.80007920206566" width="1px" height="34.699920797934325"></rect><rect x="446.94072270531404" y="234.3878746829382" width="1px" height="33.11212531706182"></rect><rect x="453.93028792270536" y="235.24428870431427" width="1px" height="32.255711295685735"></rect><rect x="460.9198531400967" y="234.68351371680686" width="1px" height="32.81648628319314"></rect><rect x="467.90941835748794" y="234.9005212550932" width="1px" height="32.59947874490681"></rect><rect x="474.89898357487925" y="237.68159153427388" width="1px" height="29.818408465726115"></rect><rect x="481.88854879227057" y="239.43084594376404" width="1px" height="28.069154056235963"></rect><rect x="488.8781140096619" y="238.13168180253479" width="1px" height="29.3683181974652"></rect><rect x="495.8676792270532" y="240.61925867028776" width="1px" height="26.880741329712247"></rect><rect x="502.85724444444446" y="239.2423877594763" width="1px" height="28.25761224052371"></rect><rect x="509.8468096618358" y="232.80007920206566" width="1px" height="34.699920797934325"></rect><rect x="516.836374879227" y="231.1745465198358" width="1px" height="36.32545348016421"></rect><rect x="523.8259400966184" y="232.11801382429746" width="1px" height="35.38198617570252"></rect><rect x="530.8155053140097" y="234.68351371680686" width="1px" height="32.81648628319314"></rect><rect x="537.805070531401" y="236.32478329221206" width="1px" height="31.17521670778794"></rect><rect x="544.7946357487923" y="238.36394425625295" width="1px" height="29.13605574374706"></rect><rect x="551.7842009661836" y="239.43084594376404" width="1px" height="28.069154056235963"></rect><rect x="558.7737661835749" y="238.7822874059911" width="1px" height="28.71771259400889"></rect><rect x="565.7633314009662" y="239.3608493036721" width="1px" height="28.1391506963279"></rect><rect x="572.7528966183576" y="237.9157113856729" width="1px" height="29.5842886143271"></rect><rect x="579.7424618357488" y="234.3205351304659" width="1px" height="33.17946486953407"></rect><rect x="586.7320270531401" y="231.98757136821587" width="1px" height="35.512428631784125"></rect><rect x="593.7215922705315" y="232.90901276100928" width="1px" height="34.590987238990714"></rect><rect x="600.7111574879227" y="235.41461924359322" width="1px" height="32.085380756406764"></rect><rect x="607.7007227053141" y="237.72661366913084" width="1px" height="29.77338633086917"></rect><rect x="614.6902879227054" y="236.3003542991237" width="1px" height="31.199645700876278"></rect><rect x="621.6798531400966" y="239.43084594376404" width="1px" height="28.069154056235963"></rect><rect x="628.669418357488" y="238.7822874059911" width="1px" height="28.71771259400889"></rect><rect x="635.6589835748792" y="240.61925867028776" width="1px" height="26.880741329712247"></rect><rect x="642.6485487922706" y="247.90329986071598" width="1px" height="19.596700139284028"></rect><rect x="649.6381140096619" y="239.45094585646393" width="1px" height="28.049054143536065"></rect><rect x="656.6276792270531" y="246.82084351188286" width="1px" height="20.679156488117158"></rect><rect x="663.6172444444445" y="250.49847964621821" width="1px" height="17.00152035378178"></rect><rect x="670.6068096618358" y="253.335001761289" width="1px" height="14.16499823871101"></rect><rect x="677.5963748792271" y="253.71188855450902" width="1px" height="13.788111445490992"></rect><rect x="684.5859400966184" y="253.47046196994282" width="1px" height="14.02953803005718"></rect><rect x="691.5755053140097" y="254.04169877561878" width="1px" height="13.458301224381204"></rect><rect x="698.565070531401" y="254.7295082310637" width="1px" height="12.7704917689363"></rect><rect x="705.5546357487923" y="255.90095144425973" width="1px" height="11.599048555740266"></rect><rect x="712.5442009661837" y="253.86872760462492" width="1px" height="13.631272395375069"></rect><rect x="719.5337661835749" y="251.74163924318938" width="1px" height="15.758360756810628"></rect>
+              </g>
+            </clipPath>
+          </g>
+        </defs>
+        <rect class="fill-bar" clip-path="url(#wave)" width="100%" height="266px" fill="yellow"></rect>
+      </svg>
+    </div>
+  </div>
+</div>

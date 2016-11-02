@@ -1,3 +1,6 @@
+// jshint esversion: 6
+
+
 var app = angular.module("Library", []);
 
 
@@ -8,7 +11,6 @@ app.directive("library", [function (){
   };
 }]);
 
-// jshint esversion: 6
 // Set context to default option (library)
 let curr_context = 'library';
 

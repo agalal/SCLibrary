@@ -55,12 +55,32 @@ a {
 
 // support collapse without BS
 
-.collapse:not(.in) {
-  display: none;
+.collapse {
+  &:not(.in) {
+    display: none;
+  }
+
+  &.in {
+    display: block;
+  }
 }
 
-.collapse.in {
-  display: block;
+.fade {
+  &:not(.in) {
+    opacity: 0;
+  }
+
+  &.in {
+    opacity: 1.0;
+  }
+}
+
+
+
+// support fade without BS as well
+
+.fade.in {
+    opacity: 1;
 }
 
 input[type=text] {
@@ -81,4 +101,8 @@ a.dark {
     *:hover > & {
       color: $highlight;
     }
+}
+
+.hidden {
+  display: none;
 }

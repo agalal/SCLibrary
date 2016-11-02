@@ -26,6 +26,10 @@
     "bootbox.js": "bootbox#^4.4.0",
     "basket.js": "https://github.com/addyosmani/basket.js.git#^0.5.2",
     "rsvp.js": "rsvp#^3.3.3",
-    "basket-css-example": "https://github.com/andrewwakeling/basket-css-example.git"
+    "basket-css-example": "https://github.com/andrewwakeling/basket-css-example.git",
+    "jquery-resizable": "^0.18.0"
+  },
+  "resolutions": {
+    "jquery": "^2.2.3"
   }
 }

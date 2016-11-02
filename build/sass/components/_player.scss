@@ -18,21 +18,19 @@ a#next-song {
   }
 }
 
-.container {
-  padding: 0 5%;
-}
-
 a#prev-song {
   left: $anchor-offset;
 }
+
 a#next-song {
   right: $anchor-offset;
 }
+
 a#prev-song,
 a#next-song {
     position: absolute;
     display: inline-block;
-    top: #{ ($player-height / 2) - ($anchor-height / 2)};
+    top: 50%;
     z-index: 2;
 }
 
@@ -44,112 +42,40 @@ div.charts {
     opacity: 0.83;
 }
 
-span.track-title,
-span.track-channel {
-    background-color: rgba(255,255,255,0.4);
-    max-width: 80%;
-    min-width: 20%;
-    height: 40px;
-    z-index: 2;
-    position: absolute;
-    font-family: Montserrat, 'Montserrat', 'Oxygen', sans-serif;
-    font-weight: 600;
-    padding: 10px 15px;
-    color: #222;
-    display: inline-block;
-}
-
-div#art-bk {
-  height: 300px;
-  width: 100%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  /* background-position: 50% 100%; */
-  position: fixed;
-  top: 0;
-  z-index: 0;
-  -webkit-filter: blur(9px);
-}
-
-#artworkimg {
-    background-position: 50% 50%;
-    background-size: cover;
-    display: inline-block;
-    height: 100px;
-    width: 100px;
-    position: relative;
-    z-index: 2;
-    box-shadow: -3px 3px 12px rgba(23,23,23,0.8);
-}
-
-#artworkimg #pauseplay {
-    opacity: 0.0;
-    transition: all .2s ease;
-}
-#artworkimg:hover #pauseplay {
-    opacity: 0.6;
-}
-#artworkimg:active #pauseplay {
-    opacity: 1.0;
-    filter: drop-shadow(10px, 12px, 6px, black);
-}
-#pauseplay {
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    display: inline-block;
-    height: 100%;
-    width: 100%;
-}
-/*Implement background animation*/
-div#art-bk:not(.moving) {
-    background-position-y: 0%;
-    transition: background-position .5s ease;
-}
-
-div#art-bk.moving {
-    background-position-y: 100% !important;
-}
-#waveformimg {
-    position: relative;
-    width: 100%;
-}
-#player.playing + div#library {
-    transition: all .2s ease;
-}
-#player:not(.playing) .player-main-wrapper {
-  opacity: 0.0;
-}
-#player.playing .player-main-wrapper {
-  opacity: 1.0;
-  transition: opacity 1.5s ease;
-}
 #player {
     position: relative;
     top: 0;
     height: 300px;
     background-color: #232323;
     width: 100%;
-}
-#player #playpausewrapper {
-    display: none;
-}
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    resize: vertical;
 
-// wrappers
+    // wrappers
+    div#top-wrapper {
+        flex-basis: 100vw;
+        height: 50px;
+        width: 100%;
+        display: inline-block;
+        position: fixed;
+        top: 0;
+        z-index: 39;
+    }
 
-div#top-wrapper {
-    height: 50px;
-    width: 100%;
-    display: inline-block;
-    position: relative;
-    z-index: 39;
-}
+    .player-main-wrapper {
+        width: 100vw;
+        display: inline-block;
+        height: 100px;
+        flex-basis: 100%;
 
-.player-main-wrapper {
-    width: 100vw;
-    display: inline-block;
-    height: 100px;
-    margin-top: 30px;
+        .container {
+          padding: 0 5%;
+        }
+    }
+
 
     span.track-channel {
         transform: translate(25px, 30px);
@@ -157,4 +83,75 @@ div#top-wrapper {
     span.track-title {
         transform: translate(10px);
     }
+
+    // sc artwork square
+    #artworkimg {
+        background-position: 50% 50%;
+        background-size: cover;
+        display: inline-block;
+        height: 100px;
+        width: 100px;
+        position: relative;
+        z-index: 2;
+        box-shadow: -3px 3px 12px rgba(23,23,23,0.8);
+    }
+
+    // transition in main wrapper
+    .player-main-wrapper {
+      transition: opacity 1.5s ease;
+    }
+    &:not(.playing) .player-main-wrapper {
+      opacity: 0;
+    }
+    &.playing .player-main-wrapper {
+      opacity: 1.0;
+    }
+
+    // art background div
+    div#art-bk {
+      height: 100%;
+      width: 100%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      /* background-position: 50% 100%; */
+      position: fixed;
+      top: 0;
+      z-index: 0;
+      -webkit-filter: blur(9px);
+
+      // Implement background animation
+      &:not(.moving) {
+          background-position-y: 0%;
+          transition: background-position .5s ease;
+      }
+      &.moving {
+          background-position-y: 100% !important;
+      }
+
+
+    }
+
+    // track title spans
+    span.track-title,
+    span.track-channel {
+        background-color: rgba(255,255,255,0.4);
+        max-width: 80%;
+        min-width: 20%;
+        height: 40px;
+        z-index: 2;
+        position: absolute;
+        font-family: Montserrat, 'Montserrat', 'Oxygen', sans-serif;
+        font-weight: 600;
+        padding: 10px 15px;
+        color: #222;
+        display: inline-block;
+    }
+
+    span.track-title {
+
+    }
+    span.track-channel {
+
+    }
+
 }
