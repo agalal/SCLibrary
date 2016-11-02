@@ -65,6 +65,8 @@ a {
   }
 }
 
+// support fade without BS as well
+
 .fade {
   &:not(.in) {
     opacity: 0;
@@ -77,11 +79,7 @@ a {
 
 
 
-// support fade without BS as well
 
-.fade.in {
-    opacity: 1;
-}
 
 input[type=text] {
     margin: 7px auto;

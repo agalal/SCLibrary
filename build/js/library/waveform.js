@@ -47,7 +47,6 @@ function loadWaveform(track_id) {
   });
 }
 
-
 // Repeatedly update the waveform in the player
 // by calling the animation function
 
@@ -116,6 +115,7 @@ function waveform() {
     .attr("class", "chart")
     .attr("width", "" + percent_offset + "%")
     .attr("style", "padding-left:" + (100 - percent_offset) + "%;")
+    // TODO fix js error originating here before resize
     .attr("viewBox", "0 0 " + Math.max(w * data.length, 0) + " " + Math.max(h, 0));
 
   // append a clip path to add the waveform to
