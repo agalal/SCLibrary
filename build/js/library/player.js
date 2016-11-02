@@ -80,42 +80,58 @@ var opt = {
   resizeHeightFrom: 'bottom',
   // hook into start drag operation (event,$el,opt passed - return false to abort drag)
   onDragStart: function (e, el) {
-    // estrict minimum and maximum size of #player
-    let playerheight = $(el).height();
-    if(playerheight <= 299) return false;
-    if(playerheight >= ($(window).height() * 0.9)) return false;
+    snapPlayer(e, el);
   },
   // hook into stop drag operation (event,$el,opt passed)
   onDragEnd: function (e, el) {
-    let playerheight = $(el).height();
-    let winheight = $(window).height();
-
-    if (playerheight <= 299) {
-      $('#player').css('transition','height 1s ease');
-      $('#player').css('height', '300px');
-    }
-
-    if (playerheight >= ($(window).height() * 0.9)) {
-      $('#player').css('transition','height 1s ease');
-      $('#player').css('height', $(window).height() * 0.9 + 'px');
-    }
-
+    snapPlayer(e, el);
   },
   // hook into each drag operation (event,$el,opt passed)
   onDrag: function (e, el) {
     let playerheight = $(el).height();
     let winheight = $(window).height();
-    $('.library-wrapper').css('height', winheight - playerheight + 'px');
+    let wfscale = Math.round(playerheight / 3) / 100;
+
+    $('.library-wrapper,#library').css('height', (winheight - playerheight) + 'px');
+    $('#wf_box').css('transform', 'scale(1.0,' + wfscale +')');
   },
   // disable touch-action on the $handle
   // prevents browser level actions like forward back gestures
   touchActionNone: true
 };
 
+function snapPlayer(e, el) {
+  let playerheight = $(el).height();
+  let winheight = $(window).height();
+
+  if (playerheight <= 149) {
+    $('#player').css('transition','height 1s ease');
+    $('#player').css('height', '150px');
+    playerheight = 150;
+    return false;
+  }
+
+  if (playerheight >= ($(window).height() * 1.0 + 1)) {
+    $('#player').css('transition','height 1s ease');
+    $('#player').css('height', $(window).height() * 1.0 + 'px');
+    playerheight = (winheight * 1.0);
+    return false;
+  }
+
+  let wfscale = Math.round(playerheight / 3) / 100;
+
+  $('.library-wrapper,#library').css('height', ($(window).height() - playerheight) + 'px');
+  $('#wf_box').css('transform', 'scale(1.0,' + wfscale +')');
+}
+
+$(window).resize(function () {
+  snapPlayer(null, '#player');
+});
+
 $("#player").resizable(opt);
 
 // TODO Figure out how to trigger this click when playing
-$('body').on("click", "#player", function(e) {
+$('body').on("click", "#wf_box", function(e) {
   console.log(e);
   //how far you clicked into the div's width by percent
   let w = $(window).width() * 1.0;

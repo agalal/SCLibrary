@@ -139,6 +139,10 @@ div#art-bk.moving {
     flex-wrap: wrap;
     align-items: center;
 
+    #wf_box {
+      transform-origin: 50% 98%;
+    }
+
     // wrappers
     div#top-wrapper {
         flex-basis: 100vw;
