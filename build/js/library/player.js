@@ -181,7 +181,7 @@ function loadSong(tid) {
   incPlayCount(tid);
   loadWaveform(tid);
   loadArtworkPalette(tid);
-
+  
   audioPlayer.src = 'http://api.soundcloud.com/tracks/' + track.t.properties.scid + '/stream' + '?client_id=a3629314a336fd5ed371ff0f3e46d4d0';
   //console.log(audioPlayer.src);
   audioPlayer.load();

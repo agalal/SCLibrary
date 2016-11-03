@@ -10,7 +10,9 @@ let options = {
   defaultFillColor: "#232323",
   waveform_resolution: 9,
   interpolation_type: 'basis',
-  patternSize: '6'
+  patternSize: '6',
+  patternImg: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+DQogIDxyZWN0IHdpZHRoPScxMCcgaGVpZ2h0PScxMCcgZmlsbD0nbm9uZScgLz4NCiAgPHJlY3QgeD0nMCcgeT0nMCcgd2lkdGg9JzInIGhlaWdodD0nMTAnIGZpbGw9J3doaXRlJyAvPg0KPC9zdmc+",
+  progressImg: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+DQogIDxyZWN0IHdpZHRoPScxMCcgaGVpZ2h0PScxMCcgZmlsbD0nbm9uZScgLz4NCiAgPHJlY3QgeD0nMCcgeT0nMCcgd2lkdGg9JzInIGhlaWdodD0nMTAnIGZpbGw9J2JsYWNrJyAvPg0KPC9zdmc+"
 };
 
 let refresh = false;
@@ -122,6 +124,7 @@ function waveform() {
   var defs = chart
     .append("defs");
 
+  // background pattern fill
   var pattern = defs
     .append("pattern")
     .attr("id", "vertical-stripe-1")
@@ -129,11 +132,25 @@ function waveform() {
     .attr("width", options.patternSize)
     .attr("height", options.patternSize)
     .append("image")
-    .attr("xlink:href", "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScgLz4KICA8cmVjdCB4PScwJyB5PScwJyB3aWR0aD0nMScgaGVpZ2h0PScxMCcgZmlsbD0nYmxhY2snIC8+Cjwvc3ZnPg==")
     .attr("x", "0")
     .attr("y", "0")
     .attr("height", options.patternSize)
-    .attr("width", options.patternSize);
+    .attr("width", options.patternSize)
+    .attr("xlink:href", options.patternImg);
+
+  // progress bar pattern fill
+  var pattern2 = defs
+    .append("pattern")
+    .attr("id", "vertical-stripe-2")
+    .attr("patternUnits", "userSpaceOnUse")
+    .attr("width", options.patternSize)
+    .attr("height", options.patternSize)
+    .append("image")
+    .attr("x", "0")
+    .attr("y", "0")
+    .attr("height", options.patternSize)
+    .attr("width", options.patternSize)
+    .attr("xlink:href", options.progressImg);
 
   var clipper = defs
     .append("clipPath")
@@ -239,8 +256,10 @@ function waveform() {
       .attr("clip-path", "url(#wave)")
       .attr("width", "" + currentPercent + "%")
       .attr("height", "" + h + "px")
-      .attr("fill-opacity", "0.8")
-      .attr("fill", color_palette.DarkVibrant || options.defaultFillColor);
+      .attr("fill-opacity", "0.6")
+      .attr("fill", color_palette.DarkMutted || options.defaultFillColor);
+      // .attr("fill", "url(#vertical-stripe-2)");
+      // .attr("fill", color_palette.DarkVibrant || options.defaultFillColor);
 
     // updating counter
     // chart.append("text")
