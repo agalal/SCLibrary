@@ -165,6 +165,17 @@ div#art-bk.moving {
         }
     }
 
+    // drag bar for resizing
+    .drag-bar {
+      width: 100vw;
+      position: absolute;
+      top: calc(100% - 40px);
+      z-index: 1000;
+      opacity: 0.8;
+      color: #fff;
+      font-size: 40px;
+      cursor: row-resize;
+    }
 
     span.track-channel {
         transform: translate(25px, 30px);

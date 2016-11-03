@@ -49,6 +49,7 @@ ul.list li > ol > li {
     overflow: hidden;
     padding: .1em .2em;
     height: 100%;
+    transition: width 1s ease;
 }
 
 ul.header ol > li {
@@ -57,17 +58,21 @@ ul.header ol > li {
     color: #333;
     padding: 4px 3px;
     background-color: #e3ecee;
-    overflow: hidden;
-    resize: horizontal;
+    // overflow: hidden;
+    // resize: horizontal;
     height: $header-height;
 
-    &:active {
-      // hack to fix resize smaller
-      // than declared width
-      width: 1px;
-    }
 }
 
+.drag-handle {
+  display: inline-block;
+  height: 30px;
+  float: right;
+  width: 1px;
+  margin: -5px -4px;
+  border: 1px solid $mid-light;
+  cursor: col-resize;
+}
 
 ul.list > li,
 ul.header > li {

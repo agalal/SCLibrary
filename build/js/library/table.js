@@ -59,13 +59,47 @@ function attachColHandles() {
     $(this).children('li').each(function() {
       // iterating through each header title li
 
+      let thisC = $(this).find('a').data('also-resize');
       // make each col-header resizable
-      $(this).mouseup(function () {
-        console.log('Dragged');
-        var resClass = $(this).find('a').attr('data-also-resize');
-        var newSize = $(this).css('width').split('px').join('');
+      var opt = {
+        // optional selector for handle that starts dragging
+        handleSelector: 'li.'+ thisC + ' .drag-handle',
+        // resize the width
+        resizeWidth: true,
+        // resize the height
+        resizeHeight: false,
+        // the side that the height resizing is relative to
+        resizeWidthFrom: 'right',
+        // hook into start drag operation (event,$el,opt passed - return false to abort drag)
+        onDragStart: function (e, el) {
+          snapColumn(e, el);
+        },
+        // hook into stop drag operation (event,$el,opt passed)
+        onDragEnd: function (e, el) {
+          snapColumn(e, el);
+        },
+        // hook into each drag operation (event,$el,opt passed)
+        onDrag: function (e, el) {
+          if ($(el).width() <= ($(el).find('a').width() + 9)) {
+            return false;
+          }
+        },
+        // disable touch-action on the $handle
+        // prevents browser level actions like forward back gestures
+        touchActionNone: true
+      };
+
+      function snapColumn(e, el) {
+        if ($(el).width() <= $(el).find('a').width() + 10) {
+          $(el).width($(el).find('a').width() + 11);
+          return false;
+        }
+        var resClass = $(el).find('a').attr('data-also-resize');
+        var newSize = $(el).css('width').split('px').join('');
         columns.set(resClass, newSize);
-      });
+      }
+
+      $(this).resizable(opt);
 
       // $(this).resizable({
       //   handles: 'se',

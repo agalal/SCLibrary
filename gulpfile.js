@@ -177,10 +177,10 @@ gulp.task('sass', ['icon'], function (cb) {
   pump([
     // match full sass files, not partials
     gulp.src('build/sass/*.scss'),
-
-    p.cache('sass', {
-      optimizeMemory: true
-    }),
+    // 
+    // p.cache('sass', {
+    //   optimizeMemory: true
+    // }),
     p.prettify(),
     p.sourcemap.init(),                 // start mapping
     p.sass(),                           // compile sass
